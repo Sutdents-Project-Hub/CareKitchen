@@ -1,32 +1,39 @@
-# web 元件
+# CareKitchen Web
 
-## 元件責任
+單一 Next.js App Router 元件，包含繁體中文 Web 介面、`/api/chat`、OpenAI 串接、家常餐點庫與價格檢查。專案使用 Node.js 24 LTS、pnpm 10、Next.js 16 及 TypeScript。依賴版本以 `package.json` 與 `pnpm-lock.yaml` 為準。
 
-- 類型：Web 前端
-- 專案：CareKitchen｜長者 AI 餐點顧問
-- 本元件只負責與其執行環境及部署生命週期一致的功能。
+## 啟動與驗證
 
-## 技術證據
+在 `web/` 執行以下指令。開發伺服器預設為 `http://localhost:3000`。
 
-- 技術：Next.js
-- Framework：Next.js
-- Package manager：pnpm
-- Manifest／入口：尚無（scaffold 規劃階段）
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+```
 
-## 本機開發
+```sh
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm start
+```
 
-目前只建立元件邊界與文件，尚未執行 framework bootstrap、依賴安裝或啟動。請使用官方 initializer 建立骨架後再補上並驗證前置需求、安裝、啟動、port 與本機 URL。
+## AI 模式
 
-## 品質與建置
+| 設定 | 行為 |
+|---|---|
+| `CAREKITCHEN_CHAT_MODE=auto`（預設） | 有金鑰時使用 OpenAI，缺少時由本機規則規劃 |
+| `CAREKITCHEN_CHAT_MODE=local` | 全程使用本機規則 |
+| `CAREKITCHEN_CHAT_MODE=openai` | 必須設定金鑰，缺少設定時回應 503 |
+| `OPENAI_API_KEY` | 伺服器端專案金鑰，填於本機 `.env.local` 或部署平台機密環境 |
+| `OPENAI_MODEL` | 可覆寫，預設 `gpt-4.1-mini` |
 
-- Manifest 中可見的 script 名稱：`lint`、`typecheck`、`test`、`build`
-- 只把實際執行成功的 lint、typecheck、test、build 指令寫入本文件。
+啟用 OpenAI 後，上游錯誤、反應逾時或不可解析會提示重試。介面上的本機規劃標示也會顯示哪些結果由本機規則產生。詳見 [OpenAI 串接](../docs/integrations.md)。
 
-## 環境變數
+## 責任與驗收
 
-以本元件的 `.env.example` 記錄名稱與安全 placeholder；不得提交真實值。
-
-## 部署與限制
-
-- 部署狀態：已規劃，平台尚未確認
-- 跨元件資料、API、權限或秘密邊界需在根 README 或 `docs/` 說明。
+- `app/` 與 `components/` 提供角色切換、同頁多輪對話、條件編輯、料理卡及採買摘要預覽。
+- `lib/server/` 解析條件、限制候選及核算採買成本。OpenAI 只能分類意圖和排序既有候選。
+- `tests/` 使用 Node.js 測試規則與模型替身。真實 OpenAI 配額、模型回覆品質和公開部署需各自驗證。
+- 會話跟隨當前分頁，採買摘要為手動複製文字。公開唯讀對話、資料庫及競賽交件見 [實作路線圖](../docs/implementation-roadmap.md)。

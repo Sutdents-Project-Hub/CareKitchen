@@ -30,3 +30,6 @@ coverage/
 # IDE
 .idea/
 *.swp
+
+# Local source attachments: student/competition planning inputs are not public Git assets
+docs/inputs-private/

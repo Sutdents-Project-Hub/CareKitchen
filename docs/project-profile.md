@@ -34,7 +34,7 @@ WAICY 2026 第 4 賽道 LLM & AI Agent（AI as a Service）：以對話協助長
 
 ## 專案限制
 
-- 本次只初始化文件與資料夾，不安裝框架、不實作功能、不啟動服務、不建立遠端倉庫或部署
+- 2026-11-20 初始化輪次僅建立文件與目錄；後續 Web 實作、GitHub 同步與部署依各次授權處理
 - 競賽鎖定 WAICY 2026 第 4 賽道 LLM & AI Agent：服務明確性、三種角色、實測迭代與最終可操作 AI 連結為核心
 - 先維持單一 Web 可執行元件，Server Route Handlers 執行 AI 呼叫與安全檢核，不預先建立 NestJS、App、CMS 或 worker
 - 任何藥物與食物交互作用、疾病診斷、調藥、醫療飲食處方與保證安全都在第一版範圍之外
@@ -54,8 +54,8 @@ WAICY 2026 第 4 賽道 LLM & AI Agent（AI as a Service）：以對話協助長
 
 ## 假設
 
-- 依初始化 Skill 公司預設，Web 預選 Next.js、TypeScript、Node.js 24 LTS 與 pnpm；本輪只有規劃並無實際套件版本證據
-- 暫定以 Next.js Server Route Handlers 提供 chat、constraint-validation、read-only share，第一版不拆獨立 backend
+- Web 已使用 Next.js 16、TypeScript、Node.js 24 LTS 與 pnpm 10，版本證據見 `web/package.json` 與 lockfile
+- Next.js Server Route Handlers 提供聊天、條件檢核與費用核算；唯讀分享仍在規劃
 - 展示介面採繁體中文優先、大字體與高對比，英文正式報告另行準備；語音非 P0
 - 先採訪客情境，沒有登入與個人健康檔案；對話儲存與公開分享需明確同意及匿名化
 - 使用者輸入的實際價格是可核對成本的主要依據；缺漏價格視為未知而非假裝為零
@@ -63,10 +63,10 @@ WAICY 2026 第 4 賽道 LLM & AI Agent（AI as a Service）：以對話協助長
 
 ## 未決定事項
 
-- AI 提供者、模型、配額、API 成本、資料政策與帳號由誰管理？確認後才接 API
+- 已選 OpenAI Responses API，預設模型 `gpt-4.1-mini`；真實帳號、配額、費用及模型輸出待確認
 - 公開展示的平台、網址、運行限制與未登入評審的可及性尚未決定
 - 是否使用托管 PostgreSQL 或其他具備持久化的儲存；先確認分享連結方案、刪除期限與費用
 - 公開分享對話需哪些事前同意、脫敏、期限與撤回機制？
 - 有無實際長者與照護者訪談，以及介面與回答易懂度的可用性驗證？
 - WAICY 2026 截止時間、報名資格及對話紀錄分享方式需交件前官方再次確認
-- 正式 GitHub 倉庫歸屬、開源授權、模型與圖片/文字素材授權尚未核准
+- GitHub 倉庫使用 `Sutdents-Project-Hub/CareKitchen`；專案開源授權待確認
