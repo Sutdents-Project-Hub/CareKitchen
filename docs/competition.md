@@ -68,6 +68,16 @@
 
 沒有測試數據時 P8 必須標註結果尚未取得，不能先填示意數字。
 
+### WAICY 簡報視覺規格
+
+以下為使用者指定的 **Term Sheet** 主題原文，供後續製作簡報時套用至每一頁。這份規格適用於簡報；網站的對應設計見 [使用流程與無障礙設計](ux-and-user-flows.md)。
+
+```text
+Create a presentation in the 'Term Sheet' theme: a structured, institutional investor pitch deck that reads like the Sequoia pitch deck template, calm authority over flash. Background: flat cool white #F7F8FA on every slide, never a gradient. Typography: headlines in Source Serif 4, 40 to 64px, semibold, navy #0E1B33; section labels and all data in IBM Plex Sans, both Google Fonts. Body runs 16 to 18px in #41495A, labels are 11 to 13px uppercase letterspaced in #818A9C, and every stat number is IBM Plex Sans semibold, 40 to 52px, in navy #16315C. Layout: a visible structured grid with numbered sections, ruled tables and aligned columns built on white #FFFFFF cards with 1px #DDE2EA borders. Accents: navy #16315C carries headings, section numbers, table rules and bar fills only; one panel sits on primarySoft #DCE4F2. Strictly avoid: photos, icons, rounded blob shapes, drop shadows, more than one accent hue, decorative gradients, centered body paragraphs.
+
+Use this theme for my slides. Ask me what the presentation is about first, then apply the theme to every slide.
+```
+
 ## 5. Submission 資料夾和欄位
 
 - 依來源指南建議：Google Drive 資料夾 `LLM_High_CareKitchen/`，內放 `LLM_High_CareKitchen.pdf`；**這裡只定義交件結構，未建立 Drive 資料夾。**

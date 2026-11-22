@@ -4,28 +4,14 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowDown,
   ArrowUpRight,
-  BookOpen,
-  Check,
   ChevronDown,
   ChevronUp,
   CircleAlert,
-  Clock3,
-  CookingPot,
   Copy,
-  HeartHandshake,
-  Leaf,
-  ListChecks,
   LoaderCircle,
-  MessageCircle,
   Minus,
   Plus,
   RefreshCw,
-  Send,
-  SlidersHorizontal,
-  Sparkles,
-  Sprout,
-  UsersRound,
-  Utensils,
   X,
 } from "lucide-react";
 import {
@@ -44,24 +30,12 @@ import {
 } from "../lib/contracts";
 
 type Entry = { role: "assistant" | "user"; text: string };
-const roles: Record<Persona, { title: string; line: string; detail: string }> =
-  {
-    elder: {
-      title: "我自己準備",
-      line: "想吃得簡單，也顧好今天的預算。",
-      detail: "一人一餐 · 步驟清楚",
-    },
-    caregiver: {
-      title: "幫家人準備",
-      line: "把已確認的飲食條件，一起帶進每道菜。",
-      detail: "條件不遺漏 · 方便調整",
-    },
-    family: {
-      title: "和家人一起安排",
-      line: "整理餐點方向，讓採買和討論更容易。",
-      detail: "採買一目了然 · 方便分享",
-    },
-  };
+const roles: Record<Persona, { title: string; line: string }> = {
+  elder: { title: "我自己準備", line: "找簡單的家常菜和做法" },
+  caregiver: { title: "幫家人準備", line: "照顧份量與已確認的限制" },
+  family: { title: "和家人一起安排", line: "整理採買，方便一起討論" },
+};
+const roleOrder: Persona[] = ["elder", "caregiver", "family"];
 const modeNames: Record<ChatMode, string> = {
   openai: "AI 對話",
   local: "本機規劃",
@@ -120,6 +94,7 @@ export default function CareKitchenApp() {
   const [unknowns, setUnknowns] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [shareNotice, setShareNotice] = useState("");
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [simpleMode, setSimpleMode] = useState(true);
   const [largeText, setLargeText] = useState(false);
@@ -145,6 +120,10 @@ export default function CareKitchenApp() {
   ];
   if (context.pantryItems.length)
     summary.push(itemNames(context.pantryItems).slice(0, 3).join("、"));
+  if (context.equipment.length)
+    summary.push(
+      context.equipment.map((item) => equipmentLabels[item]).join("、"),
+    );
   if (context.excludedIngredients.length)
     summary.push("排除 " + context.excludedIngredients.join("、"));
 
@@ -203,11 +182,7 @@ export default function CareKitchenApp() {
   function edit(update: (old: MealContext) => MealContext) {
     if (busy) return;
     setContext(update);
-    setCards([]);
-    setAnswerContext(null);
-    setUnknowns([]);
-    setExpanded(null);
-    setNotice("");
+    invalidateAnswer();
   }
   function invalidateAnswer() {
     setCards([]);
@@ -215,6 +190,7 @@ export default function CareKitchenApp() {
     setUnknowns([]);
     setExpanded(null);
     setNotice("");
+    setShareNotice("");
   }
   function setField<K extends keyof MealContext>(
     key: K,
@@ -227,6 +203,7 @@ export default function CareKitchenApp() {
     if (!text || busy) return;
     setBusy(true);
     setNotice("");
+    setShareNotice("");
     setRetryRequest({
       text,
       ...(previousMealIds?.length ? { previousMealIds } : {}),
@@ -324,9 +301,7 @@ export default function CareKitchenApp() {
           ? "我幫家人準備一餐，手邊有 150 克豆腐和 120 克青菜，預算 100 元，只有電鍋。"
           : "週末想和家人一起吃，有 150 克豆腐和 120 克青菜，預算 100 元、只有電鍋，請整理好採買方向。";
     setDraft(exampleText);
-    document
-      .getElementById("conversation")
-      ?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("message")?.focus();
   }
   function toggleEquipment(item: Equipment) {
     setField(
@@ -363,13 +338,16 @@ export default function CareKitchenApp() {
   }
   function selectPersona(value: Persona) {
     if (busy) return;
-    setPersona(value);
-    setCards([]);
-    setAnswerContext(null);
-    setThread([]);
-    setUnknowns([]);
-    setNotice("");
+    if (value !== persona) {
+      setPersona(value);
+      invalidateAnswer();
+      setThread([]);
+      setRetryRequest(null);
+    }
     document.getElementById("workspace")?.scrollIntoView();
+    document
+      .getElementById("conversation-title")
+      ?.focus({ preventScroll: true });
   }
   function choosePrompt(text: string) {
     if (busy) return;
@@ -411,334 +389,431 @@ export default function CareKitchenApp() {
     const lines = shareLines(c);
     try {
       await navigator.clipboard.writeText(lines.join("\n"));
-      setNotice("已複製預覽中的餐點摘要。");
+      setShareNotice("已複製餐點摘要。");
       setShareCard(null);
     } catch {
-      setNotice("無法自動複製，請選取預覽內容後自行複製。");
+      setShareNotice("無法自動複製，請選取預覽文字後自行複製。");
     }
   }
 
   return (
-    <main id="top" className={"app-shell" + (largeText ? " large-text" : "")}>
+    <div id="top" className={"app-shell" + (largeText ? " large-text" : "")}>
       <a className="skip-link" href="#workspace">
         跳到餐點工作區
       </a>
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="CareKitchen 首頁">
-          <span className="brand-mark">
-            <Sprout size={21} />
-          </span>
-          <span>
-            care<span>kitchen</span>
-          </span>
-        </a>
-        <nav className="top-links" aria-label="主要導覽">
-          <a href="#how-it-works">怎麼使用</a>
-          <a href="#roles">開始規劃</a>
-        </nav>
-        <div className="access-tools" aria-label="閱讀設定">
-          <button
-            type="button"
-            className={simpleMode ? "text-tool active" : "text-tool"}
-            aria-pressed={simpleMode}
-            onClick={() => setSimpleMode(!simpleMode)}
-          >
-            <BookOpen size={17} />
-            {simpleMode ? "簡單閱讀" : "詳細閱讀"}
-          </button>
-          <button
-            type="button"
-            className="font-tool"
-            aria-pressed={largeText}
-            aria-label={largeText ? "縮小文字" : "放大文字"}
-            onClick={() => setLargeText(!largeText)}
-          >
-            Aa
-          </button>
+        <div className="topbar-inner">
+          <a className="brand" href="#top" aria-label="CareKitchen 首頁">
+            CareKitchen
+          </a>
+          <nav className="top-links" aria-label="主要導覽">
+            <a href="#workspace">餐點規劃</a>
+            <a href="#how-it-works">使用說明</a>
+          </nav>
+          <div className="access-tools" aria-label="閱讀設定">
+            <button
+              type="button"
+              className="text-tool"
+              aria-pressed={simpleMode}
+              onClick={() => setSimpleMode(!simpleMode)}
+            >
+              簡易模式
+            </button>
+            <button
+              type="button"
+              className="font-tool"
+              aria-pressed={largeText}
+              onClick={() => setLargeText(!largeText)}
+            >
+              {largeText ? "縮小文字" : "放大文字"}
+            </button>
+          </div>
         </div>
       </header>
 
-      <section className="hero" aria-labelledby="hero-heading">
-        <div className="hero-copy">
-          <p className="eyebrow">
-            <span className="eyebrow-line" />
-            好好吃飯，從手邊開始
-          </p>
-          <h1 id="hero-heading">
-            把手邊的食材，
-            <br />
-            <em>煮成剛好的日常。</em>
-          </h1>
-          <p className="hero-intro">
-            告訴我們家裡有什麼、今天想花多少，
-            <br className="desktop-break" />
-            一起找一餐簡單、合適的料理方向。
-          </p>
-          <div className="hero-actions">
+      <main>
+        <div className="entry-grid">
+          <section className="hero" aria-labelledby="hero-heading">
+            <h1 id="hero-heading">
+              <span>用手邊食材</span>
+              <span>規劃今天這一餐</span>
+            </h1>
+            <p>依照預算、設備和已確認的飲食限制，找出幾道做得來的家常菜。</p>
             <a className="button button-primary" href="#roles">
-              開始規劃一餐 <ArrowDown size={18} />
+              開始規劃一餐 <ArrowDown size={18} aria-hidden="true" />
             </a>
-            <span className="hero-note">
-              <Leaf size={16} />
-              不用先準備完整資料
-            </span>
-          </div>
-          <div className="hero-smallprint">
-            <span className="smallprint-dot" />
-            依你提供的價格與已確認條件，不猜測醫療需求
-          </div>
-        </div>
-        <div
-          className="hero-visual"
-          role="img"
-          aria-label="暖色廚房桌上的豆腐、青菜與米飯"
-        >
-          <div className="hero-image" />
-        </div>
-      </section>
-
-      <section
-        className="role-section"
-        id="roles"
-        aria-labelledby="role-heading"
-      >
-        <div className="role-heading-row">
-          <h2 id="role-heading">今天，想為誰準備？</h2>
-          <p>依照你的角色，整理剛好的資訊。</p>
-        </div>
-        <div className="role-tabs" role="group" aria-label="選擇使用情境">
-          {(["elder", "caregiver", "family"] as Persona[]).map((key, index) => {
-            const Icon = [Utensils, HeartHandshake, UsersRound][index];
-            return (
-              <button
-                key={key}
-                type="button"
-                className={"role-tab" + (persona === key ? " selected" : "")}
-                onClick={() => selectPersona(key)}
-                disabled={busy}
-                aria-pressed={persona === key}
-              >
-                <span className="role-icon">
-                  <Icon size={20} />
-                </span>
-                <span className="role-text">
-                  <strong>{roles[key].title}</strong>
-                  <small>{roles[key].line}</small>
-                </span>
-                <span className="role-detail">{roles[key].detail}</span>
-                <ArrowUpRight className="role-arrow" size={18} />
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      <section
-        className="workspace-section"
-        id="workspace"
-        aria-labelledby="workspace-title"
-      >
-        <div className="workspace-heading">
-          <div>
-            <h2 id="workspace-title">一起規劃今天這一餐</h2>
-            <p>不用一次填完，想到什麼再告訴我們就好。</p>
-          </div>
-          <div
-            className={
-              "connection-state" +
-              (mode === "unavailable" ? " state-muted" : "")
-            }
+          </section>
+          <section
+            className="role-section"
+            id="roles"
+            tabIndex={-1}
+            aria-labelledby="role-heading"
           >
-            <span className="connection-dot" />
-            {modeReady ? modeNames[mode] : "正在確認服務…"}
-          </div>
-        </div>
-        <div className="workspace-grid">
-          <aside
-            className="conditions-panel"
-            aria-labelledby="conditions-title"
-          >
-            <div className="panel-top">
-              <div className="panel-title">
-                <SlidersHorizontal size={18} />
-                <h3 id="conditions-title">這餐的條件</h3>
-              </div>
-              <span className="editable-note">可隨時修改</span>
-            </div>
-            <div className="conditions-summary" aria-live="polite">
-              <span className="summary-mark">
-                <Check size={15} />
-              </span>
-              <span>{summary.join(" · ")}</span>
-            </div>
-            <fieldset className="conditions-controls" disabled={busy}>
-              <div className="condition-fields">
-                <div className="field-row">
-                  <label htmlFor="servings">準備幾人份</label>
-                  <div className="number-control">
-                    <button
-                      type="button"
-                      aria-label="減少人數"
-                      onClick={() =>
-                        setField(
-                          "servings",
-                          Math.max(1, (context.servings || 1) - 1),
-                        )
-                      }
-                    >
-                      <Minus size={16} />
-                    </button>
-                    <input
-                      id="servings"
-                      type="number"
-                      min="1"
-                      max="12"
-                      value={context.servings ?? ""}
-                      placeholder="未設定"
-                      onChange={(e) =>
-                        setField(
-                          "servings",
-                          e.target.value
-                            ? Math.max(1, Math.min(12, Number(e.target.value)))
-                            : null,
-                        )
-                      }
-                    />
-                    <button
-                      type="button"
-                      aria-label="增加人數"
-                      disabled={(context.servings || 0) >= 12}
-                      onClick={() =>
-                        setField(
-                          "servings",
-                          Math.min(12, (context.servings || 0) + 1),
-                        )
-                      }
-                    >
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                </div>
-                <div className="field-row">
-                  <label htmlFor="budget">預算上限</label>
-                  <div className="input-suffix">
-                    <span>NT$</span>
-                    <input
-                      id="budget"
-                      type="number"
-                      min="0"
-                      inputMode="numeric"
-                      placeholder="還沒決定"
-                      value={context.budgetTwd ?? ""}
-                      onChange={(e) =>
-                        setField(
-                          "budgetTwd",
-                          e.target.value ? Number(e.target.value) : null,
-                        )
-                      }
-                    />
-                    <small>這餐</small>
-                  </div>
-                </div>
-                <div className="field-row field-column">
-                  <label htmlFor="pantry">家裡現有食材</label>
-                  <input
-                    className="text-input"
-                    id="pantry"
-                    value={pantryText}
-                    placeholder="例如：豆腐、青菜、雞蛋"
-                    onChange={(e) => {
-                      setPantryText(e.target.value);
-                      invalidateAnswer();
-                    }}
-                    onBlur={() =>
-                      setField(
-                        "pantryItems",
-                        parsePantry(pantryText, context.pantryItems),
-                      )
-                    }
-                  />
-                  <span className="field-hint">
-                    用逗號或頓號分開；數量可寫在後面，例如豆腐 150g。
+            <h2 id="role-heading">這餐為誰準備？</h2>
+            <div className="role-tabs" role="group" aria-label="選擇使用情境">
+              {roleOrder.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  className="role-tab"
+                  onClick={() => selectPersona(key)}
+                  disabled={busy}
+                  aria-pressed={persona === key}
+                >
+                  <span className="role-text">
+                    <strong>{roles[key].title}</strong>
+                    <small>{roles[key].line}</small>
                   </span>
+                  {persona === key ? (
+                    <span className="role-current">目前選用</span>
+                  ) : (
+                    <ArrowUpRight size={18} aria-hidden="true" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <section
+          className="workspace-section"
+          id="workspace"
+          tabIndex={-1}
+          aria-labelledby="workspace-title"
+        >
+          <div className="workspace-heading">
+            <div>
+              <h2 id="workspace-title">餐點工作區</h2>
+            </div>
+            <div
+              className={
+                "connection-state" +
+                (mode === "unavailable" ? " state-muted" : "")
+              }
+            >
+              {modeReady ? modeNames[mode] : "正在確認服務…"}
+            </div>
+          </div>
+          <div className="workspace-grid">
+            <div className="planning-column">
+              <section
+                className="conversation-panel"
+                id="conversation"
+                aria-labelledby="conversation-title"
+              >
+                <div className="conversation-top">
+                  <div className="panel-title">
+                    <h3 id="conversation-title" tabIndex={-1}>
+                      對話規劃
+                    </h3>
+                  </div>
+                  <div className="conversation-tools">
+                    <span className="conversation-role">
+                      {personaLabels[persona]}
+                    </span>
+                    <a href="#meal-conditions" className="text-link">
+                      修改條件
+                    </a>
+                  </div>
                 </div>
-                <div className="field-row field-column">
-                  <span className="field-label">可以使用的設備</span>
-                  <div className="equipment-options">
-                    {(Object.keys(equipmentLabels) as Equipment[]).map(
-                      (equipment) => (
-                        <button
-                          type="button"
-                          key={equipment}
-                          className={
-                            "choice-chip" +
-                            (context.equipment.includes(equipment)
-                              ? " chosen"
-                              : "")
-                          }
-                          onClick={() => toggleEquipment(equipment)}
-                          aria-pressed={context.equipment.includes(equipment)}
-                        >
-                          {equipmentLabels[equipment]}
-                        </button>
-                      ),
+                {thread.length > 0 && (
+                  <div
+                    className="conversation-feed"
+                    aria-live="polite"
+                    aria-relevant="additions text"
+                  >
+                    {thread.map((entry, i) => (
+                      <div className={"message-row " + entry.role} key={i}>
+                        <div className="message-content">
+                          <span className="message-author">
+                            {entry.role === "assistant" ? "CareKitchen" : "你"}
+                          </span>
+                          <p>{entry.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                    {busy && (
+                      <div className="message-row assistant">
+                        <div className="message-content">
+                          <span className="message-author">CareKitchen</span>
+                          <p className="thinking">
+                            <LoaderCircle size={16} />
+                            正在依照目前條件整理…
+                          </p>
+                        </div>
+                      </div>
                     )}
                   </div>
-                </div>
-              </div>
-              <button
-                className="disclosure-trigger"
-                type="button"
-                aria-expanded={detailsOpen}
-                onClick={() => setDetailsOpen(!detailsOpen)}
-              >
-                <span>
-                  <Plus size={16} />
-                  再補充其他條件
-                </span>
-                {detailsOpen ? (
-                  <ChevronUp size={17} />
-                ) : (
-                  <ChevronDown size={17} />
                 )}
-              </button>
-              {detailsOpen && (
-                <div className="extra-fields">
+                {notice && (
+                  <div className="inline-notice" role="status">
+                    <CircleAlert size={17} />
+                    <span>{notice}</span>
+                    {retryRequest && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          void send(
+                            retryRequest.text,
+                            retryRequest.previousMealIds,
+                          )
+                        }
+                        disabled={busy || draft.trim() !== retryRequest.text}
+                      >
+                        重試
+                      </button>
+                    )}
+                  </div>
+                )}
+                <form className="composer" onSubmit={submit}>
+                  <label className="composer-label" htmlFor="message">
+                    描述今天想準備的餐點
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={2}
+                    maxLength={600}
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    placeholder="例如：我有豆腐和青菜，想煮簡單一點…"
+                    readOnly={busy}
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === "Enter" &&
+                        !e.shiftKey &&
+                        !e.nativeEvent.isComposing
+                      ) {
+                        e.preventDefault();
+                        void send();
+                      }
+                    }}
+                  />
+                  <div className="composer-bottom">
+                    <span>
+                      {draft.length}/600 · Enter 送出 · Shift + Enter 換行
+                    </span>
+                    <button
+                      className="send-button"
+                      type="submit"
+                      disabled={busy || !draft.trim()}
+                      aria-label="送出訊息"
+                    >
+                      {busy && (
+                        <LoaderCircle
+                          size={18}
+                          className="spin"
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span>{busy ? "處理中" : "送出"}</span>
+                    </button>
+                  </div>
+                </form>
+                {thread.length === 0 && (
+                  <div className="conversation-start">
+                    <button
+                      className="example-prompt"
+                      type="button"
+                      onClick={example}
+                    >
+                      <span>
+                        <strong>試試看一個例子</strong>
+                        <small>
+                          {persona === "elder"
+                            ? "一人份 · 豆腐和青菜 · 100 元"
+                            : persona === "caregiver"
+                              ? "幫家人準備 · 帶入備餐條件"
+                              : "三人份 · 看看要買什麼"}
+                        </small>
+                      </span>
+                      <ArrowUpRight size={18} aria-hidden="true" />
+                    </button>
+                    <div className="quick-prompts" aria-label="快速開始">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          choosePrompt("我想用家裡現有的食材規劃一餐。")
+                        }
+                      >
+                        用現有食材
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          choosePrompt(
+                            "請依照我填的預算規劃，並標出還沒確認的價格。",
+                          )
+                        }
+                      >
+                        看看預算
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          choosePrompt("請依照我已確認不使用的食材調整餐點。")
+                        }
+                      >
+                        套用已確認限制
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          choosePrompt(
+                            "請整理這餐的採買清單，列出數量和待確認價格。",
+                          )
+                        }
+                      >
+                        整理採買
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {activeCards.length > 0 && (
+                  <a className="result-jump text-link" href="#meal-results">
+                    查看 {activeCards.length} 道餐點{" "}
+                    <ArrowDown size={16} aria-hidden="true" />
+                  </a>
+                )}
+                <p className="conversation-privacy">
+                  OpenAI 模式會傳送這一輪的訊息與規劃條件。
+                </p>
+              </section>
+              <section
+                className="results-section"
+                id="meal-results"
+                tabIndex={-1}
+                aria-labelledby="results-title"
+              >
+                <div className="results-heading">
+                  <h3 id="results-title" tabIndex={-1}>
+                    餐點建議
+                  </h3>
+                  {activeCards.length > 0 && (
+                    <button
+                      className="text-action"
+                      type="button"
+                      disabled={busy}
+                      onClick={() =>
+                        void send(
+                          "請依照目前條件換一道，並避開前面列出的餐點。",
+                          activeCards.map((c) => c.id),
+                        )
+                      }
+                    >
+                      <RefreshCw size={16} />
+                      換一道
+                    </button>
+                  )}
+                </div>
+                {!activeCards.length ? (
+                  <p className="results-empty">
+                    {busy
+                      ? "正在檢查這一輪的條件。"
+                      : thread.length
+                        ? "目前沒有可顯示的餐點。"
+                        : "送出需求後，這裡會列出候選餐點。"}
+                  </p>
+                ) : (
+                  <div className="meal-grid">
+                    {activeCards.slice(0, 3).map((card, i) => (
+                      <MealOption
+                        key={card.id}
+                        card={card}
+                        index={i}
+                        expanded={expanded === card.id}
+                        onToggle={() =>
+                          setExpanded(expanded === card.id ? null : card.id)
+                        }
+                        onPreview={(button) => {
+                          shareOpener.current = button;
+                          setShareNotice("");
+                          setShareCard(card);
+                        }}
+                        context={context}
+                        simpleMode={simpleMode}
+                        busy={busy}
+                      />
+                    ))}
+                  </div>
+                )}
+                {shareNotice && !shareCard && (
+                  <p className="share-feedback" role="status">
+                    {shareNotice}
+                  </p>
+                )}
+                {unknowns.length > 0 && (
+                  <div className="unknown-notes">
+                    <strong>
+                      <CircleAlert size={17} />
+                      還需要確認
+                    </strong>
+                    <ul>
+                      {unknowns.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </section>
+            </div>
+            <aside
+              className="conditions-panel"
+              id="meal-conditions"
+              tabIndex={-1}
+              aria-labelledby="conditions-title"
+            >
+              <div className="panel-top">
+                <h3 id="conditions-title" tabIndex={-1}>
+                  這餐的條件
+                </h3>
+              </div>
+              <p className="conditions-summary" aria-live="polite">
+                {summary.join(" · ")}
+              </p>
+              <fieldset className="conditions-controls" disabled={busy}>
+                <div className="condition-fields">
                   <div className="field-row">
-                    <label htmlFor="meal-count">想規劃幾餐</label>
+                    <label htmlFor="servings">準備幾人份</label>
                     <div className="number-control">
                       <button
                         type="button"
-                        aria-label="減少餐數"
+                        aria-label="減少人數"
                         onClick={() =>
                           setField(
-                            "mealCount",
-                            Math.max(1, context.mealCount - 1),
+                            "servings",
+                            Math.max(1, (context.servings || 1) - 1),
                           )
                         }
                       >
                         <Minus size={16} />
                       </button>
                       <input
-                        id="meal-count"
+                        id="servings"
                         type="number"
                         min="1"
-                        max="7"
-                        value={context.mealCount}
+                        max="12"
+                        value={context.servings ?? ""}
+                        placeholder="未設定"
                         onChange={(e) =>
                           setField(
-                            "mealCount",
-                            Math.max(1, Number(e.target.value) || 1),
+                            "servings",
+                            e.target.value
+                              ? Math.max(
+                                  1,
+                                  Math.min(12, Number(e.target.value)),
+                                )
+                              : null,
                           )
                         }
                       />
                       <button
                         type="button"
-                        aria-label="增加餐數"
+                        aria-label="增加人數"
+                        disabled={(context.servings || 0) >= 12}
                         onClick={() =>
                           setField(
-                            "mealCount",
-                            Math.min(7, context.mealCount + 1),
+                            "servings",
+                            Math.min(12, (context.servings || 0) + 1),
                           )
                         }
                       >
@@ -747,485 +822,331 @@ export default function CareKitchenApp() {
                     </div>
                   </div>
                   <div className="field-row">
-                    <label htmlFor="time">最多料理時間</label>
+                    <label htmlFor="budget">預算上限</label>
                     <div className="input-suffix">
+                      <span>NT$</span>
                       <input
-                        id="time"
+                        id="budget"
                         type="number"
-                        min="1"
-                        placeholder="不限"
-                        value={context.maxTimeMinutes ?? ""}
+                        min="0"
+                        inputMode="numeric"
+                        placeholder="還沒決定"
+                        value={context.budgetTwd ?? ""}
                         onChange={(e) =>
                           setField(
-                            "maxTimeMinutes",
+                            "budgetTwd",
                             e.target.value ? Number(e.target.value) : null,
                           )
                         }
                       />
-                      <small>分鐘</small>
+                      <small>這餐</small>
                     </div>
                   </div>
                   <div className="field-row field-column">
-                    <label htmlFor="excluded">已確認不使用的食材</label>
+                    <label htmlFor="pantry">家裡現有食材</label>
                     <input
                       className="text-input"
-                      id="excluded"
-                      value={excludedText}
-                      placeholder="例如：花生、蝦"
+                      id="pantry"
+                      value={pantryText}
+                      placeholder="例如：豆腐、青菜、雞蛋"
                       onChange={(e) => {
-                        setExcludedText(e.target.value);
+                        setPantryText(e.target.value);
                         invalidateAnswer();
                       }}
                       onBlur={() =>
-                        setField("excludedIngredients", split(excludedText))
+                        setField(
+                          "pantryItems",
+                          parsePantry(pantryText, context.pantryItems),
+                        )
                       }
                     />
                     <span className="field-hint">
-                      只填已確認的限制；不必提供病名或藥物。
+                      用逗號或頓號分開；數量可寫在後面，例如豆腐 150g。
                     </span>
                   </div>
                   <div className="field-row field-column">
-                    <label htmlFor="preferences">口味或料理偏好</label>
-                    <input
-                      className="text-input"
-                      id="preferences"
-                      value={preferencesText}
-                      placeholder="例如：清淡、不辣、軟一點"
-                      onChange={(e) => {
-                        setPreferencesText(e.target.value);
-                        invalidateAnswer();
-                      }}
-                      onBlur={() =>
-                        setField("preferences", split(preferencesText))
-                      }
-                    />
+                    <span className="field-label">可以使用的設備</span>
+                    <div className="equipment-options">
+                      {(Object.keys(equipmentLabels) as Equipment[]).map(
+                        (equipment) => (
+                          <button
+                            type="button"
+                            key={equipment}
+                            className={
+                              "choice-chip" +
+                              (context.equipment.includes(equipment)
+                                ? " chosen"
+                                : "")
+                            }
+                            onClick={() => toggleEquipment(equipment)}
+                            aria-pressed={context.equipment.includes(equipment)}
+                          >
+                            {equipmentLabels[equipment]}
+                          </button>
+                        ),
+                      )}
+                    </div>
                   </div>
-                  <label className="check-row">
-                    <input
-                      type="checkbox"
-                      checked={context.onlyPantry}
-                      onChange={(e) => setField("onlyPantry", e.target.checked)}
-                    />
-                    <span>希望只用家裡現有食材</span>
-                  </label>
-                  <label className="check-row">
-                    <input
-                      type="checkbox"
-                      checked={context.uncertainty}
-                      onChange={(e) =>
-                        setField("uncertainty", e.target.checked)
-                      }
-                    />
-                    <span>有些條件不太確定，請先問我</span>
-                  </label>
-                  <div className="price-editor">
-                    <div className="field-label">我知道的食材價格</div>
-                    <p>只依你提供的價格估算，沒有價格會標示待確認。</p>
-                    {context.purchasePrices.map((q) => (
-                      <div className="quote-row" key={q.name}>
-                        <span>
-                          {q.name} · {q.quantity}
-                          {q.unit}
-                        </span>
-                        <strong>NT$ {q.priceTwd}</strong>
+                </div>
+                <button
+                  className="disclosure-trigger"
+                  type="button"
+                  aria-expanded={detailsOpen}
+                  onClick={() => setDetailsOpen(!detailsOpen)}
+                >
+                  <span>
+                    <Plus size={16} />
+                    再補充其他條件
+                  </span>
+                  {detailsOpen ? (
+                    <ChevronUp size={17} />
+                  ) : (
+                    <ChevronDown size={17} />
+                  )}
+                </button>
+                {detailsOpen && (
+                  <div className="extra-fields">
+                    <div className="field-row">
+                      <label htmlFor="meal-count">想規劃幾餐</label>
+                      <div className="number-control">
                         <button
                           type="button"
-                          aria-label={"移除" + q.name + "價格"}
+                          aria-label="減少餐數"
                           onClick={() =>
                             setField(
-                              "purchasePrices",
-                              context.purchasePrices.filter(
-                                (x) => x.name !== q.name,
-                              ),
+                              "mealCount",
+                              Math.max(1, context.mealCount - 1),
                             )
                           }
                         >
-                          <X size={15} />
+                          <Minus size={16} />
+                        </button>
+                        <input
+                          id="meal-count"
+                          type="number"
+                          min="1"
+                          max="7"
+                          value={context.mealCount}
+                          onChange={(e) =>
+                            setField(
+                              "mealCount",
+                              Math.max(1, Number(e.target.value) || 1),
+                            )
+                          }
+                        />
+                        <button
+                          type="button"
+                          aria-label="增加餐數"
+                          onClick={() =>
+                            setField(
+                              "mealCount",
+                              Math.min(7, context.mealCount + 1),
+                            )
+                          }
+                        >
+                          <Plus size={16} />
                         </button>
                       </div>
-                    ))}
-                    <div className="price-inputs">
-                      <input
-                        aria-label="食材名稱"
-                        value={priceName}
-                        onChange={(e) => setPriceName(e.target.value)}
-                        placeholder="食材"
-                      />
-                      <input
-                        aria-label="數量"
-                        type="number"
-                        min="0.1"
-                        step="0.1"
-                        value={priceQty}
-                        onChange={(e) => setPriceQty(e.target.value)}
-                      />
-                      <select
-                        aria-label="單位"
-                        value={priceUnit}
-                        onChange={(e) => setPriceUnit(e.target.value as Unit)}
-                      >
-                        {units.map((unit) => (
-                          <option key={unit}>{unit}</option>
-                        ))}
-                      </select>
-                      <input
-                        aria-label="價格新台幣"
-                        type="number"
-                        min="0"
-                        value={priceValue}
-                        onChange={(e) => setPriceValue(e.target.value)}
-                        placeholder="NT$"
-                      />
-                      <button
-                        type="button"
-                        onClick={addPrice}
-                        aria-label="新增價格"
-                      >
-                        <Plus size={17} />
-                      </button>
                     </div>
-                  </div>
-                </div>
-              )}
-            </fieldset>
-            <div className="conditions-footnote">
-              <CircleAlert size={16} />
-              <p>
-                不需要輸入姓名、病歷或藥物資訊。飲食限制不明時，我們會先請你確認。
-              </p>
-            </div>
-          </aside>
-
-          <section
-            className="conversation-panel"
-            id="conversation"
-            aria-labelledby="conversation-title"
-          >
-            <div className="conversation-top">
-              <div className="panel-title">
-                <MessageCircle size={18} />
-                <h3 id="conversation-title">和 CareKitchen 聊聊</h3>
-              </div>
-              <span className="conversation-role">
-                {personaLabels[persona]}
-              </span>
-            </div>
-            {thread.length === 0 ? (
-              <div className="conversation-empty">
-                <div className="empty-illustration">
-                  <div className="empty-bowl">
-                    <CookingPot size={41} />
-                  </div>
-                  <span className="empty-leaf leaf-one">
-                    <Sprout size={20} />
-                  </span>
-                  <span className="empty-leaf leaf-two">
-                    <Leaf size={17} />
-                  </span>
-                </div>
-                <h4>今天想吃點什麼？</h4>
-                <p>從手邊的食材開始，慢慢告訴我就好。</p>
-                <button
-                  className="example-prompt"
-                  type="button"
-                  onClick={example}
-                >
-                  <span className="example-icon">
-                    <Sparkles size={16} />
-                  </span>
-                  <span>
-                    <strong>試試看一個例子</strong>
-                    <small>
-                      {persona === "elder"
-                        ? "一人份 · 豆腐和青菜 · 100 元"
-                        : persona === "caregiver"
-                          ? "幫家人準備 · 清楚列出條件"
-                          : "家人一起吃 · 看看要買什麼"}
-                    </small>
-                  </span>
-                  <ArrowUpRight size={17} />
-                </button>
-                <div className="quick-prompts" aria-label="快速開始">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      choosePrompt("我想用家裡現有的食材規劃一餐。")
-                    }
-                  >
-                    用現有食材
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      choosePrompt(
-                        "請依照我填的預算規劃，並標出還沒確認的價格。",
-                      )
-                    }
-                  >
-                    看看預算
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      choosePrompt("請依照我已確認不使用的食材調整餐點。")
-                    }
-                  >
-                    套用已確認限制
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      choosePrompt(
-                        "請整理這餐的採買清單，列出數量和待確認價格。",
-                      )
-                    }
-                  >
-                    整理採買
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div
-                className="conversation-feed"
-                aria-live="polite"
-                aria-relevant="additions text"
-              >
-                {thread.map((entry, i) => (
-                  <div className={"message-row " + entry.role} key={i}>
-                    <div className="message-avatar" aria-hidden="true">
-                      {entry.role === "assistant" ? <Sprout size={17} /> : "我"}
+                    <div className="field-row">
+                      <label htmlFor="time">最多料理時間</label>
+                      <div className="input-suffix">
+                        <input
+                          id="time"
+                          type="number"
+                          min="1"
+                          placeholder="不限"
+                          value={context.maxTimeMinutes ?? ""}
+                          onChange={(e) =>
+                            setField(
+                              "maxTimeMinutes",
+                              e.target.value ? Number(e.target.value) : null,
+                            )
+                          }
+                        />
+                        <small>分鐘</small>
+                      </div>
                     </div>
-                    <div className="message-content">
-                      <span className="message-author">
-                        {entry.role === "assistant" ? "CareKitchen" : "你"}
+                    <div className="field-row field-column">
+                      <label htmlFor="excluded">已確認不使用的食材</label>
+                      <input
+                        className="text-input"
+                        id="excluded"
+                        value={excludedText}
+                        placeholder="例如：花生、蝦"
+                        onChange={(e) => {
+                          setExcludedText(e.target.value);
+                          invalidateAnswer();
+                        }}
+                        onBlur={() =>
+                          setField("excludedIngredients", split(excludedText))
+                        }
+                      />
+                      <span className="field-hint">
+                        只填已確認的限制；不必提供病名或藥物。
                       </span>
-                      <p>{entry.text}</p>
                     </div>
-                  </div>
-                ))}
-                {busy && (
-                  <div className="message-row assistant">
-                    <div className="message-avatar">
-                      <Sprout size={17} />
+                    <div className="field-row field-column">
+                      <label htmlFor="preferences">口味或料理偏好</label>
+                      <input
+                        className="text-input"
+                        id="preferences"
+                        value={preferencesText}
+                        placeholder="例如：清淡、不辣、軟一點"
+                        onChange={(e) => {
+                          setPreferencesText(e.target.value);
+                          invalidateAnswer();
+                        }}
+                        onBlur={() =>
+                          setField("preferences", split(preferencesText))
+                        }
+                      />
                     </div>
-                    <div className="message-content">
-                      <span className="message-author">CareKitchen</span>
-                      <p className="thinking">
-                        <LoaderCircle size={16} />
-                        正在依照目前條件整理…
-                      </p>
+                    <label className="check-row">
+                      <input
+                        type="checkbox"
+                        checked={context.onlyPantry}
+                        onChange={(e) =>
+                          setField("onlyPantry", e.target.checked)
+                        }
+                      />
+                      <span>希望只用家裡現有食材</span>
+                    </label>
+                    <label className="check-row">
+                      <input
+                        type="checkbox"
+                        checked={context.uncertainty}
+                        onChange={(e) =>
+                          setField("uncertainty", e.target.checked)
+                        }
+                      />
+                      <span>有些條件不太確定，請先問我</span>
+                    </label>
+                    <div className="price-editor">
+                      <div className="field-label">我知道的食材價格</div>
+                      <p>只依你提供的價格估算，沒有價格會標示待確認。</p>
+                      {context.purchasePrices.map((q) => (
+                        <div className="quote-row" key={q.name}>
+                          <span>
+                            {q.name} · {q.quantity}
+                            {q.unit}
+                          </span>
+                          <strong>NT$ {q.priceTwd}</strong>
+                          <button
+                            type="button"
+                            aria-label={"移除" + q.name + "價格"}
+                            onClick={() =>
+                              setField(
+                                "purchasePrices",
+                                context.purchasePrices.filter(
+                                  (x) => x.name !== q.name,
+                                ),
+                              )
+                            }
+                          >
+                            <X size={15} />
+                          </button>
+                        </div>
+                      ))}
+                      <div className="price-inputs">
+                        <label>
+                          食材名稱
+                          <input
+                            value={priceName}
+                            onChange={(e) => setPriceName(e.target.value)}
+                          />
+                        </label>
+                        <label>
+                          包裝數量
+                          <input
+                            type="number"
+                            min="0.1"
+                            step="any"
+                            value={priceQty}
+                            onChange={(e) => setPriceQty(e.target.value)}
+                          />
+                        </label>
+                        <label>
+                          單位
+                          <select
+                            value={priceUnit}
+                            onChange={(e) =>
+                              setPriceUnit(e.target.value as Unit)
+                            }
+                          >
+                            {units.map((unit) => (
+                              <option key={unit}>{unit}</option>
+                            ))}
+                          </select>
+                        </label>
+                        <label>
+                          價格（新台幣）
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={priceValue}
+                            onChange={(e) => setPriceValue(e.target.value)}
+                          />
+                        </label>
+                        <button
+                          className="text-action"
+                          type="button"
+                          onClick={addPrice}
+                        >
+                          新增價格
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
-              </div>
-            )}
-            {notice && (
-              <div className="inline-notice" role="status">
-                <CircleAlert size={17} />
-                <span>{notice}</span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    retryRequest &&
-                    void send(retryRequest.text, retryRequest.previousMealIds)
-                  }
-                  disabled={
-                    busy || !retryRequest || draft.trim() !== retryRequest.text
-                  }
-                >
-                  <RefreshCw size={15} />
-                  重試
-                </button>
-              </div>
-            )}
-            <form className="composer" onSubmit={submit}>
-              <label className="sr-only" htmlFor="message">
-                描述今天想準備的餐點
-              </label>
-              <textarea
-                id="message"
-                rows={2}
-                maxLength={600}
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                placeholder="例如：我有豆腐和青菜，想煮簡單一點…"
-                disabled={busy}
-                onKeyDown={(e) => {
-                  if (
-                    e.key === "Enter" &&
-                    !e.shiftKey &&
-                    !e.nativeEvent.isComposing
-                  ) {
-                    e.preventDefault();
-                    void send();
-                  }
-                }}
-              />
-              <div className="composer-bottom">
-                <span>
-                  {draft.length}/600 · Enter 送出 · Shift + Enter 換行
-                </span>
-                <button
-                  className="send-button"
-                  type="submit"
-                  disabled={busy || !draft.trim()}
-                  aria-label="送出訊息"
-                >
-                  {busy ? (
-                    <LoaderCircle size={18} className="spin" />
-                  ) : (
-                    <Send size={18} />
-                  )}
-                  <span>送出</span>
-                </button>
-              </div>
-            </form>
-            <div className="conversation-privacy">
-              <span>
-                <span className="privacy-dot" />
-                目前條件會用於這次規劃
-              </span>
-              <span>不會傳送完整對話紀錄</span>
-            </div>
-          </section>
-        </div>
-
-        <section className="results-section" aria-labelledby="results-title">
-          <div className="results-heading">
-            <div>
-              <h3 id="results-title">為你整理的餐點方向</h3>
-              <p>先看看哪個方向合適，再一起調整。</p>
-            </div>
-            {activeCards.length > 0 && (
-              <button
-                className="text-action"
-                type="button"
-                disabled={busy}
-                onClick={() =>
-                  void send(
-                    "請依照目前條件換一道，並避開前面列出的餐點。",
-                    activeCards.map((c) => c.id),
-                  )
-                }
-              >
-                <RefreshCw size={16} />
-                換一道
-              </button>
-            )}
-          </div>
-          {!activeCards.length ? (
-            <div className="results-empty">
-              <div className="empty-line-icon">
-                <ListChecks size={21} />
-              </div>
-              <div>
-                <strong>
-                  {thread.length
-                    ? "送出需求後，餐點方向會出現在這裡。"
-                    : "還沒有餐點建議"}
-                </strong>
+              </fieldset>
+              <div className="conditions-footnote">
+                <CircleAlert size={16} />
                 <p>
-                  {thread.length
-                    ? "條件有修改時，會重新確認後再顯示新的內容。"
-                    : "先選一種使用情境，再說說食材或預算。"}
+                  不需要輸入姓名、病歷或藥物資訊。飲食限制不明時，我們會先請你確認。
                 </p>
               </div>
-            </div>
-          ) : (
-            <div className="meal-grid">
-              {activeCards.slice(0, 3).map((card, i) => (
-                <MealOption
-                  key={card.id}
-                  card={card}
-                  index={i}
-                  expanded={expanded === card.id}
-                  onToggle={() =>
-                    setExpanded(expanded === card.id ? null : card.id)
-                  }
-                  onPreview={(button) => {
-                    shareOpener.current = button;
-                    setShareCard(card);
-                  }}
-                  context={context}
-                  simpleMode={simpleMode}
-                  busy={busy}
-                />
-              ))}
-            </div>
-          )}
-          {unknowns.length > 0 && (
-            <div className="unknown-notes">
-              <strong>
-                <CircleAlert size={17} />
-                還需要確認
-              </strong>
-              <ul>
-                {unknowns.map((x) => (
-                  <li key={x}>{x}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+            </aside>
+          </div>
         </section>
-      </section>
 
-      <section className="how-section" id="how-it-works">
-        <div className="how-lead">
-          <h2>
-            不用想得很完整，
-            <br />
-            先從今天開始。
-          </h2>
-          <p>一餐一餐慢慢來。你可以先選方向，再逐步補上條件。</p>
-        </div>
-        <div className="how-steps">
-          <div className="how-step">
-            <span>01</span>
-            <div>
-              <strong>說說手邊有什麼</strong>
-              <p>食材、預算、設備，想到多少就說多少。</p>
-            </div>
-          </div>
-          <div className="how-step">
-            <span>02</span>
-            <div>
-              <strong>一起看看幾個方向</strong>
-              <p>清楚區分家裡已有、還要買，以及價格待確認。</p>
-            </div>
-          </div>
-          <div className="how-step">
-            <span>03</span>
-            <div>
-              <strong>挑喜歡的，再慢慢調整</strong>
-              <p>改人數、換食材或偏好，條件都能再確認。</p>
-            </div>
-          </div>
-        </div>
-        <aside className="scope-note">
-          <div className="scope-note-icon">
-            <Sprout size={19} />
-          </div>
-          <div>
-            <strong>這裡陪你規劃日常的一餐。</strong>
+        <section
+          className="how-section"
+          id="how-it-works"
+          aria-labelledby="help-title"
+        >
+          <h2 id="help-title">使用說明</h2>
+          <ol className="how-steps" role="list">
+            <li>
+              <strong>說明需求</strong>
+              <p>先說家裡有什麼、要煮給幾個人，或這餐想花多少。</p>
+            </li>
+            <li>
+              <strong>選一道料理</strong>
+              <p>對照所需食材、做法和待確認的價格。</p>
+            </li>
+            <li>
+              <strong>需要時再調整</strong>
+              <p>更改人數或食材後送出，系統會依新條件重新檢查。</p>
+            </li>
+          </ol>
+          <aside className="scope-note">
+            <strong>適用範圍</strong>
             <p>
               若有醫療飲食、過敏或藥物相關疑問，請先向醫師、藥師或營養師確認。CareKitchen
               不提供診斷或醫療飲食處方。
             </p>
-          </div>
-        </aside>
-      </section>
-
+          </aside>
+        </section>
+      </main>
       <footer className="footer">
         <a className="brand footer-brand" href="#top">
-          <span className="brand-mark">
-            <Sprout size={18} />
-          </span>
-          <span>
-            care<span>kitchen</span>
-          </span>
+          CareKitchen
         </a>
-        <span>一起好好吃飯，照顧每天的自己。</span>
-        <span>© CareKitchen · 日常餐點規劃</span>
+        <a className="text-link" href="#top">
+          返回頁首
+        </a>
       </footer>
 
       {shareCard && (
@@ -1263,6 +1184,11 @@ export default function CareKitchenApp() {
             <pre className="share-preview-text">
               {shareLines(shareCard).join("\n")}
             </pre>
+            {shareNotice && (
+              <p className="share-feedback" role="status">
+                {shareNotice}
+              </p>
+            )}
             <div className="modal-actions">
               <button
                 type="button"
@@ -1283,7 +1209,7 @@ export default function CareKitchenApp() {
           </section>
         </div>
       )}
-    </main>
+    </div>
   );
 }
 
@@ -1315,31 +1241,14 @@ function MealOption({
         ? "cost-alert"
         : "cost-unknown";
   return (
-    <article className={"meal-card meal-card-" + (index + 1)}>
-      <div className="meal-card-top">
-        <span className="meal-index">餐點方向 {index + 1}</span>
-        <span className="meal-illustration">
-          <CookingPot size={21} />
-        </span>
-      </div>
+    <article className="meal-card">
+      <p className="meal-index">餐點 {index + 1}</p>
       <h4>{card.title}</h4>
-      <div className="meal-meta">
-        <span>
-          <UsersRound size={15} />
-          {card.servings} 人份 · {card.mealCount} 餐
-        </span>
-        <span>
-          <Clock3 size={15} />約 {card.minutes} 分鐘
-        </span>
-        <span>
-          <CookingPot size={15} />
-          {equipmentLabels[card.equipment]}
-        </span>
-      </div>
-      <div className={"cost-line " + status}>
-        <span className="cost-mark" />
-        {priceLabel(card)}
-      </div>
+      <p className="meal-meta">
+        {card.servings} 人份 · {card.mealCount} 餐 · 約 {card.minutes} 分鐘 ·{" "}
+        {equipmentLabels[card.equipment]}
+      </p>
+      <p className={"cost-line " + status}>{priceLabel(card)}</p>
       {(card.unknownPantry.length > 0 || card.missingPrices.length > 0) && (
         <p className="meal-unknown">
           <CircleAlert size={15} />
@@ -1383,10 +1292,7 @@ function MealOption({
         onClick={onToggle}
         disabled={busy}
       >
-        <span>
-          <ListChecks size={17} />
-          {expanded ? "收起料理步驟" : "查看簡單作法"}
-        </span>
+        <span>{expanded ? "收起料理步驟" : "查看簡單作法"}</span>
         {expanded ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
       </button>
       {expanded && (

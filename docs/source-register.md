@@ -46,7 +46,8 @@
 
 ## 6. 開發與介面來源
 
-- [UI UX Pro Max，nextlevelbuilder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) 的設計系統與可及性查詢（修訂 `6ec2bb5`）用於配色、鍵盤焦點與觸控範圍檢查。
+- [UI UX Pro Max，nextlevelbuilder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) 的設計系統與可及性查詢（修訂 `6ec2bb5`）用於配色、響應式表單、鍵盤焦點與觸控範圍檢查。
 - [unslop，Damir Sokolovsky（@heydamir）](https://github.com/heydamir/unslop) 的版面檢查指引（修訂 `620163e`，[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)）用於留白、階層、材質與圖像取捨。
-- 介面使用 [Lucide](https://lucide.dev/) 圖示。主圖由 ImageGen 為本專案生成；餐點庫為本專案撰寫。
+- 介面使用 [Lucide](https://lucide.dev/) 的操作圖示。餐點庫為本專案撰寫。
 - OpenAI 和 Next.js 技術文件見 [OpenAI 串接](integrations.md) 與 [Next.js App Router](https://nextjs.org/docs/app/getting-started/installation)。
+- 網站自託管 [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) 與 [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) 的拉丁變體，兩者均採 SIL Open Font License，授權檔隨字型存放於 `web/app/fonts/`。
