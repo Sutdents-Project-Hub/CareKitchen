@@ -14,7 +14,7 @@
 <div class="card" style="flex:1; padding:24px 34px">
 <p class="ct" style="margin-bottom:12px; font-size:34px">2 · Spoken edits were lost or mis-stored</p>
 <div class="g4" style="flex:1">
-<div><p class="k">OBSERVED</p><p class="cs">“蛋先不要” was saved as excluded food “蛋先”. “Two people, about 80” stayed at one person and NT$100.</p></div>
+<div><p class="k">OBSERVED</p><p class="cs">Spoken “no eggs for now” was saved as an excluded food named “eggs-for-now”. “Two people, about 80” stayed at one person and NT$100.</p></div>
 <div><p class="k">ROOT CAUSE</p><p class="cs">The first rule parser could not handle spoken word order or equipment that had been switched off.</p></div>
 <div><p class="k">FIX (V2, V4)</p><p class="cs">Parse this turn’s update, keep unchanged fields, then recompute candidates from the new state.</p></div>
 <div class="soft" style="padding:20px 24px"><p class="k">RETEST</p><p class="cs" style="color:#0E1B33">DEMO-10-3, -4, -7 keep “no eggs”, change to 2 people and NT$80, then microwave only.</p></div>
