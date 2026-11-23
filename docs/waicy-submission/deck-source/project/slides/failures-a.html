@@ -1,0 +1,23 @@
+<section id="failures-a" data-transition="fade">
+<p class="eyebrow">05 · ITERATIVE DESIGN · ERROR ANALYSIS 1 OF 2</p>
+<h2>Failures about conditions and spoken edits</h2>
+<div class="card" style="margin-bottom:26px">
+<p class="ct" style="margin-bottom:16px">1 · Complete conditions, yet the assistant asked again</p>
+<div class="cols4">
+<div><p class="k">OBSERVED</p><p class="cb" style="font-size:24px">V1 caregiver case returned no meals. After the user added the rice cooker, the reply still asked for ingredients and people.</p></div>
+<div><p class="k">ROOT CAUSE</p><p class="cb" style="font-size:24px">The V1 prompt allowed broad clarification, so the model could block valid candidates.</p></div>
+<div><p class="k">FIX (V2)</p><p class="cb" style="font-size:24px">The server checks missing fields first. The model may only ask about a new missing condition and must quote the user.</p></div>
+<div class="soft" style="padding:18px 22px"><p class="k">RETEST</p><p class="cb" style="font-size:24px; color:#0E1B33">SAME-CAREGIVER-1 and DEMO-10-2 return meals. In V4: 3 and 2 meals.</p></div>
+</div>
+</div>
+<div class="card">
+<p class="ct" style="margin-bottom:16px">2 · Spoken edits were lost or mis-stored</p>
+<div class="cols4">
+<div><p class="k">OBSERVED</p><p class="cb" style="font-size:24px">“蛋先不要” was saved as excluded food “蛋先”. “Two people, about 80” stayed at one person and NT$100.</p></div>
+<div><p class="k">ROOT CAUSE</p><p class="cb" style="font-size:24px">The first rule parser could not handle spoken word order or equipment that had been switched off.</p></div>
+<div><p class="k">FIX (V2, V4)</p><p class="cb" style="font-size:24px">Parse this turn’s update, keep unchanged fields, then recompute candidates from the new state.</p></div>
+<div class="soft" style="padding:18px 22px"><p class="k">RETEST</p><p class="cb" style="font-size:24px; color:#0E1B33">DEMO-10-3, -4, -7 keep “no eggs”, change to 2 people and NT$80, then microwave only.</p></div>
+</div>
+</div>
+<p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
+</section>

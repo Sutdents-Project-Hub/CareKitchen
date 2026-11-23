@@ -1,0 +1,27 @@
+{
+  "v": 5,
+  "createdOnFiles": { "v": 1, "at": "2026-11-23T09:00:00Z" },
+  "lists": "css",
+  "format": { "v": 1, "shared": ["project/deck.css"] },
+  "title": "CareKitchen — WAICY 2026 Submission Deck",
+  "order": [
+    "cover", "glance", "motivation", "gap",
+    "service", "flow", "architecture", "users", "same-question",
+    "price", "in-action", "safety",
+    "idea", "prompts", "results", "failures-a", "failures-b", "fresh",
+    "demo-links", "transcript",
+    "limits", "ethics", "future", "originality", "conclusion", "refs"
+  ],
+  "sections": {
+    "s1": { "description": "What CareKitchen is and why it matters: the service, the evidence for the problem and the three users.", "start": "cover" },
+    "s2": { "description": "How the service works for three different users, with real product screens.", "start": "service" },
+    "s3": { "description": "The iterative design process: ideas, prompt versions, tests, errors and fixes.", "start": "idea" },
+    "s4": { "description": "Live assistant, the final ten-round conversation and the evidence trail.", "start": "demo-links" },
+    "s5": { "description": "Limitations, ethics, future development, originality, conclusion and references.", "start": "limits" }
+  },
+  "faces": {
+    "source-serif-4": { "family": "Source Serif 4", "href": "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap" },
+    "ibm-plex-sans": { "family": "IBM Plex Sans", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" }
+  },
+  "designSystems": []
+}

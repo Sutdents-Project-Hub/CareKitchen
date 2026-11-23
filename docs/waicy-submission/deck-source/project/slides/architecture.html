@@ -1,0 +1,21 @@
+<section id="architecture" data-transition="fade">
+<p class="eyebrow">02 · AGENT DESIGN</p>
+<h2>The AI proposes, and the server verifies</h2>
+<div style="display:grid; grid-template-columns:1fr 44px 1fr 44px 1fr 44px 1fr 44px 1fr; align-items:stretch; margin-bottom:30px">
+<div class="card"><p class="k">1 · USER TURN</p><p class="cb">Free text plus the condition form: people, budget, pantry, equipment.</p></div>
+<div style="display:flex; align-items:center; justify-content:center"><x-shape kind="arrow-right" style="width:36px; height:22px; background:#16315C"></x-shape></div>
+<div class="card"><p class="k">2 · SERVER PARSER</p><p class="cb">Updates one canonical state. An edit overrides only its own field.</p></div>
+<div style="display:flex; align-items:center; justify-content:center"><x-shape kind="arrow-right" style="width:36px; height:22px; background:#16315C"></x-shape></div>
+<div class="card"><p class="k">3 · SAFETY CHECK</p><p class="cb">Medication, symptoms or unclear restrictions: ask or refer, no model call.</p></div>
+<div style="display:flex; align-items:center; justify-content:center"><x-shape kind="arrow-right" style="width:36px; height:22px; background:#16315C"></x-shape></div>
+<div class="soft"><p class="k">4 · LLM DECISION</p><p class="cb" style="color:#0E1B33">GPT-6 Luna returns a structured choice: intent and a ranking of eligible meals.</p></div>
+<div style="display:flex; align-items:center; justify-content:center"><x-shape kind="arrow-right" style="width:36px; height:22px; background:#16315C"></x-shape></div>
+<div class="card"><p class="k">5 · VALIDATORS</p><p class="cb">Exclusions, equipment, servings and price engine decide what is shown.</p></div>
+</div>
+<div class="cols3">
+<div class="card"><p class="ct">The model cannot invent</p><p class="cb">Ingredients, prices and steps come from a project-written meal library and the user’s own inputs.</p></div>
+<div class="card"><p class="ct">Cost is computed by code</p><p class="cb">Whole packages the user must buy, using prices the user supplied. Missing prices show as pending.</p></div>
+<div class="card"><p class="ct">Keys stay on the server</p><p class="cb">The API key is only in server settings. Responses are stored with <i>store: false</i> and outputs are schema-checked.</p></div>
+</div>
+<p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
+</section>
