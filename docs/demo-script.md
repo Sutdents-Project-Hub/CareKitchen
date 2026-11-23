@@ -1,13 +1,13 @@
 # CareKitchen｜競賽 Demo 腳本與對話證據指引
 
-> 本文是競賽 Demo 預演腳本。現有原型可進行本機操作；正式 OpenAI Demo 與 10 輪對話證據仍待實際執行。
+> 本文是競賽 Demo 預演腳本。本機已完成 GPT-6 Luna 合成案例操作，真實資料見 [十輪測試](evidence/README.md#十輪對話)。公開展示與正式交件仍待驗收。
 
 ## A. 90 秒產品主線（長者角色）
 
 | 順序 | 操作 | 預期在畫面看到 |
 |---|---|---|
-| 1 | 進首頁，選「我自己準備晚餐」 | 大字輸入、簡單快捷入口 |
-| 2 | 輸入：「我有豆腐、青菜、雞蛋，晚餐 100 元，只能用電鍋。」 | 條件摘要、必要追問、2–3 候選 |
+| 1 | 進首頁，選「我自己準備」 | 大字輸入、簡單快捷入口 |
+| 2 | 輸入：「我有豆腐 150 克、青菜 120 克和雞蛋 2 顆，要做一人份晚餐，預算 100 元，只能用電鍋。」 | 條件摘要、必要追問、2–3 候選 |
 | 3 | 點候選卡查看 | 已有／待買、價格未知、短步驟 |
 | 4 | 輸入：「我不想吃蛋，而且改成兩人份。」 | 不含蛋的候選，份量重算 |
 | 5 | 輸入：「如果要買米，價格還沒確定怎麼辦？」 | 未知成本不冒充通過預算 |
@@ -53,10 +53,10 @@
 | 欄位 | 狀態 |
 |---|---|
 | Live chatbot URL | TODO－尚未部署 |
-| Final 10+ rounds transcript URL | TODO－尚未產出 |
-| Model name／version | TODO－尚未選定 |
-| Prompt version／commit | TODO－尚未實作 |
-| True run timestamp | TODO－尚未執行 |
+| Final 10+ rounds transcript URL | 本機 `/evidence/waicy`，評審連結待發布 |
+| Model name／version | `gpt-6-luna`，`reasoning.effort: none` |
+| Prompt version／commit | `carekitchen-v4`，應用原始紀錄附提示詞雜湊 |
+| True run timestamp | 2026-11-23，精確時間見 [V4 原始紀錄](evidence/runs/luna-final.json) |
 | 外部無痕瀏覽器通過 | TODO－尚未驗證 |
 | 同意、匿名化與留存期限 | TODO－尚待確認 |
 

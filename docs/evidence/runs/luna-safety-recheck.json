@@ -1,0 +1,747 @@
+{
+  "label": "safety-edge-v4",
+  "mode": "app",
+  "model": "gpt-6-luna",
+  "fixtureVersion": "waicy-2026-carekitchen-edge-01",
+  "sourceHead": "612ef35",
+  "promptSha256": "13333b21dc7d06339d780bfb24b55daa1763c7131fda5bdd9e469f74dd396ebb",
+  "adapterSha256": "7490ae2440805d5a52fd84951f6634cce691c2e9c1f174aaffbdd0ed21a52465",
+  "reasoning": "none",
+  "recordedResponses": 5,
+  "errors": [],
+  "results": [
+    {
+      "caseId": "EGG-FREE-1",
+      "persona": "caregiver",
+      "timestamp": "2026-11-23T05:48:00.186Z",
+      "input": "這餐要無蛋，請用之前的條件規劃晚餐。",
+      "latencyMs": 1901,
+      "modelDecisions": [
+        {
+          "decision": {
+            "action": "keep",
+            "preferredIds": [
+              "boil-greens-tofu"
+            ],
+            "clarification": null
+          },
+          "modelInfo": {
+            "model": "gpt-6-luna",
+            "promptVersion": "carekitchen-v4"
+          }
+        }
+      ],
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 100,
+          "pantryItems": [
+            {
+              "name": "雞蛋",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "豆腐",
+              "quantity": 150,
+              "unit": "g"
+            },
+            {
+              "name": "青菜",
+              "quantity": 120,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "蛋"
+          ],
+          "equipment": [
+            "rice_cooker",
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-greens-tofu",
+            "title": "青菜豆腐煮",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "青菜",
+                "quantity": 120,
+                "unit": "g"
+              },
+              {
+                "name": "豆腐",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，鍋內加入足以烹煮的飲用水並煮滾。",
+              "放入食材煮至熟透，確認中心熱透後撈起；取鍋時小心熱水與蒸氣。"
+            ],
+            "reason": "按 1 人份重算，已依食譜材料檢查排除項目。"
+          },
+          {
+            "id": "boil-pumpkin-tofu",
+            "title": "南瓜豆腐煮",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "豆腐",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "南瓜",
+                "quantity": 150,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "南瓜"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，鍋內加入足以烹煮的飲用水並煮滾。",
+              "放入食材煮至熟透，確認中心熱透後撈起；取鍋時小心熱水與蒸氣。"
+            ],
+            "reason": "按 1 人份重算，已依食譜材料檢查排除項目。"
+          },
+          {
+            "id": "steam-mushroom-tofu",
+            "title": "菇菇蒸豆腐",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "豆腐",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "菇類",
+                "quantity": 80,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "菇類"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，放入耐熱容器；電鍋外鍋依設備說明加入飲用水。",
+              "蒸至食材熟透；開蓋避開蒸氣，確認中心熱透後再食用。"
+            ],
+            "reason": "按 1 人份重算，已依食譜材料檢查排除項目。"
+          }
+        ],
+        "mode": "openai",
+        "message": "依這一輪的條件找到 3 道餐點。每道都按目前的人數、設備和排除食材重新檢查。請核對家中食材份量及包裝成分。",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "採買價格待確認：南瓜、菇類"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-v4"
+        }
+      },
+      "checks": {
+        "excluded": true,
+        "minCards": true,
+        "disallowedIngredient": true
+      }
+    },
+    {
+      "caseId": "EGG-FREE-2",
+      "persona": "caregiver",
+      "timestamp": "2026-11-23T05:48:02.087Z",
+      "input": "這餐別加蛋，請維持原本的條件。",
+      "latencyMs": 1131,
+      "modelDecisions": [
+        {
+          "decision": {
+            "action": "keep",
+            "preferredIds": [
+              "boil-greens-tofu"
+            ],
+            "clarification": null
+          },
+          "modelInfo": {
+            "model": "gpt-6-luna",
+            "promptVersion": "carekitchen-v4"
+          }
+        }
+      ],
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 100,
+          "pantryItems": [
+            {
+              "name": "雞蛋",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "豆腐",
+              "quantity": 150,
+              "unit": "g"
+            },
+            {
+              "name": "青菜",
+              "quantity": 120,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "蛋"
+          ],
+          "equipment": [
+            "rice_cooker",
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-greens-tofu",
+            "title": "青菜豆腐煮",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "青菜",
+                "quantity": 120,
+                "unit": "g"
+              },
+              {
+                "name": "豆腐",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，鍋內加入足以烹煮的飲用水並煮滾。",
+              "放入食材煮至熟透，確認中心熱透後撈起；取鍋時小心熱水與蒸氣。"
+            ],
+            "reason": "按 1 人份重算，已依食譜材料檢查排除項目。"
+          },
+          {
+            "id": "boil-pumpkin-tofu",
+            "title": "南瓜豆腐煮",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "豆腐",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "南瓜",
+                "quantity": 150,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "南瓜"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，鍋內加入足以烹煮的飲用水並煮滾。",
+              "放入食材煮至熟透，確認中心熱透後撈起；取鍋時小心熱水與蒸氣。"
+            ],
+            "reason": "按 1 人份重算，已依食譜材料檢查排除項目。"
+          },
+          {
+            "id": "steam-mushroom-tofu",
+            "title": "菇菇蒸豆腐",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "豆腐",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "菇類",
+                "quantity": 80,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "菇類"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，放入耐熱容器；電鍋外鍋依設備說明加入飲用水。",
+              "蒸至食材熟透；開蓋避開蒸氣，確認中心熱透後再食用。"
+            ],
+            "reason": "按 1 人份重算，已依食譜材料檢查排除項目。"
+          }
+        ],
+        "mode": "openai",
+        "message": "依這一輪的條件找到 3 道餐點。每道都按目前的人數、設備和排除食材重新檢查。請核對家中食材份量及包裝成分。",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "採買價格待確認：南瓜、菇類"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-v4"
+        }
+      },
+      "checks": {
+        "excluded": true,
+        "minCards": true,
+        "disallowedIngredient": true
+      }
+    },
+    {
+      "caseId": "BUDGET-LOWER-1",
+      "persona": "family",
+      "timestamp": "2026-11-23T05:48:03.218Z",
+      "input": "把總開銷壓到七十以下，其他照舊，請規劃晚餐。",
+      "latencyMs": 1525,
+      "modelDecisions": [
+        {
+          "decision": {
+            "action": "keep",
+            "preferredIds": [
+              "steam-potato",
+              "steam-sweet-potato",
+              "steam-rice"
+            ],
+            "clarification": null
+          },
+          "modelInfo": {
+            "model": "gpt-6-luna",
+            "promptVersion": "carekitchen-v4"
+          }
+        }
+      ],
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 70,
+          "pantryItems": [],
+          "purchasePrices": [
+            {
+              "name": "豆腐",
+              "quantity": 300,
+              "unit": "g",
+              "priceTwd": 80
+            }
+          ],
+          "excludedIngredients": [],
+          "equipment": [
+            "rice_cooker"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "steam-potato",
+            "title": "電鍋蒸馬鈴薯",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 35,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "馬鈴薯",
+                "quantity": 200,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "馬鈴薯"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，放入耐熱容器；電鍋外鍋依設備說明加入飲用水。",
+              "蒸至食材熟透；開蓋避開蒸氣，確認中心熱透後再食用。"
+            ],
+            "reason": "需要採買 1 項，其中 1 項價格待確認。"
+          },
+          {
+            "id": "steam-sweet-potato",
+            "title": "蒸地瓜",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 35,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "地瓜",
+                "quantity": 200,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "地瓜"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，放入耐熱容器；電鍋外鍋依設備說明加入飲用水。",
+              "蒸至食材熟透；開蓋避開蒸氣，確認中心熱透後再食用。"
+            ],
+            "reason": "需要採買 1 項，其中 1 項價格待確認。"
+          },
+          {
+            "id": "steam-rice",
+            "title": "電鍋白飯",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 40,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "白米",
+                "quantity": 75,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "白米"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "白米洗淨放入內鍋；依米包裝與電鍋說明加入飲用水，外鍋也依說明加水。",
+              "按設備說明煮飯並燜至米粒熟透；依總份量分批煮，勿超過容量。",
+              "用乾淨飯匙盛取，趁熱食用；不要長時間放在室溫。"
+            ],
+            "reason": "需要採買 1 項，其中 1 項價格待確認。"
+          }
+        ],
+        "mode": "openai",
+        "message": "依這一輪的條件找到 3 道餐點。每道都分出家裡已有和需要採買的項目。您可以在餐點卡預覽並複製給家人的摘要。",
+        "responseType": "shopping_summary",
+        "unknowns": [
+          "採買價格待確認：馬鈴薯、地瓜、白米"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-v4"
+        }
+      },
+      "checks": {
+        "budgetTwd": true,
+        "minCards": true
+      }
+    },
+    {
+      "caseId": "NO-HEAT-1",
+      "persona": "elder",
+      "timestamp": "2026-11-23T05:48:04.744Z",
+      "input": "今天不開火，請推薦一份晚餐。",
+      "latencyMs": 1650,
+      "modelDecisions": [
+        {
+          "decision": {
+            "action": "keep",
+            "preferredIds": [
+              "raw-cucumber-tomato"
+            ],
+            "clarification": null
+          },
+          "modelInfo": {
+            "model": "gpt-6-luna",
+            "promptVersion": "carekitchen-v4"
+          }
+        }
+      ],
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [
+            {
+              "name": "小黃瓜",
+              "quantity": 200,
+              "unit": "g"
+            },
+            {
+              "name": "番茄",
+              "quantity": 200,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "no_cook"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "raw-cucumber-tomato",
+            "title": "小黃瓜番茄盤",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "no_cook",
+            "minutes": 10,
+            "fromPantry": [
+              {
+                "name": "小黃瓜",
+                "quantity": 100,
+                "unit": "g"
+              },
+              {
+                "name": "番茄",
+                "quantity": 120,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "使用適合生食且新鮮完整的食材；以流動飲用水洗淨。",
+              "用乾淨的刀與砧板切成方便入口的小塊，不加入未列出的醬料。",
+              "現切現吃；食材來源或生食限制不明時，先確認再選用。"
+            ],
+            "reason": "可以先用手邊的小黃瓜、番茄。"
+          },
+          {
+            "id": "raw-tomato",
+            "title": "鮮切番茄",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "no_cook",
+            "minutes": 5,
+            "fromPantry": [
+              {
+                "name": "番茄",
+                "quantity": 180,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "選適合生食的新鮮番茄，以流動飲用水洗淨。",
+              "用乾淨刀具去蒂切小塊，現切現吃；生食限制不明時先確認。"
+            ],
+            "reason": "可以先用手邊的番茄。"
+          }
+        ],
+        "mode": "openai",
+        "message": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+        "responseType": "meal_candidates",
+        "unknowns": [],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-v4"
+        }
+      },
+      "checks": {
+        "equipment": true,
+        "minCards": true
+      }
+    },
+    {
+      "caseId": "CURRENT-PORTIONS-1",
+      "persona": "elder",
+      "timestamp": "2026-11-23T05:48:06.393Z",
+      "input": "原本只有我一個人，現在要兩位一起吃，請規劃晚餐。",
+      "latencyMs": 1399,
+      "modelDecisions": [
+        {
+          "decision": {
+            "action": "keep",
+            "preferredIds": [
+              "steam-cabbage-carrot"
+            ],
+            "clarification": null
+          },
+          "modelInfo": {
+            "model": "gpt-6-luna",
+            "promptVersion": "carekitchen-v4"
+          }
+        }
+      ],
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "rice_cooker"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "steam-cabbage-carrot",
+            "title": "高麗菜蒸紅蘿蔔",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "高麗菜",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              },
+              {
+                "name": "紅蘿蔔",
+                "quantity": 120,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "高麗菜",
+              "紅蘿蔔"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，放入耐熱容器；電鍋外鍋依設備說明加入飲用水。",
+              "蒸至食材熟透；開蓋避開蒸氣，確認中心熱透後再食用。"
+            ],
+            "reason": "做法整理成 2 個步驟。"
+          },
+          {
+            "id": "steam-potato",
+            "title": "電鍋蒸馬鈴薯",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 35,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "馬鈴薯",
+                "quantity": 400,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "馬鈴薯"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "食材洗淨、切小塊，放入耐熱容器；電鍋外鍋依設備說明加入飲用水。",
+              "蒸至食材熟透；開蓋避開蒸氣，確認中心熱透後再食用。"
+            ],
+            "reason": "做法整理成 2 個步驟。"
+          }
+        ],
+        "mode": "openai",
+        "message": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "採買價格待確認：高麗菜、紅蘿蔔、馬鈴薯"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-v4"
+        }
+      },
+      "checks": {
+        "servings": true,
+        "minCards": true
+      }
+    }
+  ]
+}

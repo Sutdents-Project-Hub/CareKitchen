@@ -1,11 +1,11 @@
 # WAICY 2026｜CareKitchen 第 4 賽道交件與評審作戰文件
 
-> 資訊依 2026-11-20 使用者提供的《WAICY_2026_第4賽道_LLM_AI_Agent_完整參賽研究指南》整理。**這是來源摘要，不代表本輪另上官網重新核驗。** 提交前依官方最新頁面核對。
+> 資訊依 2026-11-20 使用者提供的《WAICY_2026_第4賽道_LLM_AI_Agent_完整參賽研究指南》整理。2026-11-23 已核對官方活動頁、評分表與手冊的 LLM & AI Agent 章節。團隊資格仍由參賽者確認。
 > 參賽類別：LLM & AI Agent（AI as a Service），高中組；作品 CareKitchen。
 
-本機原型已可操作，OpenAI 真實執行證據、公開評審網址及提交資料仍待備妥。下列交件規則沿用初始研究指南，正式送件前以官方公告為準。
+本機已保存 GPT-6 Luna 真實回覆和逐版比較。現有十輪合成對話可在本機查看，評審公開網址與正式提交待備妥。 [實測紀錄](evidence/README.md)
 
-## 1. 時程與官方入口（來自提供指南）
+## 1. 時程與官方入口
 
 | 項目 | 內容 |
 |---|---|
@@ -20,7 +20,7 @@
 
 資格、年齡分組、超過 5 人隊伍的規則及實際答辯時間，指南指出文件之間可能有差異；無法自行證實時向主辦確認。
 
-## 2. 來源指南整理的評分結構（100 分）
+## 2. 官方評分結構（100 分）
 
 | 項目 | 分數 | CareKitchen 必須展示 |
 |---|---:|---|
@@ -41,7 +41,7 @@
 3. Motivation：為何需要這種專用顧問；標示已驗證與需求假設。
 4. Chat History：**最終版 AI 至少 10 則交換訊息**的可讀取分享連結；保守準備**至少 10 個完整問答回合（約 20 則訊息）**，這是競賽準備建議，不冒充官方額外門檻。
 5. Chatbot Link：評審可親自操作的真正 AI 顧問連結，非純影片或固定範本。
-6. Iterative AI Design：提示詞、測試、失敗、調整與重測。
+6. Iterative AI Design：以 [迭代開發紀錄](evidence/iteration-development.md)的 Prompt 原文、同題實測、錯誤分析與修正結果編寫。有原始 JSON 與操作畫面可回查。
 7. Limitations：安全、未核驗價格、健康界線、倫理、隱私、未完成事項。
 8. Future Development：語音、收藏、經審核的價格／營養資料等未來發展，清楚標示非 P0。
 9. Conclusion：真實完成成果、效果與學生貢獻。
@@ -60,13 +60,13 @@
 | 5 | Real User Journey & Agent Workflow |
 | 6 | Baseline & First Prompt |
 | 7 | Evaluation Dataset & Scoring Rules |
-| 8 | Actual V1 / V2 / V3 Comparison（依真實版本） |
+| 8 | Baseline & V1–V4 Results（直接基準採質性對照，應用同題檢查另附 V4 口語邊界） |
 | 9 | Failure Analysis, Fixes & Retests |
 | 10 | **Live Chatbot URL + Final Chat Transcript URL** |
 | 11 | Limitations, Privacy, Safety & Future |
 | 12 | Conclusion, Student Contributions & References |
 
-沒有測試數據時 P8 必須標註結果尚未取得，不能先填示意數字。
+第 8、9 頁可引用目前已完成的 16 回合同題比較、5 回合口語邊界檢查及原始失敗例。 [迭代開發紀錄](evidence/iteration-development.md)
 
 ### WAICY 簡報視覺規格
 
@@ -93,7 +93,7 @@ Use this theme for my slides. Ask me what the presentation is about first, then 
 - [ ] AI 能長對話、理解中途變更、合理追問
 - [ ] 預算未知不謊稱精算、醫療問題不越權
 - [ ] 30 題或實際完整評估案例已執行，結果與證據可查
-- [ ] 至少一個失敗 → 修正 → 同題重測有真實紀錄
+- [x] 至少一個失敗 → 修正 → 同題重測有真實紀錄。[逐案證據](evidence/iteration-development.md)
 - [ ] **最終版**至少 10 輪完整真實問答已匿名、分享連結可讀
 - [ ] 作品網址可在無痕視窗操作且不需學生私人帳號
 - [ ] 英文 PDF 涵蓋官方要求、模型及資料引用、學生實際貢獻

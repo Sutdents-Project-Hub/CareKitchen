@@ -1,6 +1,11 @@
 export const personas = ["elder", "caregiver", "family"] as const;
 export const units = ["g", "ml", "個", "份"] as const;
-export const equipmentOptions = ["rice_cooker", "microwave", "stove", "no_cook"] as const;
+export const equipmentOptions = [
+  "rice_cooker",
+  "microwave",
+  "stove",
+  "no_cook",
+] as const;
 
 export type Persona = (typeof personas)[number];
 export type Unit = (typeof units)[number];
@@ -20,8 +25,17 @@ export const equipmentLabels: Record<Equipment, string> = {
   no_cook: "免開火",
 };
 
-export type ItemAmount = { name: string; quantity: number | null; unit: Unit | null };
-export type PriceQuote = { name: string; quantity: number; unit: Unit; priceTwd: number };
+export type ItemAmount = {
+  name: string;
+  quantity: number | null;
+  unit: Unit | null;
+};
+export type PriceQuote = {
+  name: string;
+  quantity: number;
+  unit: Unit;
+  priceTwd: number;
+};
 
 export type MealContext = {
   servings: number | null;
@@ -65,6 +79,7 @@ export type MealCard = {
   missingPrices: string[];
   unknownPantry: string[];
   steps: string[];
+  reason?: string;
 };
 
 export type ChatReply = {
@@ -72,7 +87,11 @@ export type ChatReply = {
   message: string;
   context: MealContext;
   cards: MealCard[];
-  responseType: "ask_clarification" | "meal_candidates" | "shopping_summary" | "professional_referral";
+  responseType:
+    | "ask_clarification"
+    | "meal_candidates"
+    | "shopping_summary"
+    | "professional_referral";
   unknowns: string[];
   modelInfo?: { model: string; promptVersion: string };
 };

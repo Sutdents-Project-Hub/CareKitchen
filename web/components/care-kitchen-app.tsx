@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowDown,
@@ -29,7 +30,7 @@ import {
   type Unit,
 } from "../lib/contracts";
 
-type Entry = { role: "assistant" | "user"; text: string };
+type Entry = { role: "assistant" | "user"; text: string; changes?: string[] };
 const roles: Record<Persona, { title: string; line: string }> = {
   elder: { title: "我自己準備", line: "找簡單的家常菜和做法" },
   caregiver: { title: "幫家人準備", line: "照顧份量與已確認的限制" },
@@ -69,7 +70,45 @@ const itemNames = (items: ItemAmount[]) =>
       x.name + (x.quantity == null ? "" : " " + x.quantity + (x.unit || "")),
   );
 const money = (value: number) => "NT$ " + value.toLocaleString("zh-TW");
+
+function conditionChanges(before: MealContext, after: MealContext) {
+  const changes: string[] = [];
+  if (before.servings !== after.servings && after.servings !== null) {
+    changes.push(`${after.servings} 人份`);
+  }
+  if (before.mealCount !== after.mealCount)
+    changes.push(`${after.mealCount} 餐`);
+  if (before.budgetTwd !== after.budgetTwd && after.budgetTwd !== null) {
+    changes.push(`預算 ${money(after.budgetTwd)}`);
+  }
+  if (before.equipment.join() !== after.equipment.join()) {
+    changes.push(
+      after.equipment.length
+        ? after.equipment.map((item) => equipmentLabels[item]).join("、")
+        : "設備待確認",
+    );
+  }
+  const exclusions = after.excludedIngredients.filter(
+    (item) => !before.excludedIngredients.includes(item),
+  );
+  if (exclusions.length) changes.push(`排除 ${exclusions.join("、")}`);
+  if (
+    itemNames(before.pantryItems).join() !== itemNames(after.pantryItems).join()
+  )
+    changes.push("更新現有食材");
+  if (
+    JSON.stringify(before.purchasePrices) !==
+    JSON.stringify(after.purchasePrices)
+  )
+    changes.push("已記下你提供的報價");
+  if (before.onlyPantry !== after.onlyPantry)
+    changes.push(after.onlyPantry ? "只用現有食材" : "可採買");
+  return changes;
+}
+
 function priceLabel(card: MealCard) {
+  if (card.toBuy.length === 0 && card.unknownPantry.length === 0)
+    return "新增採買 NT$ 0";
   if (card.budgetStatus === "within")
     return "依提供價格估算 " + money(card.knownCostTwd);
   if (card.budgetStatus === "over")
@@ -114,18 +153,21 @@ export default function CareKitchenApp() {
     answerContext && JSON.stringify(answerContext) === JSON.stringify(context),
   );
   const activeCards = current ? cards : [];
-  const summary = [
+  const keyConditions = [
     context.servings ? context.servings + " 人" : "人數待補",
+    context.mealCount + " 餐",
     context.budgetTwd == null ? "預算待補" : context.budgetTwd + " 元",
   ];
-  if (context.pantryItems.length)
-    summary.push(itemNames(context.pantryItems).slice(0, 3).join("、"));
   if (context.equipment.length)
-    summary.push(
+    keyConditions.push(
       context.equipment.map((item) => equipmentLabels[item]).join("、"),
     );
   if (context.excludedIngredients.length)
-    summary.push("排除 " + context.excludedIngredients.join("、"));
+    keyConditions.push("排除 " + context.excludedIngredients.join("、"));
+  if (context.uncertainty) keyConditions.push("飲食限制待確認");
+  const summary = context.pantryItems.length
+    ? [...keyConditions, itemNames(context.pantryItems).slice(0, 3).join("、")]
+    : keyConditions;
 
   useEffect(() => {
     let alive = true;
@@ -198,16 +240,16 @@ export default function CareKitchenApp() {
   ) {
     edit((old) => ({ ...old, [key]: value }));
   }
-  async function send(textValue = draft, previousMealIds?: string[]) {
+  async function send(
+    textValue = draft,
+    previousMealIds = activeCards.map(({ id }) => id),
+  ) {
     const text = textValue.trim();
     if (!text || busy) return;
     setBusy(true);
     setNotice("");
     setShareNotice("");
-    setRetryRequest({
-      text,
-      ...(previousMealIds?.length ? { previousMealIds } : {}),
-    });
+    setRetryRequest({ text, previousMealIds });
     const submittedContext: MealContext = {
       ...context,
       pantryItems: parsePantry(pantryText, context.pantryItems),
@@ -252,7 +294,14 @@ export default function CareKitchenApp() {
       setPreferencesText(reply.context.preferences.join("、"));
       setCards(reply.cards);
       setUnknowns(reply.unknowns || []);
-      setThread((old) => [...old, { role: "assistant", text: reply.message }]);
+      setThread((old) => [
+        ...old,
+        {
+          role: "assistant",
+          text: reply.message,
+          changes: conditionChanges(submittedContext, reply.context),
+        },
+      ]);
       setDraft("");
       setExpanded(null);
       setRetryRequest(null);
@@ -275,31 +324,12 @@ export default function CareKitchenApp() {
   }
   function example() {
     if (busy) return;
-    const isFamily = persona === "family";
-    const servings = isFamily ? 3 : 1;
-    const maxTimeMinutes = isFamily ? 110 : 30;
-    edit(() => ({
-      ...emptyContext,
-      servings,
-      mealCount: 1,
-      budgetTwd: 100,
-      pantryItems: [
-        { name: "豆腐", quantity: 150, unit: "g" },
-        { name: "青菜", quantity: 120, unit: "g" },
-      ],
-      equipment: ["rice_cooker"],
-      maxTimeMinutes,
-    }));
-    setPantryText("豆腐 150g、青菜 120g");
-    setExcludedText("");
-    setPreferencesText("");
-    setThread([]);
     const exampleText =
       persona === "elder"
-        ? "我自己準備晚餐，有 150 克豆腐和 120 克青菜，預算 100 元，只有電鍋，想做簡單一點。"
+        ? "我想準備一人份晚餐，家裡有豆腐 150 克和青菜 120 克，預算 100 元，只有電鍋。"
         : persona === "caregiver"
-          ? "我幫家人準備一餐，手邊有 150 克豆腐和 120 克青菜，預算 100 元，只有電鍋。"
-          : "週末想和家人一起吃，有 150 克豆腐和 120 克青菜，預算 100 元、只有電鍋，請整理好採買方向。";
+          ? "我幫家人準備兩人份晚餐，手邊有豆腐 300 克和青菜 240 克，預算 100 元，只有電鍋，不能吃蛋。"
+          : "請安排三人份晚餐，家裡有豆腐 150 克和青菜 120 克，預算 100 元，只有電鍋，請整理採買清單。";
     setDraft(exampleText);
     document.getElementById("message")?.focus();
   }
@@ -516,6 +546,11 @@ export default function CareKitchenApp() {
                     </a>
                   </div>
                 </div>
+                {(thread.length > 0 || context.servings !== null) && (
+                  <p className="mobile-conditions">
+                    {keyConditions.join(" · ")}
+                  </p>
+                )}
                 {thread.length > 0 && (
                   <div
                     className="conversation-feed"
@@ -529,6 +564,11 @@ export default function CareKitchenApp() {
                             {entry.role === "assistant" ? "CareKitchen" : "你"}
                           </span>
                           <p>{entry.text}</p>
+                          {Boolean(entry.changes?.length) && (
+                            <p className="turn-changes">
+                              這輪已更新 · {entry.changes?.join("、")}
+                            </p>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -714,27 +754,38 @@ export default function CareKitchenApp() {
                         : "送出需求後，這裡會列出候選餐點。"}
                   </p>
                 ) : (
-                  <div className="meal-grid">
-                    {activeCards.slice(0, 3).map((card, i) => (
-                      <MealOption
-                        key={card.id}
-                        card={card}
-                        index={i}
-                        expanded={expanded === card.id}
-                        onToggle={() =>
-                          setExpanded(expanded === card.id ? null : card.id)
-                        }
-                        onPreview={(button) => {
-                          shareOpener.current = button;
-                          setShareNotice("");
-                          setShareCard(card);
-                        }}
-                        context={context}
-                        simpleMode={simpleMode}
-                        busy={busy}
-                      />
-                    ))}
-                  </div>
+                  <>
+                    {context.servings !== null &&
+                      (context.servings > 2 || context.mealCount > 1) && (
+                        <p className="meal-batch-note">
+                          {context.mealCount > 1
+                            ? `各候選按同一道料理準備 ${context.mealCount} 餐。`
+                            : ""}
+                          加熱料理以每批約 2 人份估時，實際批次依設備容量調整。
+                        </p>
+                      )}
+                    <div className="meal-grid">
+                      {activeCards.slice(0, 3).map((card, i) => (
+                        <MealOption
+                          key={card.id}
+                          card={card}
+                          index={i}
+                          expanded={expanded === card.id}
+                          onToggle={() =>
+                            setExpanded(expanded === card.id ? null : card.id)
+                          }
+                          onPreview={(button) => {
+                            shareOpener.current = button;
+                            setShareNotice("");
+                            setShareCard(card);
+                          }}
+                          context={context}
+                          simpleMode={simpleMode}
+                          busy={busy}
+                        />
+                      ))}
+                    </div>
+                  </>
                 )}
                 {shareNotice && !shareCard && (
                   <p className="share-feedback" role="status">
@@ -839,7 +890,11 @@ export default function CareKitchenApp() {
                           )
                         }
                       />
-                      <small>這餐</small>
+                      <small>
+                        {context.mealCount > 1
+                          ? `共 ${context.mealCount} 餐`
+                          : "這餐"}
+                      </small>
                     </div>
                   </div>
                   <div className="field-row field-column">
@@ -1144,6 +1199,9 @@ export default function CareKitchenApp() {
         <a className="brand footer-brand" href="#top">
           CareKitchen
         </a>
+        <Link href="/evidence/waicy" className="text-link" prefetch={false}>
+          WAICY 實測紀錄
+        </Link>
         <a className="text-link" href="#top">
           返回頁首
         </a>
@@ -1248,6 +1306,7 @@ function MealOption({
         {card.servings} 人份 · {card.mealCount} 餐 · 約 {card.minutes} 分鐘 ·{" "}
         {equipmentLabels[card.equipment]}
       </p>
+      {card.reason && <p className="meal-reason">{card.reason}</p>}
       <p className={"cost-line " + status}>{priceLabel(card)}</p>
       {(card.unknownPantry.length > 0 || card.missingPrices.length > 0) && (
         <p className="meal-unknown">

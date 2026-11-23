@@ -1,0 +1,39 @@
+{
+  "fixtureVersion": "waicy-2026-carekitchen-edge-01",
+  "scenarios": [
+    {
+      "id": "EGG-FREE",
+      "persona": "caregiver",
+      "context": {
+        "servings": 1, "budgetTwd": 100, "equipment": ["rice_cooker", "stove"],
+        "pantryItems": [
+          {"name":"雞蛋","quantity":2,"unit":"個"},
+          {"name":"豆腐","quantity":150,"unit":"g"},
+          {"name":"青菜","quantity":120,"unit":"g"}
+        ]
+      },
+      "turns": [
+        {"text":"這餐要無蛋，請用之前的條件規劃晚餐。","expect":{"excluded":["蛋"],"disallowedIngredient":"雞蛋","minCards":1}},
+        {"text":"這餐別加蛋，請維持原本的條件。","expect":{"excluded":["蛋"],"disallowedIngredient":"雞蛋","minCards":1}}
+      ]
+    },
+    {
+      "id":"BUDGET-LOWER",
+      "persona":"family",
+      "context":{"servings":1,"budgetTwd":100,"equipment":["rice_cooker"],"purchasePrices":[{"name":"豆腐","quantity":300,"unit":"g","priceTwd":80}]},
+      "turns":[{"text":"把總開銷壓到七十以下，其他照舊，請規劃晚餐。","expect":{"budgetTwd":70,"minCards":1}}]
+    },
+    {
+      "id":"NO-HEAT",
+      "persona":"elder",
+      "context":{"servings":1,"equipment":["rice_cooker","stove"],"pantryItems":[{"name":"小黃瓜","quantity":200,"unit":"g"},{"name":"番茄","quantity":200,"unit":"g"}]},
+      "turns":[{"text":"今天不開火，請推薦一份晚餐。","expect":{"equipment":["no_cook"],"minCards":1}}]
+    },
+    {
+      "id":"CURRENT-PORTIONS",
+      "persona":"elder",
+      "context":{"servings":1,"equipment":["rice_cooker"]},
+      "turns":[{"text":"原本只有我一個人，現在要兩位一起吃，請規劃晚餐。","expect":{"servings":2,"minCards":1}}]
+    }
+  ]
+}

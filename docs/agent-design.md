@@ -1,8 +1,8 @@
 # CareKitchen｜AI Agent 設計、Prompt 規則與安全護欄
 
-> 本機規則與 OpenAI Responses API 串接已實作，真實模型輸出待驗證。下列為完整設計目標。
+> 本機規則與 OpenAI Responses API 已在合成案例實測。下列為完整設計目標。
 >
-> 現行流程由程式解析明確條件、檢查餐點庫與採買費用。OpenAI 分類意圖並對合格餐點排序，無法提供自行編寫的食材、價格或步驟。現行提示詞 `carekitchen-v1` 在 `web/lib/server/openai.ts`。
+> 現行流程由程式解析明確條件、檢查餐點庫與採買費用。OpenAI 分類意圖並對合格餐點排序，無法提供自行編寫的食材、價格或步驟。現行提示詞 `carekitchen-v4` 在 `web/lib/server/openai.ts`。
 > 相關權威文件：`docs/product-spec.md`、`docs/api-and-data-contracts.md`、`docs/evaluation-and-iteration.md`。
 
 ## 1. 顧問角色與主要任務

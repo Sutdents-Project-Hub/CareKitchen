@@ -116,7 +116,8 @@ function purchaseCost(item: ItemAmount, quotes: PriceQuote[]): number | null {
     ...matching.map((q) => Math.ceil(item.quantity! / q.quantity) * q.priceTwd),
   );
 }
-export function generateMeals(context: MealContext): MealCard[] {
+export function assessMeals(context: MealContext) {
+  const unavailable = { cards: [], minimumOverBudgetTwd: null };
   if (
     !context.servings ||
     !Number.isInteger(context.servings) ||
@@ -125,20 +126,21 @@ export function generateMeals(context: MealContext): MealCard[] {
     context.mealCount < 1 ||
     context.uncertainty
   )
-    return [];
+    return unavailable;
   // Unsupported restrictions cannot be safely interpreted as permission to use every recipe.
   if (
     context.excludedIngredients.some((x) => !KNOWN.has(canonicalIngredient(x)))
   )
-    return [];
+    return unavailable;
   if (
     context.excludedIngredients.some((x) =>
       ["水", "食用水", "飲用水"].includes(canonicalIngredient(x)),
     )
   )
-    return [];
+    return unavailable;
   const factor = context.servings * context.mealCount;
   const candidates: Array<{ card: MealCard; score: number }> = [];
+  let minimumOverBudgetTwd: number | null = null;
   for (const recipe of RECIPES) {
     if (
       recipe.equipment !== "no_cook" &&
@@ -150,8 +152,11 @@ export function generateMeals(context: MealContext): MealCard[] {
       !context.equipment.includes(recipe.equipment)
     )
       continue;
-    // Larger batches may require repeated cooking. This conservative bound never treats one batch's time as all meals.
-    const minutes = recipe.minutes * factor;
+    // Two portions per heated batch is an estimate, not a promise about the user's appliance.
+    const minutes =
+      recipe.equipment === "no_cook"
+        ? recipe.minutes + 2 * (factor - 1)
+        : recipe.minutes * Math.ceil(factor / 2);
     if (context.maxTimeMinutes !== null && minutes > context.maxTimeMinutes)
       continue;
     if (
@@ -209,7 +214,13 @@ export function generateMeals(context: MealContext): MealCard[] {
           : missingPrices.length || unknownPantry.length
             ? "unknown"
             : "within";
-    if (budgetStatus === "over") continue;
+    if (budgetStatus === "over") {
+      minimumOverBudgetTwd = Math.min(
+        minimumOverBudgetTwd ?? Infinity,
+        knownCostTwd,
+      );
+      continue;
+    }
     const card: MealCard = {
       id: recipe.id,
       title: recipe.title,
@@ -264,5 +275,12 @@ export function generateMeals(context: MealContext): MealCard[] {
       distinct.push(card);
     }
   }
-  return [...distinct, ...alternatives].slice(0, 12);
+  return {
+    cards: [...distinct, ...alternatives].slice(0, 12),
+    minimumOverBudgetTwd,
+  };
+}
+
+export function generateMeals(context: MealContext): MealCard[] {
+  return assessMeals(context).cards;
 }

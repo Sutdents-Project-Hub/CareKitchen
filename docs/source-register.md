@@ -26,9 +26,9 @@
 ## 3. 確認程度
 
 - **原始企劃已確認的需求方向**：目標人群、食材／預算／明確限制下的餐點對話、簡易說明、採買與三角色差異。
-- **研究指南整理的競賽規則**：第 4 賽道、1 份 PDF、10 則交換訊息、至少三 Persona、可操作助理、評分權重。這些資訊依 2026-11-20 使用者附件，**尚未在本輪重新聯網核對**。
-- **已實作**：Next.js、TypeScript、Node.js 24、pnpm、Zod、Node.js 測試及 OpenAI adapter。真實模型驗證與託管方案待確認。
-- **仍未確認**：OpenAI 真實模型回覆與費率、部署平台、正式資料保存政策、學生資格、真人可用性驗證、實際模型輸出、競賽提交是否成功。
+- **官方賽道要求**：2026-11-23 已核對 1 份 PDF、至少 10 則交換訊息、三種有差異的使用者、可操作助理與評分權重。 [活動頁](https://www.waicy.org/waicy-2026/) · [官方手冊](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf) · [評分表](https://www.waicy.org/rubrics/)
+- **已實作**：Next.js、TypeScript、Node.js 24、pnpm、Zod、Node.js 測試及 OpenAI adapter。已保留 GPT-6 Luna 合成案例實測。託管方案待確認。
+- **仍未確認**：部署平台、正式資料保存政策、真實使用者驗收、公開環境成本與競賽提交是否成功。
 
 ## 4. 禁止虛構的證據
 

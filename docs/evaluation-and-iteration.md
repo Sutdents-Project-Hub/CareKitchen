@@ -1,6 +1,6 @@
 # CareKitchen｜實測、Baseline、迭代與證據計畫
 
-> 下列是正式模型比較計畫，尚無 Baseline／V1–V3 真實模型測試數字。Web 規則測試和替身驗證見元件 README。
+> 下列是評估規劃。本機已完成 Luna 直接基準、CareKitchen V1–V4 的固定 16 回合同題重跑，以及 V4 另行執行的 5 回合口語邊界測試。實際版本、原始回覆、檢查及修正結果見 [實測索引](evidence/README.md)與 [WAICY 第 6 項迭代開發紀錄](evidence/iteration-development.md)。本頁規劃的 30 題與真人驗收待執行。
 > 來源：WAICY 研究指南建議重視 Specific AI Service 25 分、Iterative Development 25 分，其餘評分詳見 `docs/competition.md`。
 
 ## 1. 要驗證的假設（不是事實）
@@ -118,4 +118,4 @@ H4：A/B/C 得到真實不同的答覆，且各自更能完成生活任務。
 
 - Node.js 24 執行 `pnpm lint`、`pnpm typecheck`、`pnpm test`（23 項）及 `pnpm build`。以本機 API 實際送出 10 輪合成案例，確認份量、費用上限、排除食材、設備與專業轉介。
 - Playwright 操作三個角色、修改條件、輸入包裝報價、查看料理步驟及複製摘要。在窄螢幕測試放大文字、橫向版面與重試；上游 503 為瀏覽器攔截模擬。以 HTTP 測試替身確認 OpenAI SDK 的請求格式及回應解析。
-- 這些結果驗證本機規則與介面。正式模型逐版比較、真人研究、公開可用性與提交證據仍待實際執行。
+- 這一節保留初版無金鑰的歷史驗證。真實模型的逐版比較見 [本輪結果](evidence/README.md)，真人研究、公開驗收與送件仍待實際執行。

@@ -1,0 +1,216 @@
+{
+  "source": "luna-final.json",
+  "executedAt": "2026-11-23T05:48:04.111Z",
+  "promptVersion": "carekitchen-v4",
+  "turns": [
+    {
+      "id": "DEMO-10-1",
+      "model": null,
+      "formNote": null,
+      "input": "我一個人吃晚餐，家裡有豆腐 150 克、青菜 120 克和雞蛋 2 個，預算 100 元。",
+      "reply": "還需要確認設備（例如只有電鍋，或免開火）。",
+      "meals": []
+    },
+    {
+      "id": "DEMO-10-2",
+      "model": "gpt-6-luna",
+      "formNote": null,
+      "input": "只有電鍋，請給我兩道簡單的。",
+      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "meals": [
+        {
+          "id": "steam-tofu-greens",
+          "title": "電鍋豆腐青菜",
+          "servings": 1,
+          "knownCostTwd": 0,
+          "unknowns": []
+        },
+        {
+          "id": "steam-egg-tofu",
+          "title": "豆腐蒸蛋",
+          "servings": 1,
+          "knownCostTwd": 0,
+          "unknowns": []
+        }
+      ]
+    },
+    {
+      "id": "DEMO-10-3",
+      "model": "gpt-6-luna",
+      "formNote": null,
+      "input": "蛋先不要，其他照原來。",
+      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "meals": [
+        {
+          "id": "steam-tofu-greens",
+          "title": "電鍋豆腐青菜",
+          "servings": 1,
+          "knownCostTwd": 0,
+          "unknowns": []
+        },
+        {
+          "id": "steam-mushroom-tofu",
+          "title": "菇菇蒸豆腐",
+          "servings": 1,
+          "knownCostTwd": 0,
+          "unknowns": [
+            "菇類"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEMO-10-4",
+      "model": "gpt-6-luna",
+      "formNote": null,
+      "input": "那就兩位吧，抓八十塊就好。",
+      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "meals": [
+        {
+          "id": "steam-tofu-greens",
+          "title": "電鍋豆腐青菜",
+          "servings": 2,
+          "knownCostTwd": 0,
+          "unknowns": [
+            "豆腐",
+            "青菜"
+          ]
+        },
+        {
+          "id": "steam-mushroom-tofu",
+          "title": "菇菇蒸豆腐",
+          "servings": 2,
+          "knownCostTwd": 0,
+          "unknowns": [
+            "菇類",
+            "豆腐"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEMO-10-5",
+      "model": "gpt-6-luna",
+      "formNote": null,
+      "input": "豆腐一包 300 克 45 元，白米一包 500 克 60 元。",
+      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "meals": [
+        {
+          "id": "steam-tofu-greens",
+          "title": "電鍋豆腐青菜",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "青菜"
+          ]
+        },
+        {
+          "id": "steam-mushroom-tofu",
+          "title": "菇菇蒸豆腐",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "菇類"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEMO-10-6",
+      "model": "gpt-6-luna",
+      "formNote": null,
+      "input": "如果菜價還沒查到，這樣能確定沒有超過 80 元嗎？",
+      "reply": "依這一輪的條件找到 2 道餐點。其中有採買價格或家中份量待確認，請看每道的已知小計；目前無法確認這些選項的總額。",
+      "meals": [
+        {
+          "id": "steam-tofu-greens",
+          "title": "電鍋豆腐青菜",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "青菜"
+          ]
+        },
+        {
+          "id": "steam-mushroom-tofu",
+          "title": "菇菇蒸豆腐",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "菇類"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEMO-10-7",
+      "model": "gpt-6-luna",
+      "formNote": null,
+      "input": "電鍋也先別用了，剩微波爐。想吃濕潤一點的。",
+      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "meals": [
+        {
+          "id": "micro-tofu-greens",
+          "title": "微波豆腐青菜",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "青菜"
+          ]
+        },
+        {
+          "id": "micro-eggplant-tofu",
+          "title": "茄子豆腐",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "茄子"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DEMO-10-8",
+      "model": null,
+      "formNote": null,
+      "input": "我好像有飲食限制，醫師說過但我沒記清楚。",
+      "reply": "請先確認需要排除的食材，再到「這餐的條件」填入，並取消勾選「有些條件不太確定」。",
+      "meals": []
+    },
+    {
+      "id": "DEMO-10-9",
+      "model": null,
+      "formNote": null,
+      "input": "如果我還有在吃藥，你能保證這些料理都安全嗎？",
+      "reply": "這項問題需要專業人員確認。用藥請問醫師或藥師，食物反應、疾病飲食或吞嚥問題請向醫療專業人員確認。日常備餐時，您可以填入已確認要避開的食材。",
+      "meals": []
+    },
+    {
+      "id": "DEMO-10-10",
+      "model": "gpt-6-luna",
+      "formNote": "送出前在條件表單確認限制，取消「有些條件不太確定」。",
+      "input": "我已確認需要避開的只有蛋，幫我整理採買清單。",
+      "reply": "依這一輪的條件找到 2 道餐點。請從下面選一道，查看待買項目與待確認價格，也可以預覽再複製採買摘要。",
+      "meals": [
+        {
+          "id": "micro-tofu-greens",
+          "title": "微波豆腐青菜",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "青菜"
+          ]
+        },
+        {
+          "id": "micro-eggplant-tofu",
+          "title": "茄子豆腐",
+          "servings": 2,
+          "knownCostTwd": 45,
+          "unknowns": [
+            "茄子"
+          ]
+        }
+      ]
+    }
+  ]
+}

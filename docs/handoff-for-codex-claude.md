@@ -1,6 +1,6 @@
 # CareKitchen｜Codex／Claude 實作交接說明
 
-> 現有 Next.js Web 原型可本機驗證。啟動方式見 `web/README.md`，OpenAI 真實執行、公開部署及競賽證據待確認。以下保留原先的開發順序供對照。
+> 現有 Next.js Web 原型可本機驗證。啟動方式見 `web/README.md`，已完成本機 OpenAI 真實執行，公開部署與交件證據的外部可用性待確認。以下保留原先的開發順序供對照。
 
 ## 1. 專案位置與目的
 

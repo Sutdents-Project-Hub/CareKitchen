@@ -1,6 +1,6 @@
 # CareKitchen｜專案總覽、範圍與驗收
 
-> 狀態：本機 Web 原型已實作，OpenAI 真實呼叫、使用者研究與公開展示待驗證。
+> 狀態：本機 Web 原型與 GPT-6 Luna 實測已完成。真實使用者研究與公開展示待驗證。
 > 最詳細的功能與 AC 以 `docs/product-spec.md` 為準；正式比賽要求以 `docs/competition.md` 為準。
 
 ## 1. 願景

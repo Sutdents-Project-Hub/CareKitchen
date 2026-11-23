@@ -356,6 +356,8 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .message-row { padding: 10px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .message-author { color: var(--primary); font-weight: 650; font-size: var(--small-text); }
 .message-content p { margin-top: 3px; white-space: pre-wrap; }
+.message-content .turn-changes { color: var(--primary); font-size: var(--small-text); }
+.mobile-conditions { display: none; }
 .message-row.user .message-author { color: var(--muted); }
 .thinking { display: flex; align-items: center; gap: 8px; }
 .spin, .thinking svg { animation: spin 1s linear infinite; }
@@ -386,6 +388,8 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .meal-index { margin-bottom: 5px; color: var(--primary); font-size: var(--small-text); font-weight: 650; font-variant-numeric: tabular-nums; }
 .meal-card h4 { font: 650 max(1.3rem, var(--panel-title))/1.3 var(--serif); }
 .meal-meta { margin-top: 6px; color: var(--muted); font-size: var(--small-text); }
+.meal-reason { margin-top: 8px; color: var(--primary); font-size: var(--small-text); }
+.meal-batch-note { margin-bottom: 10px; color: var(--muted); font-size: var(--small-text); }
 .cost-line { margin: 12px 0 0; padding: 8px 10px; border: 1px solid var(--line); background: var(--canvas); color: var(--heading); font-weight: 650; font-size: var(--small-text); font-variant-numeric: tabular-nums; }
 .cost-good { color: var(--primary); }
 .cost-alert { border-color: var(--control-line); }
@@ -436,7 +440,7 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .how-steps strong, .scope-note strong { color: var(--heading); }
 .how-steps p, .scope-note p { margin-top: 4px; }
 .scope-note { margin-top: 16px; padding: 13px 0; font-size: var(--small-text); }
-.footer { display: flex; align-items: center; justify-content: space-between; min-height: 64px; border-top: 1px solid var(--line); gap: 8px; }
+.footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; min-height: 64px; border-top: 1px solid var(--line); gap: 8px; }
 .footer-brand { font-size: 1.22rem; }
 
 .modal-backdrop {
@@ -456,6 +460,15 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .modal-actions { margin-top: 14px; justify-content: flex-end; flex-wrap: wrap; }
 
 @media (max-width: 800px) {
+  .mobile-conditions {
+    display: block;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--hover);
+    color: var(--primary);
+    font-size: var(--small-text);
+    overflow-wrap: anywhere;
+  }
   .topbar-inner { grid-template-columns: 1fr auto; gap: 10px; }
   .top-links { display: none; }
   .entry-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 30px 0; }
@@ -488,3 +501,31 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) {
   .spin, .thinking svg { animation: none; }
 }
+
+.evidence-page {
+  width: min(860px, calc(100% - 2 * var(--gutter)));
+  margin: 0 auto;
+  padding: 20px 0 48px;
+}
+.evidence-header { border-bottom: 1px solid var(--line); padding: 18px 0 24px; }
+.evidence-header h1 { font: 650 clamp(2rem, 5vw, 3.25rem)/1.3 var(--serif); margin: 6px 0 12px; }
+.evidence-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+  border: 1px solid var(--line);
+  background: var(--paper);
+  margin: 16px 0;
+}
+.evidence-facts > div { padding: 12px; }
+.evidence-facts dt, .evidence-turn-heading span { color: var(--muted); font-size: .875rem; }
+.evidence-facts dd { margin: 3px 0 0; color: var(--primary); font-weight: 650; }
+.evidence-turns { padding: 0; margin: 20px 0 0; display: grid; gap: 12px; list-style: none; }
+.evidence-turns article { border: 1px solid var(--line); padding: 16px; background: var(--paper); }
+.evidence-turn-heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.evidence-turn-heading h2 { font-size: 1.15rem; }
+.evidence-turns dl { margin: 8px 0 0; }
+.evidence-turns dl > div { border-top: 1px solid var(--line); padding: 8px 0; }
+.evidence-turns dt { color: var(--heading); font-weight: 650; }
+.evidence-turns dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+.evidence-turns dd ul { margin: 0; padding-left: 20px; }
+.evidence-form-note { color: var(--primary); font-size: .875rem; margin-top: 8px; }
