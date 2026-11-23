@@ -1,25 +1,36 @@
 <section id="results" data-transition="fade">
 <p class="eyebrow">05 · ITERATIVE DESIGN · EXPERIMENTAL RESULTS</p>
 <h2>The same 16 rounds, rerun for every version</h2>
-<div class="cols2" style="gap:56px; margin-bottom:26px">
-<div>
-<p class="ct">Rounds passed (of 16)</p>
-<div class="bar-row"><p class="bar-name">V1</p><div class="bar-track"><div class="bar-fill lo" style="width:31%"></div></div><p class="bar-val">5 / 16</p></div>
-<div class="bar-row"><p class="bar-name">V2</p><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><p class="bar-val">16 / 16</p></div>
-<div class="bar-row"><p class="bar-name">V3</p><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><p class="bar-val">16 / 16</p></div>
-<div class="bar-row"><p class="bar-name">V4</p><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><p class="bar-val">16 / 16</p></div>
+<div class="body">
+<div class="card" style="padding:28px 38px; flex:1.5; justify-content:space-between">
+<div style="display:grid; grid-template-columns:90px 1fr 150px 170px; gap:20px; align-items:center">
+<p class="k" style="margin:0"></p><p class="k" style="margin:0">ONE SQUARE PER ROUND (16): DARK = ALL CHECKS PASSED, LIGHT = NOT PASSED</p><p class="k" style="margin:0">ROUNDS</p><p class="k" style="margin:0">CHECKS</p>
 </div>
-<div>
-<p class="ct">Individual checks passed (of 56)</p>
-<div class="bar-row"><p class="bar-name">V1</p><div class="bar-track"><div class="bar-fill lo" style="width:52%"></div></div><p class="bar-val">29 / 56</p></div>
-<div class="bar-row"><p class="bar-name">V2</p><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><p class="bar-val">56 / 56</p></div>
-<div class="bar-row"><p class="bar-name">V3</p><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><p class="bar-val">56 / 56</p></div>
-<div class="bar-row"><p class="bar-name">V4</p><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><p class="bar-val">56 / 56</p></div>
+<div style="display:grid; grid-template-columns:90px 1fr 150px 170px; gap:20px; align-items:center">
+<p class="ct" style="margin:0">V1</p>
+<div class="cellrow"><div class="cell"></div><div class="cell no"></div><div class="cell"></div><div class="cell"></div><div class="cell no"></div><div class="cell no"></div><div class="cell no"></div><div class="cell no"></div><div class="cell no"></div><div class="cell no"></div><div class="cell"></div><div class="cell"></div><div class="cell no"></div><div class="cell no"></div><div class="cell no"></div><div class="cell no"></div></div>
+<p class="mid" style="margin:0; font-size:44px">5 / 16</p><p class="mid" style="margin:0; font-size:44px">29 / 56</p>
+</div>
+<div style="display:grid; grid-template-columns:90px 1fr 150px 170px; gap:20px; align-items:center">
+<p class="ct" style="margin:0">V2</p>
+<div class="cellrow"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+<p class="mid" style="margin:0; font-size:44px">16 / 16</p><p class="mid" style="margin:0; font-size:44px">56 / 56</p>
+</div>
+<div style="display:grid; grid-template-columns:90px 1fr 150px 170px; gap:20px; align-items:center">
+<p class="ct" style="margin:0">V3</p>
+<div class="cellrow"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+<p class="mid" style="margin:0; font-size:44px">16 / 16</p><p class="mid" style="margin:0; font-size:44px">56 / 56</p>
+</div>
+<div style="display:grid; grid-template-columns:90px 1fr 150px 170px; gap:20px; align-items:center">
+<p class="ct" style="margin:0">V4</p>
+<div class="cellrow"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+<p class="mid" style="margin:0; font-size:44px">16 / 16</p><p class="mid" style="margin:0; font-size:44px">56 / 56</p>
 </div>
 </div>
-<div class="cols2">
-<div class="card"><p class="k">HOW TO READ THIS</p><p class="cb">A round passes only if all of its expected checks pass (people, budget, equipment, exclusions, candidate count, price notes). The baseline was read case by case, with no pass/fail score. All 85 round records and 0 execution errors are saved.</p></div>
-<div class="soft"><p class="k">CAVEAT</p><p class="cb" style="color:#0E1B33">These 16 rounds guided the fixes, so V2–V4 scores are regression results, not a held-out test. V3 and V4 added behavior this count cannot show: role routing and colloquial edits. See the fresh test next.</p></div>
+<div class="g2" style="flex:1">
+<div class="card" style="padding:26px 34px"><p class="k">HOW TO READ THIS</p><p class="cs">A round passes only if all its expected checks pass: people, budget, equipment, exclusions, candidate count, price notes. The baseline was read case by case, with no pass/fail score. All 85 round records are saved, with 0 execution errors.</p></div>
+<div class="soft" style="padding:26px 34px"><p class="k">CAVEAT</p><p class="cs" style="color:#0E1B33">These 16 rounds guided the fixes, so V2–V4 are regression results, not a held-out test. V3 and V4 added behavior this count cannot show: role routing and spoken edits. See the fresh test next.</p></div>
+</div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
 </section>

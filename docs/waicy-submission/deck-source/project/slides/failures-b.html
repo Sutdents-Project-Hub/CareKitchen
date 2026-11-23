@@ -1,22 +1,24 @@
 <section id="failures-b" data-transition="fade">
 <p class="eyebrow">05 · ITERATIVE DESIGN · ERROR ANALYSIS 2 OF 2</p>
 <h2>Failures about prices and safety</h2>
-<div class="card" style="margin-bottom:26px">
-<p class="ct" style="margin-bottom:16px">3 · Unclear and invented cost claims</p>
-<div class="cols4">
-<div><p class="k">OBSERVED</p><p class="cb" style="font-size:24px">Baseline: “about NT$49, within NT$100”. V1 asked users to retype prices they had already given.</p></div>
-<div><p class="k">ROOT CAUSE</p><p class="cb" style="font-size:24px">Package prices were prorated by recipe amount, and V1 had no way to record prices from the chat.</p></div>
-<div><p class="k">FIX (V2)</p><p class="cb" style="font-size:24px">Accept item, package size and price. Code prices whole packages; missing prices show as pending.</p></div>
-<div class="soft" style="padding:18px 22px"><p class="k">RETEST</p><p class="cb" style="font-size:24px; color:#0E1B33">COST-OVER-1: “known subtotal at least NT$120 exceeds NT$100”, 0 meal cards.</p></div>
+<div class="body">
+<div class="card" style="flex:1; padding:24px 34px">
+<p class="ct" style="margin-bottom:12px; font-size:34px">3 · Unclear and invented cost claims</p>
+<div class="g4" style="flex:1">
+<div><p class="k">OBSERVED</p><p class="cs">Baseline: “about NT$49, within NT$100”. V1 asked users to retype prices they had already given.</p></div>
+<div><p class="k">ROOT CAUSE</p><p class="cs">Package prices were prorated by recipe amount, and V1 had no way to record prices from the chat.</p></div>
+<div><p class="k">FIX (V2)</p><p class="cs">Accept item, package size and price. Code prices whole packages; missing prices show as pending.</p></div>
+<div class="soft" style="padding:20px 24px"><p class="k">RETEST</p><p class="cs" style="color:#0E1B33">COST-OVER-1: “known subtotal at least NT$120 exceeds NT$100”, 0 meal cards.</p></div>
 </div>
 </div>
-<div class="card">
-<p class="ct" style="margin-bottom:16px">4 · Symptoms treated like ingredients</p>
-<div class="cols4">
-<div><p class="k">OBSERVED</p><p class="cb" style="font-size:24px">In the egg-rash case, the word “follow-up” was stored as an excluded food, and a generic question came back.</p></div>
-<div><p class="k">ROOT CAUSE</p><p class="cb" style="font-size:24px">Confirmed restrictions, symptoms and medication questions were not separated.</p></div>
-<div><p class="k">FIX (V2)</p><p class="cb" style="font-size:24px">Check symptoms, medication and unclear restrictions first and refer. Keep confirmed exclusions as hard filters.</p></div>
-<div class="soft" style="padding:18px 22px"><p class="k">RETEST</p><p class="cb" style="font-size:24px; color:#0E1B33">ALLERGY-SYMPTOM-1: referral, 0 cards, nothing wrongly stored. Soy allergy: 3 meals, no tofu.</p></div>
+<div class="card" style="flex:1; padding:24px 34px">
+<p class="ct" style="margin-bottom:12px; font-size:34px">4 · Symptoms treated like ingredients</p>
+<div class="g4" style="flex:1">
+<div><p class="k">OBSERVED</p><p class="cs">In the egg-rash case, the word “follow-up” was stored as an excluded food, and a generic question came back.</p></div>
+<div><p class="k">ROOT CAUSE</p><p class="cs">Confirmed restrictions, symptoms and medication questions were not separated.</p></div>
+<div><p class="k">FIX (V2)</p><p class="cs">Check symptoms, medication and unclear restrictions first and refer. Keep confirmed exclusions as hard filters.</p></div>
+<div class="soft" style="padding:20px 24px"><p class="k">RETEST</p><p class="cs" style="color:#0E1B33">ALLERGY-SYMPTOM-1: referral, 0 cards, nothing wrongly stored. Soy allergy: 3 meals, no tofu.</p></div>
+</div>
 </div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
