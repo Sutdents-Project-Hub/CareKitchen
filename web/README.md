@@ -36,4 +36,4 @@ pnpm start
 - `app/` 與 `components/` 提供角色切換、同頁多輪對話、條件編輯、料理卡及採買摘要預覽。
 - `lib/server/` 解析條件、限制候選及核算採買成本。OpenAI 只能分類意圖和排序既有候選。
 - `tests/` 使用 Node.js 測試規則與模型替身。實際 OpenAI 合成案例、逐版差異與限制見 [實測紀錄](../docs/evidence/README.md)。公開環境的配額和可用性仍待確認。
-- 會話跟隨當前分頁，採買摘要為手動複製文字。唯讀路由 `/evidence/waicy` 顯示整理好的十輪合成案例。公開部署、可分享的真人會話與競賽交件見 [實作路線圖](../docs/implementation-roadmap.md)。
+- 會話跟隨當前分頁，採買摘要為手動複製文字。唯讀路由 `/evidence/waicy` 顯示交件前重跑的十輪合成案例，附英文操作指南與逐輪摘要。外部評審驗收見 [部署說明](../docs/deployment.md)。

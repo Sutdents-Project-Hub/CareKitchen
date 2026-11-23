@@ -51,3 +51,5 @@
 - 介面使用 [Lucide](https://lucide.dev/) 的操作圖示。餐點庫為本專案撰寫。
 - OpenAI 和 Next.js 技術文件見 [OpenAI 串接](integrations.md) 與 [Next.js App Router](https://nextjs.org/docs/app/getting-started/installation)。
 - 網站自託管 [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) 與 [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) 的拉丁變體，兩者均採 SIL Open Font License，授權檔隨字型存放於 `web/app/fonts/`。
+
+英文報告引用內政部的 2025 年 12 月戶籍人口資料，當月底 65 歲以上占 20.06%。此資料用於說明人口背景，備餐痛點仍是待真人驗證的假設。 [內政部戶口統計資料分析](https://www.moi.gov.tw/News_Content.aspx?n=2&s=335870)

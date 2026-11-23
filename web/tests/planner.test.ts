@@ -437,3 +437,111 @@ test("current portions, new spend ceiling and no heating replace stale values", 
   assert.equal(result.context.budgetTwd, 70);
   assert.deepEqual(result.context.equipment, ["no_cook"]);
 });
+
+test("keeping existing exclusions while replacing equipment does not create an ingredient", async () => {
+  const result = await planTurn(
+    turnSchema.parse({
+      persona: "caregiver",
+      text: "微波爐壞了，改用電鍋，人數和不能用的材料照舊，請再推薦。",
+      context: {
+        ...options,
+        servings: 2,
+        equipment: ["microwave"],
+        excludedIngredients: ["豆製品", "菇類"],
+      },
+    }),
+  );
+  assert.deepEqual(result.context.equipment, ["rice_cooker"]);
+  assert.deepEqual(result.context.excludedIngredients, ["豆製品", "菇類"]);
+  assert.ok(result.cards.length);
+  assert.ok(
+    result.cards.every(
+      (card) => card.servings === 2 && card.equipment === "rice_cooker",
+    ),
+  );
+});
+
+test("new exclusions in the same sentence still apply alongside carryover wording", async () => {
+  const context: MealContext = {
+    ...options,
+    equipment: ["stove"],
+    pantryItems: [{ name: "雞蛋", quantity: 6, unit: "個" }],
+    excludedIngredients: ["菇類"],
+  };
+  for (const text of [
+    "不能吃的食材照舊但今天不吃蛋，請推薦晚餐。",
+    "沒有要排除的蔬菜但今天不吃蛋，請推薦晚餐。",
+    "不吃蛋但不能吃的食材照舊，請推薦晚餐。",
+  ]) {
+    const result = await planTurn(
+      turnSchema.parse({ persona: "caregiver", text, context }),
+    );
+    assert.deepEqual(result.context.excludedIngredients, ["菇類", "蛋"]);
+    assert.ok(result.cards.length);
+    assert.ok(
+      result.cards.every(({ fromPantry, toBuy }) =>
+        [...fromPantry, ...toBuy].every(({ name }) => name !== "雞蛋"),
+      ),
+    );
+  }
+});
+
+test("lowered or raised shopping budgets replace the old limit", () => {
+  for (const amount of ["25", "二十五"]) {
+    const result = inspectTurn(
+      `那就把採買預算降低到 ${amount} 元，其他照舊。`,
+      { ...options, budgetTwd: 100 },
+    );
+    assert.equal(result.context.budgetTwd, 25);
+  }
+  const result = inspectTurn("餐費提高至 150 元。", options);
+  assert.equal(result.context.budgetTwd, 150);
+});
+
+test("uncertain restrictions do not pollute the confirmed exclusion list", async () => {
+  const original = { ...options, excludedIngredients: ["蛋"] };
+  const uncertain = inspectTurn(
+    "長輩有些蔬菜不能吃，我還沒確認是哪幾種，今天可以先推薦嗎？",
+    original,
+  );
+  assert.equal(uncertain.intent, "clarify");
+  assert.equal(uncertain.context.uncertainty, true);
+  assert.deepEqual(uncertain.context.excludedIngredients, ["蛋"]);
+  const confirmed = await planTurn(
+    turnSchema.parse({
+      persona: "caregiver",
+      text: "已確認沒有要排除的蔬菜，不能吃的食材照舊，請規劃晚餐。",
+      context: { ...uncertain.context, uncertainty: false },
+    }),
+  );
+  assert.deepEqual(confirmed.context.excludedIngredients, ["蛋"]);
+  assert.ok(confirmed.cards.length);
+});
+
+test("a changed group without servings and eating-related choking are handled before ranking", async () => {
+  const unexpectedRank: RankMeals = () => {
+    throw new Error("This turn should be resolved before ranking");
+  };
+  const input = { persona: "elder", context: options };
+  const servings = await planTurn(
+    turnSchema.parse({
+      ...input,
+      text: "改成我跟孩子一起吃，孩子只吃一點點，其他條件不變。",
+    }),
+    unexpectedRank,
+  );
+  assert.equal(servings.context.servings, null);
+  assert.deepEqual(servings.cards, []);
+  assert.equal(servings.responseType, "ask_clarification");
+  assert.match(servings.message, /份量/);
+
+  const referral = await planTurn(
+    turnSchema.parse({
+      ...input,
+      text: "最近吃飯常常嗆到，想把菜弄軟一點，幫我選適合我吃的晚餐。",
+    }),
+    unexpectedRank,
+  );
+  assert.equal(referral.responseType, "professional_referral");
+  assert.deepEqual(referral.cards, []);
+});

@@ -1,15 +1,15 @@
 # WAICY 2026｜CareKitchen 第 4 賽道交件與評審作戰文件
 
-> 資訊依 2026-11-20 使用者提供的《WAICY_2026_第4賽道_LLM_AI_Agent_完整參賽研究指南》整理。2026-11-23 已核對官方活動頁、評分表與手冊的 LLM & AI Agent 章節。團隊資格仍由參賽者確認。
+> 資訊依使用者提供的研究指南和 2026-11-23 核對的官方活動頁、評分表、手冊及提交表單整理。團隊資格由參賽者確認。
 > 參賽類別：LLM & AI Agent（AI as a Service），高中組；作品 CareKitchen。
 
-本機已保存 GPT-6 Luna 真實回覆和逐版比較。現有十輪合成對話可在本機查看，評審公開網址與正式提交待備妥。 [實測紀錄](evidence/README.md)
+本機已完成交件前新案例重測及十輪合成對話展示，附英文操作指南。英文報告草稿已整理實測、參考來源及表單用摘要。評審公開網址、學生貢獻、最終英文 PDF 與正式提交待備妥。 [英文報告草稿](waicy-report.en.md) · [實測紀錄](evidence/README.md)
 
 ## 1. 時程與官方入口
 
 | 項目 | 內容 |
 |---|---|
-| 全球賽正式截止 | 2026-11-29 17:00 美國東部時間（提供指南換算台灣為 11/30 06:00） |
+| 全球賽正式截止 | 2026-11-29 17:00 EST，台灣時間 2026-11-30 06:00 |
 | 專案內部目標 | 2026-11-29 晚上前**提前完成**上傳，避開美東時間最後幾小時 |
 | 決賽預期 | 2026-12-04 至 12-06，實際安排以主辦通知為準 |
 | 官網 | https://www.waicy.org/waicy-2026/ |
@@ -47,7 +47,7 @@
 9. Conclusion：真實完成成果、效果與學生貢獻。
 10. References：引用可追溯官方／研究／資料來源；不得把未查過的外部引用當正式資料。
 
-指南指出**不需另外必交** GitHub、程式碼、影片或固定頁數；10–12 頁英文 PDF 只是合理建議，不是官方規定。交件流程應依官方提交頁面再次確認。
+賽道手冊列出的標準資料夾包含一份 PDF。下列頁數為排版參考。 [官方手冊](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf)
 
 ## 4. 建議英文 PDF 頁面規劃（12 頁）
 
@@ -80,8 +80,8 @@ Use this theme for my slides. Ask me what the presentation is about first, then 
 
 ## 5. Submission 資料夾和欄位
 
-- 依來源指南建議：Google Drive 資料夾 `LLM_High_CareKitchen/`，內放 `LLM_High_CareKitchen.pdf`；**這裡只定義交件結構，未建立 Drive 資料夾。**
-- 表單可能需要：Country Taiwan、Track 對應 AI Large Language Models、Project Name CareKitchen、學生英文姓名／年級／Email、老師資料、聯絡電話、High School、最多 200 英文字 Project Description 與**Drive 資料夾公開連結**。填寫前以提交表單實際欄位為準。
+- 依官方手冊的命名格式，若確認報名高中組，Google Drive 資料夾用 `LLM_High_CareKitchen`，內放 `LLM_High_CareKitchen.pdf`。
+- 2026-11-23 檢視表單包含國家、賽道、作品名、參加方式、最多 200 英文字的作品描述、聯絡資料、隊員資料、組別與任何人可閱讀的 Drive 資料夾連結。教師及地區主辦資料依實際情況填寫。團隊作品送出一份；如已由官方地區主辦完成登記，先向該主辦確認。 [官方提交表單](https://www.waicy.org/2026-submission/) · [英文摘要](waicy-report.en.md#project-description-for-the-submission-form)
 - 交件 PDF 裡的兩個網址要獨立驗證：① AI 顧問可操作 ② final chat history 可讀。
 - 打開無痕視窗和其他裝置測試共用權限、付費牆、登入要求、資料到期及平台限流。
 - 送件後保存實際成功畫面／確認信；不可只根據表單送出按鈕認定已受理。
@@ -89,14 +89,14 @@ Use this theme for my slides. Ask me what the presentation is about first, then 
 ## 6. 交件前關卡（未完成不可勾）
 
 - [ ] 學生報名資格及官方截止資訊再次確認
-- [ ] 三角色各有真正、可比較的個人化回覆
-- [ ] AI 能長對話、理解中途變更、合理追問
-- [ ] 預算未知不謊稱精算、醫療問題不越權
+- [x] 三角色有可比較的本機同題回覆
+- [x] 本機十輪合成對話保留中途條件並在缺少必要資料時追問
+- [x] 固定案例檢查未知價格、整包超支及專業轉介
 - [ ] 30 題或實際完整評估案例已執行，結果與證據可查
 - [x] 至少一個失敗 → 修正 → 同題重測有真實紀錄。[逐案證據](evidence/iteration-development.md)
 - [ ] **最終版**至少 10 輪完整真實問答已匿名、分享連結可讀
 - [ ] 作品網址可在無痕視窗操作且不需學生私人帳號
-- [ ] 英文 PDF 涵蓋官方要求、模型及資料引用、學生實際貢獻
+- [ ] 英文草稿補上經核實的學生貢獻與兩個公開連結，匯出最終英文 PDF
 - [ ] Drive 分享權限與 PDF 內連結逐一通過外部測試
 - [ ] 確認信或提交成功截圖保存
 

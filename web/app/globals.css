@@ -519,10 +519,17 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .evidence-facts > div { padding: 12px; }
 .evidence-facts dt, .evidence-turn-heading span { color: var(--muted); font-size: .875rem; }
 .evidence-facts dd { margin: 3px 0 0; color: var(--primary); font-weight: 650; }
+.judge-guide { margin-top: 20px; padding: 0 16px; border: 1px solid var(--line); background: var(--paper); }
+.judge-guide summary { display: list-item; min-height: 44px; padding: 12px 0; color: var(--primary); font-weight: 650; cursor: pointer; }
+.judge-guide ol { margin: 0 0 16px; padding-left: 22px; }
+.judge-guide li + li { margin-top: 12px; }
+.judge-guide a { text-decoration: underline; text-underline-offset: 3px; }
+.judge-guide blockquote { margin: 8px 0 0; padding: 8px 12px; background: var(--primary-soft); }
 .evidence-turns { padding: 0; margin: 20px 0 0; display: grid; gap: 12px; list-style: none; }
 .evidence-turns article { border: 1px solid var(--line); padding: 16px; background: var(--paper); }
 .evidence-turn-heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .evidence-turn-heading h2 { font-size: 1.15rem; }
+.evidence-recap { color: var(--muted); margin: 8px 0 0; }
 .evidence-turns dl { margin: 8px 0 0; }
 .evidence-turns dl > div { border-top: 1px solid var(--line); padding: 8px 0; }
 .evidence-turns dt { color: var(--heading); font-weight: 650; }

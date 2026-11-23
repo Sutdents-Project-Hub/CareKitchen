@@ -30,5 +30,6 @@ pnpm dev
 - [系統架構](docs/architecture.md) · [API 與資料契約](docs/api-and-data-contracts.md) · [Agent 設計](docs/agent-design.md) · [OpenAI 串接](docs/integrations.md)
 - [使用流程、配色與可及性](docs/ux-and-user-flows.md) · [安全與隱私](docs/security-and-privacy.md) · [資料保存](docs/data-and-storage.md)
 - [實測結果](docs/evidence/README.md) · [WAICY 迭代開發紀錄](docs/evidence/iteration-development.md) · [實測計畫](docs/evaluation-and-iteration.md) · [Demo 腳本](docs/demo-script.md) · [競賽交件清單](docs/competition.md) · [部署計畫](docs/deployment.md)
+- [WAICY 英文報告草稿與報名摘要](docs/waicy-report.en.md)
 
 GitHub 版本管理使用 [Sutdents-Project-Hub/CareKitchen](https://github.com/Sutdents-Project-Hub/CareKitchen)。公開展示平台待選。開發與交接依 [AGENTS.md](AGENTS.md)，來源及設計指引見 [來源紀錄](docs/source-register.md)。

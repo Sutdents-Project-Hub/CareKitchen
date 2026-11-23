@@ -80,9 +80,12 @@ const matchingEquipment: Array<[RegExp, Equipment]> = [
 const medicalPattern =
   /用藥|吃藥|服藥|服用|藥物|藥品|藥師|調藥|停藥|藥量|降血糖藥|降壓藥|處方|劑量|診斷|治療|吞嚥|醫療安全|營養處方|腎臟病|糖尿病|高血壓|化療/;
 const symptomPattern =
-  /起(?:紅)?疹|蕁麻疹|喘不過氣|呼吸困難|嘴唇(?:發)?腫|喉嚨(?:發)?腫|過敏反應/;
+  /起(?:紅)?疹|蕁麻疹|喘不過氣|呼吸困難|嘴唇(?:發)?腫|喉嚨(?:發)?腫|過敏反應|(?:吃飯|吃東西|喝水).{0,8}嗆(?:到|咳)/;
 const uncertainPattern =
   /(?:好像|不確定|忘了|有些|有某些).{0,16}(?:不能吃|忌口|限制|過敏)|有(?:飲食|食物|食材)?(?:限制|過敏|忌口)|(?:醫師|醫生|我過敏)(?:[。！?？]|$)/;
+const retainsExclusions =
+  /(?:不能(?:吃|用)|不(?:吃|用)|要避開|要排除|排除)的(?:食材|材料|東西)(?:都|仍然)?(?:照舊|維持|不變|照原來)/;
+const noNewExclusions = /沒有(?:任何)?(?:要|需要)?(?:排除|避開)的/;
 const identifierPattern =
   /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|\b09\d{2}[- ]?\d{3}[- ]?\d{3}\b|[A-Z][12]\d{8}/i;
 const foodSeparator = /、|，|,|和|跟|與|以及|及|\+/;
@@ -251,16 +254,25 @@ export function inspectTurn(text: string, context: MealContext) {
   const alone = /只(?:煮給自己|剩我(?:一個人|了)?|有我(?:一個人)?)/.test(
     servingStatement,
   );
+  const changedGroupWithoutCount =
+    servings === null &&
+    /(?:改成|改為|換成)[^，。；]{1,18}(?:一起|一塊)(?:吃|用餐|享用)/.test(
+      servingStatement,
+    );
   updated.servings = alone
     ? 1
     : (servings ??
-      (/我自己(?:準備|吃|用餐)/.test(servingStatement) ? 1 : context.servings));
+      (changedGroupWithoutCount
+        ? null
+        : /我自己(?:準備|吃|用餐)/.test(servingStatement)
+          ? 1
+          : context.servings));
   updated.mealCount = meals ?? context.mealCount;
   updated.maxTimeMinutes = minutes ?? context.maxTimeMinutes;
 
   const explicitBudget = [
     ...normalized.matchAll(
-      /(?:預算|餐費)\s*(?:改(?:成|為)?|是|為|剩|只有|上限|約|控制在|不超過|最多|在)?\s*[:：]?\s*(?:新台幣|NT\$|\$)?\s*(\d{1,7}(?:\.\d{1,2})?)(?![\d.])\s*(?:元|塊|(?=$|[,，。、 ]))/gi,
+      /(?:預算|餐費)\s*(?:改(?:成|為)?|(?:降低|提高|調低|調高|調整|降|調|壓)(?:到|至)|是|為|剩|只有|上限|約|控制在|不超過|最多|在)?\s*[:：]?\s*(?:新台幣|NT\$|\$)?\s*(\d{1,7}(?:\.\d{1,2})?)(?![\d.])\s*(?:元|塊|(?=$|[,，。、 ]))/gi,
     ),
   ].at(-1);
   const budgetCeiling =
@@ -274,7 +286,7 @@ export function inspectTurn(text: string, context: MealContext) {
     /(?:抓|預算剩下?|餐費抓)\s*(\d{1,7}(?:\.\d{1,2})?)\s*(?:元|塊)/,
   );
   const chineseBudget = normalized.match(
-    /(?:預算|餐費|抓)(?:改(?:成|為)?|是|為|剩|只有|上限|約)?\s*[:：]?\s*([零一二兩三四五六七八九十]{1,3})\s*(?:元|塊)/,
+    /(?:預算|餐費|抓)\s*(?:改(?:成|為)?|(?:降低|提高|調低|調高|調整|降|調|壓)(?:到|至)|是|為|剩|只有|上限|約)?\s*[:：]?\s*([零一二兩三四五六七八九十]{1,3})\s*(?:元|塊)/,
   );
   const expenseCeiling = normalized.match(
     /(?:總開銷|開銷|花費|成本)\s*(?:壓到|壓在|改成|控制在|最多)\s*([0-9]{1,7}|[零一二兩三四五六七八九十]{1,3})(?:元|塊)?\s*(?:以下|以內|內)/,
@@ -319,6 +331,11 @@ export function inspectTurn(text: string, context: MealContext) {
       )
         ? clause.split(/(?:也|然後|另外)(?=不要|不吃|不能|不加|排除)/)
         : [clause],
+    );
+  const exclusionClauses = clauses
+    .flatMap((clause) => clause.split(/但是?|不過|可是/))
+    .filter(
+      (clause) => !retainsExclusions.test(clause) && !noNewExclusions.test(clause),
     );
   const priceQuery =
     /(?:能|可以|可)確定.{0,15}(?:超過|超支|預算)|(?:總價|總費用).{0,12}(?:多少|預算|內嗎)|(?:菜價|價格|報價).{0,8}(?:沒查到|還沒|不確定|待確認)/.test(
@@ -437,19 +454,34 @@ export function inspectTurn(text: string, context: MealContext) {
         }
       }
     }
+    const preference = clause.match(/(?:喜歡|想吃|偏好|想要)(.{1,16})$/);
+    if (
+      (preference || /太油的(?:就)?不要|不要太油/.test(clause)) &&
+      !/不喜歡|不想吃/.test(clause) &&
+      updated.preferences.length < 16
+    ) {
+      const value = preference?.[1].trim() || "清淡";
+      if (value && !updated.preferences.includes(value))
+        updated.preferences.push(value);
+    }
+  }
+
+  for (const clause of exclusionClauses) {
+    if (uncertainPattern.test(clause)) continue;
     const eggFree =
       /(?:^|要|改成|選|做|希望|想要)(?:無蛋|不含蛋)(?:的|餐點|料理|晚餐|早餐|$)/.test(
         clause,
       );
-    const explicit = clause.match(/也先別用|先別用|(?:太|很).+(?:就)?不要$/)
-      ? null
-      : (clause.match(/對\s*(.+?)過敏/) ??
-        clause.match(
-          /^\s*(.{1,20}?)(?:也|都|先)?(?:不要|不能)(?:吃|用)?(?:了)?\s*$/,
-        ) ??
-        clause.match(
-          /(?:不要(?:用|吃|加|放)?|不能(?:用|吃|加|放)|不想吃|不吃|不加|別加|不放|別放|不含|避免|排除|禁用|需要避開的只有)\s*(.+)$/,
-        ));
+    const explicit =
+      /也先別用|先別用|(?:太|很).+(?:就)?不要$/.test(clause)
+        ? null
+        : (clause.match(/對\s*(.+?)過敏/) ??
+          clause.match(
+            /^\s*(.{1,20}?)(?:也|都|先)?(?:不要|不能)(?:吃|用)?(?:了)?\s*$/,
+          ) ??
+          clause.match(
+            /(?:不要(?:用|吃|加|放)?|不能(?:用|吃|加|放)|不想吃|不吃|不加|別加|不放|別放|不含|避免|排除|禁用|需要避開的只有)\s*(.+)$/,
+          ));
     if (
       (explicit || eggFree) &&
       !/不要再?買|不要開火|不能開火|不能用明火|不可明火/.test(clause)
@@ -466,16 +498,6 @@ export function inspectTurn(text: string, context: MealContext) {
           updated.excludedIngredients.push(food);
         }
       }
-    }
-    const preference = clause.match(/(?:喜歡|想吃|偏好|想要)(.{1,16})$/);
-    if (
-      (preference || /太油的(?:就)?不要|不要太油/.test(clause)) &&
-      !/不喜歡|不想吃/.test(clause) &&
-      updated.preferences.length < 16
-    ) {
-      const value = preference?.[1].trim() || "清淡";
-      if (value && !updated.preferences.includes(value))
-        updated.preferences.push(value);
     }
   }
 
@@ -496,7 +518,9 @@ export function inspectTurn(text: string, context: MealContext) {
     };
 
   if (
-    /(?:過敏|禁忌|忌口|不能吃|排除|禁用|不要吃|戒|禁食)/.test(normalized) &&
+    exclusionClauses.some((clause) =>
+      /過敏|禁忌|忌口|不能吃|排除|禁用|不要吃|戒|禁食/.test(clause),
+    ) &&
     !/現有食材|利用食材|有哪些食材/.test(normalized) &&
     !/用家裡|用手邊|用現有/.test(normalized) &&
     !/整理|換食材/.test(normalized) &&

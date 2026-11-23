@@ -108,13 +108,19 @@ function conditionChanges(before: MealContext, after: MealContext) {
 
 function priceLabel(card: MealCard) {
   if (card.toBuy.length === 0 && card.unknownPantry.length === 0)
-    return "新增採買 NT$ 0";
+    return "這道不用另外採買";
+  if (card.budgetStatus === "unknown") {
+    const reason = card.missingPrices.length
+      ? "採買總額待確認"
+      : "請先確認家裡的食材份量";
+    return card.knownCostTwd > 0
+      ? reason + " · 已知小計 " + money(card.knownCostTwd)
+      : reason;
+  }
   if (card.budgetStatus === "within")
     return "依提供價格估算 " + money(card.knownCostTwd);
   if (card.budgetStatus === "over")
     return "已知採買 " + money(card.knownCostTwd) + "，高於預算";
-  if (card.budgetStatus === "unknown")
-    return "價格待確認 · 已知 " + money(card.knownCostTwd);
   return "已知採買 " + money(card.knownCostTwd) + " · 未設定預算";
 }
 
@@ -141,7 +147,7 @@ export default function CareKitchenApp() {
   const [shareCard, setShareCard] = useState<MealCard | null>(null);
   const [retryRequest, setRetryRequest] = useState<{
     text: string;
-    previousMealIds?: string[];
+    previousMealIds: string[];
   } | null>(null);
   const shareOpener = useRef<HTMLElement | null>(null);
   const shareDialog = useRef<HTMLElement>(null);
@@ -233,6 +239,7 @@ export default function CareKitchenApp() {
     setExpanded(null);
     setNotice("");
     setShareNotice("");
+    setRetryRequest(null);
   }
   function setField<K extends keyof MealContext>(
     key: K,
@@ -240,12 +247,13 @@ export default function CareKitchenApp() {
   ) {
     edit((old) => ({ ...old, [key]: value }));
   }
-  async function send(
-    textValue = draft,
-    previousMealIds = activeCards.map(({ id }) => id),
-  ) {
+  async function send(textValue = draft) {
     const text = textValue.trim();
     if (!text || busy) return;
+    const retrying = retryRequest?.text === text;
+    const previousMealIds = retrying
+      ? retryRequest.previousMealIds
+      : activeCards.map(({ id }) => id);
     setBusy(true);
     setNotice("");
     setShareNotice("");
@@ -260,7 +268,7 @@ export default function CareKitchenApp() {
     setCards([]);
     setAnswerContext(null);
     setUnknowns([]);
-    setThread((old) => [...old, { role: "user", text }]);
+    if (!retrying) setThread((old) => [...old, { role: "user", text }]);
     try {
       const r = await fetch("/api/chat", {
         method: "POST",
@@ -275,17 +283,19 @@ export default function CareKitchenApp() {
         }),
       });
       const data = await r.json();
-      if (!r.ok)
-        throw new Error(
-          typeof data.message === "string"
+      if (!r.ok) {
+        if (r.status === 503) setMode("unavailable");
+        setNotice(
+          typeof data?.message === "string"
             ? data.message
             : "目前無法取得新的建議，條件和輸入都保留了，請稍後重試。",
         );
+        setDraft(text);
+        return;
+      }
       const reply = data as ChatReply;
       if (reply.mode !== "openai" && reply.mode !== "local")
-        throw new Error(
-          "目前無法取得新的建議，條件和輸入都保留了，請稍後重試。",
-        );
+        throw new Error("Invalid meal planning response");
       setMode(reply.mode);
       setContext(reply.context);
       setAnswerContext(reply.context);
@@ -305,15 +315,10 @@ export default function CareKitchenApp() {
       setDraft("");
       setExpanded(null);
       setRetryRequest(null);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "目前無法取得新的建議，條件和輸入都保留了，請稍後重試。";
-      setNotice(message);
+    } catch {
+      setNotice("目前無法取得新的建議，條件和輸入都保留了，請稍後重試。");
       setMode("unavailable");
-      setDraft((old) => (old.trim() ? old : text));
-      setThread((old) => [...old, { role: "assistant", text: message }]);
+      setDraft(text);
     } finally {
       setBusy(false);
     }
@@ -372,7 +377,6 @@ export default function CareKitchenApp() {
       setPersona(value);
       invalidateAnswer();
       setThread([]);
-      setRetryRequest(null);
     }
     document.getElementById("workspace")?.scrollIntoView();
     document
@@ -592,12 +596,7 @@ export default function CareKitchenApp() {
                     {retryRequest && (
                       <button
                         type="button"
-                        onClick={() =>
-                          void send(
-                            retryRequest.text,
-                            retryRequest.previousMealIds,
-                          )
-                        }
+                        onClick={() => void send(retryRequest.text)}
                         disabled={busy || draft.trim() !== retryRequest.text}
                       >
                         重試
@@ -734,10 +733,7 @@ export default function CareKitchenApp() {
                       type="button"
                       disabled={busy}
                       onClick={() =>
-                        void send(
-                          "請依照目前條件換一道，並避開前面列出的餐點。",
-                          activeCards.map((c) => c.id),
-                        )
+                        void send("請依照目前條件換一道，並避開前面列出的餐點。")
                       }
                     >
                       <RefreshCw size={16} />

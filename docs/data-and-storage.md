@@ -42,4 +42,4 @@
 
 ## 合成對話資料
 
-本機 `/evidence/waicy` 內含固定合成情境的十輪實測。頁面資料隨程式碼編譯，來自 [V4 原始紀錄](evidence/runs/luna-final.json) 的 `DEMO-10`。互動會話由瀏覽器當前分頁持有，採買摘要由使用者預覽後複製。
+本機 `/evidence/waicy` 內含固定合成情境的十輪實測。頁面資料隨程式碼編譯，取自 [交件前完整重跑](evidence/runs/luna-waicy-final-recheck.json)的 `DEMO-10`。互動會話由瀏覽器當前分頁持有，採買摘要由使用者預覽後複製。

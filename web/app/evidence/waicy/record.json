@@ -1,7 +1,7 @@
 {
-  "source": "luna-final.json",
-  "executedAt": "2026-11-23T05:48:04.111Z",
+  "executedAt": "2026-11-23T07:23:24.796Z",
   "promptVersion": "carekitchen-v4",
+  "source": "luna-waicy-final-recheck.json",
   "turns": [
     {
       "id": "DEMO-10-1",

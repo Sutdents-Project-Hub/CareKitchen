@@ -1,6 +1,6 @@
 # CareKitchen｜實測、Baseline、迭代與證據計畫
 
-> 下列是評估規劃。本機已完成 Luna 直接基準、CareKitchen V1–V4 的固定 16 回合同題重跑，以及 V4 另行執行的 5 回合口語邊界測試。實際版本、原始回覆、檢查及修正結果見 [實測索引](evidence/README.md)與 [WAICY 第 6 項迭代開發紀錄](evidence/iteration-development.md)。本頁規劃的 30 題與真人驗收待執行。
+> 下列是評估規劃。本機已完成 Luna 直接基準、V1–V4 的固定 16 回合同題重跑、5 回合口語邊界，以及交件前另外 10 回合新題的前後對照。實際版本、原始回覆、檢查及修正結果見 [實測索引](evidence/README.md)與 [WAICY 第 6 項迭代開發紀錄](evidence/iteration-development.md)。本頁規劃的 30 題與真人驗收待執行。
 > 來源：WAICY 研究指南建議重視 Specific AI Service 25 分、Iterative Development 25 分，其餘評分詳見 `docs/competition.md`。
 
 ## 1. 要驗證的假設（不是事實）

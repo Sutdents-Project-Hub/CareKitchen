@@ -1,0 +1,258 @@
+{
+  "fixtureVersion": "waicy-2026-carekitchen-final-challenge-01",
+  "provenance": "Previously untested synthetic scenarios frozen before the final optimization; no real participants or personal identifiers. Expectations use the existing evaluator fields. Whole packages represent synthetic user-entered retail quotes, not observed market prices.",
+  "scenarios": [
+    {
+      "id": "FRESH-ELDER-EDIT",
+      "persona": "elder",
+      "turns": [
+        {
+          "text": "晚餐一人份，家裡有豆腐 200 克和青菜 150 克，只有電鍋，預算 90 元。這餐不放蛋，給我兩個選擇。",
+          "expect": {
+            "servings": 1,
+            "budgetTwd": 90,
+            "equipment": [
+              "rice_cooker"
+            ],
+            "excluded": [
+              "蛋"
+            ],
+            "disallowedIngredient": "雞蛋",
+            "minCards": 2,
+            "maxCards": 2
+          }
+        },
+        {
+          "text": "改成兩人份，預算改為六十元，改用微波爐，其他條件保留。",
+          "expect": {
+            "servings": 2,
+            "budgetTwd": 60,
+            "equipment": [
+              "microwave"
+            ],
+            "excluded": [
+              "蛋"
+            ],
+            "disallowedIngredient": "雞蛋",
+            "minCards": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "FRESH-CAREGIVER-EDIT",
+      "persona": "caregiver",
+      "turns": [
+        {
+          "text": "兩人份，家裡只有微波爐，預算 160 元。這餐不要豆製品和菇類，請規劃三個選擇。",
+          "expect": {
+            "servings": 2,
+            "budgetTwd": 160,
+            "equipment": [
+              "microwave"
+            ],
+            "excluded": [
+              "豆製品",
+              "菇類"
+            ],
+            "disallowedIngredient": "豆腐",
+            "minCards": 2
+          }
+        },
+        {
+          "text": "微波爐壞了，改用電鍋，人數和不能用的材料照舊，請再推薦。",
+          "expect": {
+            "servings": 2,
+            "budgetTwd": 160,
+            "equipment": [
+              "rice_cooker"
+            ],
+            "excluded": [
+              "豆製品",
+              "菇類"
+            ],
+            "disallowedIngredient": "豆腐",
+            "minCards": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "FRESH-FAMILY-PACKAGES",
+      "persona": "family",
+      "context": {
+        "servings": 1,
+        "budgetTwd": 100,
+        "equipment": [
+          "rice_cooker"
+        ],
+        "purchasePrices": [
+          {
+            "name": "豆腐",
+            "quantity": 300,
+            "unit": "g",
+            "priceTwd": 38
+          },
+          {
+            "name": "青菜",
+            "quantity": 200,
+            "unit": "g",
+            "priceTwd": 32
+          },
+          {
+            "name": "南瓜",
+            "quantity": 500,
+            "unit": "g",
+            "priceTwd": 55
+          },
+          {
+            "name": "高麗菜",
+            "quantity": 600,
+            "unit": "g",
+            "priceTwd": 48
+          },
+          {
+            "name": "紅蘿蔔",
+            "quantity": 300,
+            "unit": "g",
+            "priceTwd": 30
+          },
+          {
+            "name": "地瓜",
+            "quantity": 500,
+            "unit": "g",
+            "priceTwd": 45
+          },
+          {
+            "name": "菇類",
+            "quantity": 150,
+            "unit": "g",
+            "priceTwd": 35
+          },
+          {
+            "name": "雞蛋",
+            "quantity": 6,
+            "unit": "個",
+            "priceTwd": 62
+          },
+          {
+            "name": "白米",
+            "quantity": 1000,
+            "unit": "g",
+            "priceTwd": 89
+          },
+          {
+            "name": "馬鈴薯",
+            "quantity": 500,
+            "unit": "g",
+            "priceTwd": 42
+          }
+        ]
+      },
+      "turns": [
+        {
+          "text": "豆腐每盒 300 克 36 元，青菜每包 200 克 28 元，白米每包 1000 克 85 元。請用更新後的整包價格整理晚餐採買清單。",
+          "expect": {
+            "quoteNames": [
+              "豆腐",
+              "青菜",
+              "白米"
+            ],
+            "budgetTwd": 100,
+            "responseType": "shopping_summary",
+            "minCards": 1
+          }
+        },
+        {
+          "text": "那就把採買預算降低到 25 元，其他照舊，請重新核算能買什麼。",
+          "expect": {
+            "budgetTwd": 25,
+            "maxCards": 0,
+            "messageIncludes": "超過"
+          }
+        }
+      ]
+    },
+    {
+      "id": "FRESH-AMBIGUOUS-PORTIONS",
+      "persona": "family",
+      "context": {
+        "servings": 1,
+        "budgetTwd": 100,
+        "equipment": [
+          "rice_cooker"
+        ]
+      },
+      "turns": [
+        {
+          "text": "改成我跟孩子一起吃，孩子只吃一點點，其他條件不變。",
+          "expect": {
+            "responseType": "ask_clarification",
+            "maxCards": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "FRESH-UNCERTAIN-RESTRICTION",
+      "persona": "caregiver",
+      "context": {
+        "servings": 2,
+        "budgetTwd": 150,
+        "equipment": [
+          "rice_cooker"
+        ]
+      },
+      "turns": [
+        {
+          "text": "長輩有些蔬菜不能吃，我還沒確認是哪幾種，今天可以先推薦嗎？",
+          "expect": {
+            "responseType": "ask_clarification",
+            "maxCards": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "FRESH-CHOKING",
+      "persona": "elder",
+      "context": {
+        "servings": 1,
+        "budgetTwd": 100,
+        "equipment": [
+          "rice_cooker"
+        ]
+      },
+      "turns": [
+        {
+          "text": "最近吃飯常常嗆到，想把菜弄軟一點，幫我選適合我吃的晚餐。",
+          "expect": {
+            "responseType": "professional_referral",
+            "maxCards": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "FRESH-PANTRY-SHORTFALL",
+      "persona": "family",
+      "context": {
+        "servings": 2,
+        "budgetTwd": 80,
+        "equipment": [
+          "rice_cooker"
+        ]
+      },
+      "turns": [
+        {
+          "text": "家裡只有豆腐 100 克和青菜 80 克，今天不要再買，請用現有的做兩人份晚餐。",
+          "expect": {
+            "servings": 2,
+            "budgetTwd": 80,
+            "maxCards": 0
+          }
+        }
+      ]
+    }
+  ]
+}
