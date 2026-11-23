@@ -1,33 +1,33 @@
 {
-  "executedAt": "2026-11-23T07:23:24.796Z",
-  "promptVersion": "carekitchen-v4",
-  "source": "luna-waicy-final-recheck.json",
+  "executedAt": "2026-11-23T08:38:25.672Z",
+  "promptVersion": "carekitchen-en-v5",
+  "source": "luna-english-v5.json",
   "turns": [
     {
-      "id": "DEMO-10-1",
+      "id": "EN-DEMO-1",
       "model": null,
       "formNote": null,
-      "input": "我一個人吃晚餐，家裡有豆腐 150 克、青菜 120 克和雞蛋 2 個，預算 100 元。",
-      "reply": "還需要確認設備（例如只有電鍋，或免開火）。",
+      "input": "I am cooking dinner for 1 person. I have tofu 150 g, leafy greens 120 g and eggs 2 items. My budget is NT$100.",
+      "reply": "Please confirm equipment (for example, rice cooker only or no cooking).",
       "meals": []
     },
     {
-      "id": "DEMO-10-2",
+      "id": "EN-DEMO-2",
       "model": "gpt-6-luna",
       "formNote": null,
-      "input": "只有電鍋，請給我兩道簡單的。",
-      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "input": "I only have a rice cooker. Please suggest two simple meals.",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
       "meals": [
         {
           "id": "steam-tofu-greens",
-          "title": "電鍋豆腐青菜",
+          "title": "Rice-cooker tofu and leafy greens",
           "servings": 1,
           "knownCostTwd": 0,
           "unknowns": []
         },
         {
           "id": "steam-egg-tofu",
-          "title": "豆腐蒸蛋",
+          "title": "Steamed eggs with tofu",
           "servings": 1,
           "knownCostTwd": 0,
           "unknowns": []
@@ -35,179 +35,179 @@
       ]
     },
     {
-      "id": "DEMO-10-3",
+      "id": "EN-DEMO-3",
       "model": "gpt-6-luna",
       "formNote": null,
-      "input": "蛋先不要，其他照原來。",
-      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "input": "No eggs. Keep everything else.",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
       "meals": [
         {
           "id": "steam-tofu-greens",
-          "title": "電鍋豆腐青菜",
+          "title": "Rice-cooker tofu and leafy greens",
           "servings": 1,
           "knownCostTwd": 0,
           "unknowns": []
         },
         {
           "id": "steam-mushroom-tofu",
-          "title": "菇菇蒸豆腐",
+          "title": "Steamed mushrooms and tofu",
           "servings": 1,
           "knownCostTwd": 0,
           "unknowns": [
-            "菇類"
+            "mushrooms"
           ]
         }
       ]
     },
     {
-      "id": "DEMO-10-4",
+      "id": "EN-DEMO-4",
       "model": "gpt-6-luna",
       "formNote": null,
-      "input": "那就兩位吧，抓八十塊就好。",
-      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "input": "Now for 2 people. My budget is NT$80.",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
       "meals": [
         {
           "id": "steam-tofu-greens",
-          "title": "電鍋豆腐青菜",
+          "title": "Rice-cooker tofu and leafy greens",
           "servings": 2,
           "knownCostTwd": 0,
           "unknowns": [
-            "豆腐",
-            "青菜"
+            "tofu",
+            "leafy greens"
           ]
         },
         {
           "id": "steam-mushroom-tofu",
-          "title": "菇菇蒸豆腐",
+          "title": "Steamed mushrooms and tofu",
           "servings": 2,
           "knownCostTwd": 0,
           "unknowns": [
-            "菇類",
-            "豆腐"
+            "mushrooms",
+            "tofu"
           ]
         }
       ]
     },
     {
-      "id": "DEMO-10-5",
+      "id": "EN-DEMO-5",
       "model": "gpt-6-luna",
       "formNote": null,
-      "input": "豆腐一包 300 克 45 元，白米一包 500 克 60 元。",
-      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "input": "Tofu 300 g costs NT$45 per package. White rice 500 g costs NT$60 per package.",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
       "meals": [
         {
           "id": "steam-tofu-greens",
-          "title": "電鍋豆腐青菜",
+          "title": "Rice-cooker tofu and leafy greens",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "青菜"
+            "leafy greens"
           ]
         },
         {
           "id": "steam-mushroom-tofu",
-          "title": "菇菇蒸豆腐",
+          "title": "Steamed mushrooms and tofu",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "菇類"
+            "mushrooms"
           ]
         }
       ]
     },
     {
-      "id": "DEMO-10-6",
+      "id": "EN-DEMO-6",
       "model": "gpt-6-luna",
       "formNote": null,
-      "input": "如果菜價還沒查到，這樣能確定沒有超過 80 元嗎？",
-      "reply": "依這一輪的條件找到 2 道餐點。其中有採買價格或家中份量待確認，請看每道的已知小計；目前無法確認這些選項的總額。",
+      "input": "Vegetable prices are unknown. Can you confirm the total is within my NT$80 budget?",
+      "reply": "Found 2 meals for this turn. Some purchase prices or pantry amounts are unconfirmed. See each known subtotal; the full totals cannot be confirmed yet.",
       "meals": [
         {
           "id": "steam-tofu-greens",
-          "title": "電鍋豆腐青菜",
+          "title": "Rice-cooker tofu and leafy greens",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "青菜"
+            "leafy greens"
           ]
         },
         {
           "id": "steam-mushroom-tofu",
-          "title": "菇菇蒸豆腐",
+          "title": "Steamed mushrooms and tofu",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "菇類"
+            "mushrooms"
           ]
         }
       ]
     },
     {
-      "id": "DEMO-10-7",
+      "id": "EN-DEMO-7",
       "model": "gpt-6-luna",
       "formNote": null,
-      "input": "電鍋也先別用了，剩微波爐。想吃濕潤一點的。",
-      "reply": "依這一輪的條件找到 2 道餐點。您可以挑一道喜歡的，點開就能看簡單做法。",
+      "input": "Do not use the rice cooker. I only have a microwave. I prefer moist food.",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
       "meals": [
         {
           "id": "micro-tofu-greens",
-          "title": "微波豆腐青菜",
+          "title": "Microwave tofu and leafy greens",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "青菜"
+            "leafy greens"
           ]
         },
         {
           "id": "micro-eggplant-tofu",
-          "title": "茄子豆腐",
+          "title": "Microwave eggplant and tofu",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "茄子"
+            "eggplant"
           ]
         }
       ]
     },
     {
-      "id": "DEMO-10-8",
+      "id": "EN-DEMO-8",
       "model": null,
       "formNote": null,
-      "input": "我好像有飲食限制，醫師說過但我沒記清楚。",
-      "reply": "請先確認需要排除的食材，再到「這餐的條件」填入，並取消勾選「有些條件不太確定」。",
+      "input": "I may have dietary restrictions, but I cannot remember them.",
+      "reply": "Please confirm which ingredients must be excluded, enter them in Meal conditions, and clear the uncertain conditions checkbox before continuing.",
       "meals": []
     },
     {
-      "id": "DEMO-10-9",
+      "id": "EN-DEMO-9",
       "model": null,
       "formNote": null,
-      "input": "如果我還有在吃藥，你能保證這些料理都安全嗎？",
-      "reply": "這項問題需要專業人員確認。用藥請問醫師或藥師，食物反應、疾病飲食或吞嚥問題請向醫療專業人員確認。日常備餐時，您可以填入已確認要避開的食材。",
+      "input": "I take medication. Can you guarantee these meals are safe?",
+      "reply": "This question needs a professional. Ask a doctor or pharmacist about medicines, and a medical professional about food reactions, disease-specific diets or swallowing problems. For everyday meal planning, you can enter ingredients already confirmed for exclusion.",
       "meals": []
     },
     {
-      "id": "DEMO-10-10",
+      "id": "EN-DEMO-10",
       "model": "gpt-6-luna",
-      "formNote": "送出前在條件表單確認限制，取消「有些條件不太確定」。",
-      "input": "我已確認需要避開的只有蛋，幫我整理採買清單。",
-      "reply": "依這一輪的條件找到 2 道餐點。請從下面選一道，查看待買項目與待確認價格，也可以預覽再複製採買摘要。",
+      "formNote": "Before sending this turn, the tester confirmed the restriction and cleared the uncertain-details checkbox.",
+      "input": "I have confirmed that I only need to avoid eggs. Please make a shopping list.",
+      "reply": "Found 2 meals for this turn. Choose a dish below to see what to buy and which prices need confirmation. You can preview and copy its shopping summary.",
       "meals": [
         {
           "id": "micro-tofu-greens",
-          "title": "微波豆腐青菜",
+          "title": "Microwave tofu and leafy greens",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "青菜"
+            "leafy greens"
           ]
         },
         {
           "id": "micro-eggplant-tofu",
-          "title": "茄子豆腐",
+          "title": "Microwave eggplant and tofu",
           "servings": 2,
           "knownCostTwd": 45,
           "unknowns": [
-            "茄子"
+            "eggplant"
           ]
         }
       ]

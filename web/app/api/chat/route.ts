@@ -66,32 +66,34 @@ export function GET() {
 }
 
 export async function POST(request: Request) {
+  let english = request.headers.get("accept-language")?.toLowerCase().startsWith("en") ?? false;
   const origin = request.headers.get("origin");
   const host = request.headers.get("host");
   const matchesHost = origin === `http://${host}` || origin === `https://${host}`;
   if (request.headers.get("sec-fetch-site") === "cross-site" || (origin && !matchesHost)) {
-    return failure("請從 CareKitchen 頁面送出餐點需求。", 403);
+    return failure(english ? "Please submit your meal request from the CareKitchen page." : "請從 CareKitchen 頁面送出餐點需求。", 403);
   }
   if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") {
-    return failure("請以餐點表單送出資料。", 415);
+    return failure(english ? "Please submit your request using the meal form." : "請以餐點表單送出資料。", 415);
   }
   if (Number(request.headers.get("content-length")) > maxBodyBytes) {
-    return failure("輸入內容太長，請縮短餐點需求。", 413);
+    return failure(english ? "Your message is too long. Please shorten your meal request." : "輸入內容太長，請縮短餐點需求。", 413);
   }
 
   let input: unknown;
   try {
     input = await readJson(request);
+    english = !!input && typeof input === "object" && "language" in input && input.language === "en";
   } catch (error) {
     return error instanceof RangeError
-      ? failure("輸入內容太長，請縮短餐點需求。", 413)
-      : failure("無法讀取餐點需求，請再試一次。", 400);
+      ? failure(english ? "Your message is too long. Please shorten your meal request." : "輸入內容太長，請縮短餐點需求。", 413)
+      : failure(english ? "We could not read your request. Please try again." : "無法讀取餐點需求，請再試一次。", 400);
   }
   const turn = turnSchema.safeParse(input);
-  if (!turn.success) return failure("請確認輸入內容，以及人數、預算或採買數量，再送出。", 400);
+  if (!turn.success) return failure(english ? "Check your message and the serving size, budget, or package amounts, then try again." : "請確認輸入內容，以及人數、預算或採買數量，再送出。", 400);
 
   const mode = getChatMode();
-  if (mode === "unavailable") return failure("OpenAI 尚未完成設定，您輸入的內容仍在，可以稍後重試。", 503);
+  if (mode === "unavailable") return failure(english ? "The AI service is not configured yet. Your message is saved; please try again later." : "OpenAI 尚未完成設定，您輸入的內容仍在，可以稍後重試。", 503);
 
   const rank = mode === "openai" ? async (...args: Parameters<typeof rankWithOpenAI>) => {
     if (!reserveOpenAiRequest(Date.now())) throw new RateLimitedError();
@@ -106,10 +108,10 @@ export async function POST(request: Request) {
     return json(await planTurn(turn.data, rank));
   } catch (error) {
     if (error instanceof RateLimitedError) {
-      return failure("目前使用人數較多，請稍候再試。您輸入的內容仍在。", 429, { "Retry-After": "60" });
+      return failure(english ? "The service is busy. Please wait a moment and try again. Your message is saved." : "目前使用人數較多，請稍候再試。您輸入的內容仍在。", 429, { "Retry-After": "60" });
     }
     return failure(
-      mode === "openai" ? "目前無法取得 OpenAI 回覆，您輸入的內容仍在，可以稍後重試。" : "目前無法完成餐點規劃，您輸入的內容仍在，可以再試一次。",
+      english ? (mode === "openai" ? "We could not get a response from the AI service. Your message is saved; please try again later." : "We could not finish planning this meal. Your message is saved; please try again.") : mode === "openai" ? "目前無法取得 OpenAI 回覆，您輸入的內容仍在，可以稍後重試。" : "目前無法完成餐點規劃，您輸入的內容仍在，可以再試一次。",
       mode === "openai" ? 503 : 500,
     );
   }

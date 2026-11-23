@@ -1,33 +1,37 @@
-# CareKitchen｜系統架構
+# Architecture
 
-## 目前實作
+## Implemented system
 
-單一 `web/` Next.js App Router 專案，使用 TypeScript、Node.js 24 LTS 及 pnpm。頁面、伺服器端請求、餐點規劃及測試採同一依賴與部署邊界。
+CareKitchen is a single Next.js App Router project under `web/`, using TypeScript, Node.js 24 LTS, and pnpm. The web application, server requests, meal planning, and tests share one dependency and deployment boundary.
 
 ```text
-瀏覽器（角色、條件、對話、餐點與採買摘要）
-  → POST /api/chat（輸入格式、長度、來源及模式）
-  → 使用者本輪意圖與明確條件解析
-  → 家常餐點庫（份數、設備、排除、時間、庫存與整包成本）
-  → OpenAI Structured Outputs（若啟用：分類與候選排序）
-  → 以合格候選整理回應與待確認項目
+Browser: role, conditions, conversation, meals, shopping summary
+  -> POST /api/chat: input, size, origin, and mode checks
+  -> parse current user intent and explicit conditions
+  -> recipe catalog: portions, equipment, exclusions, time, inventory, package costs
+  -> OpenAI Structured Outputs (when enabled: classify intent and rank candidates)
+  -> assemble answer and unresolved items from eligible candidates
 ```
 
-| 路徑 | 責任 |
+| Path | Responsibility |
 |---|---|
-| `web/app/`、`web/components/` | 角色入口、對話與條件編輯、料理卡、採買摘要預覽和複製 |
-| `web/app/api/chat/route.ts` | 請求邊界、設定、模型請求限流及錯誤訊息 |
-| `web/lib/server/turn.ts` | Zod 驗證、條件更新、醫療與不確定性處理 |
-| `web/lib/server/meals.ts`、`recipes.ts` | 原創家常餐點庫、食材與規則核對、庫存扣抵、費用試算 |
-| `web/lib/server/planner.ts`、`openai.ts` | 組合回應與單一 OpenAI 介接，排序只能選既有合格 ID |
-| `web/tests/` | 本機規則與模型替身回歸測試 |
+| `web/app/`, `web/components/` | Role entry, conversation, condition editor, meal cards, shopping preview and copy |
+| `web/app/api/chat/route.ts` | Request boundary, configuration, model rate limits, error responses |
+| `web/lib/server/turn.ts` | Zod validation, condition updates, medical-boundary and uncertainty handling |
+| `web/lib/server/meals.ts`, `recipes.ts` | Original meal catalog, constraint checks, inventory deductions, cost calculations |
+| `web/lib/server/planner.ts`, `openai.ts` | Response composition and OpenAI adapter; ranking may select only existing eligible IDs |
+| `web/tests/` | Local rule and model-substitute regression tests |
 
-每輪帶入上一次條件並套用本輪可辨識的變更。表單可明確修正未能辨識的條件或解除排除項目。伺服器重新核算費用及限制，瀏覽器只呈現回傳結果。現階段分頁重新載入後會清除會話。
+Each turn carries forward prior conditions and applies recognizable changes from the current turn. Users can edit conditions that were not recognized and remove exclusions. The server recalculates costs and restrictions; the browser displays the returned result. Reloading the page clears the current session.
 
-## 部署與資料保存
+## Language and price behavior
 
-公開展示、長期對話保存與快照分享仍待決定。展示的存放供應商、存取控制、到期、撤回與備份依 [資料保存](data-and-storage.md) 和 [部署計畫](deployment.md) 驗證。OpenAI 的模型、故障與限流契約見 [串接文件](integrations.md)。
+The interface is English-first and retains Traditional Chinese. The API's optional `language: "en"` selects English output; omission preserves the legacy Chinese caller behavior. Budget checks cover additional purchase spending from user-provided package prices. Missing price or quantity information remains unknown. English wording does not change price calculations or safety checks.
 
-## 競賽實測頁
+## Deployment and data
 
-`/evidence/waicy` 是隨 Web 編譯的唯讀頁，資料取自評估腳本的固定合成案例。頁面列出逐輪輸入、回覆及模型參與狀態。互動對話仍只留在當前分頁。 [實測紀錄](evidence/README.md)
+Public hosting, persistent conversations, and snapshot sharing are undecided. Confirm storage, access control, expiration, withdrawal, and backups before implementing public sharing. See [data and storage](data-and-storage.md), [deployment plan](deployment.md), and [OpenAI integration](integrations.md).
+
+## Competition evidence page
+
+`/evidence/waicy` is a read-only page compiled with the web app from fixed synthetic cases. It shows recorded turns and model participation. Interactive conversation state remains in the current browser tab. See [evaluation evidence](evidence/README.md).

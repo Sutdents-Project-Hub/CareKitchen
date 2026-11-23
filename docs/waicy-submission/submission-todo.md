@@ -1,31 +1,31 @@
-# 提交前待補清單
+# Submission Checklist
 
-截止：2026-11-29 17:00 美東（台灣 11/30 06:00）。內部目標：11/29 晚上前完成。
+**Deadline recorded in the prior project research:** November 29, 2026, 17:00 Eastern Time (November 30, 06:00 Taiwan time). Reconfirm this deadline and eligibility directly with WAICY before relying on it. Internal target recorded: complete upload by the evening of November 29.
 
-## 阻擋提交（必須完成）
+## Submission blockers
 
-| # | 缺少什麼 | 放哪裡 | 你需要提供／做什麼 |
-|---|---|---|---|
-| 1 | 公開 AI 助理網址 | 簡報第 19 頁、封面 | 部署後提供網址。以無痕視窗確認不需登入、能完成一輪真實對話；先評估 OpenAI 額度與限流，避免評審操作時失敗 |
-| 2 | QR code | 第 19 頁左側虛線框 | 網址確定後再產生，不要先放假碼 |
-| 3 | 最終版對話分享連結（至少 10 則交換訊息） | 第 19 頁、封面 | 在公開網站用最終版 V4 進行真實對話並產生可公開讀取的連結。目前只有本機 `/evidence/waicy` 唯讀頁（取自已保存的十輪重跑），它不是官方要求的「與最終版助理的對話連結」，需部署或另行產生 |
-| 4 | 隊名、學生姓名、組別確認 | 封面、報名表 | 封面目前寫「High School [confirm]」；請確認報名組別，檔名 `LLM_High_CareKitchen.pdf` 才會正確 |
-| 5 | 學生實際貢獻與 AI 協助揭露 | 第 24 頁右下虛線框 | 如實填寫誰做了什麼、用了哪些 AI 工具。專案文件的規則是不可因使用 AI 就推定為學生獨立完成 |
-| 6 | 匯出 PDF 並檢查 | 作品頁 Share › Export | 你確認作品後自行匯出。匯出後逐頁檢查圖片、換行與連結；刪除所有 `[...]` 與 `TO ADD` 標籤 |
-| 7 | Google Drive 資料夾與權限 | 報名表 | 資料夾名 `LLM_High_CareKitchen`，內含 PDF，分享設定為評審可存取，並用無痕視窗開啟驗證 |
+| # | Missing item | Where it belongs | Action required |
+|---:|---|---|---|
+| 1 | Public AI assistant URL | Deck slide 19 and cover | Deploy only after separately authorized. Test in a private/logged-out browser: no student login, one complete live conversation, and adequate quota/rate-limit behavior. |
+| 2 | QR code | Dotted box on slide 19 | Generate only after the public URL is final; scan-test it. |
+| 3 | Shareable final conversation link | Slide 19 and cover | Create from a real conversation with the final deployed assistant and confirm public read access. The local `/evidence/waicy` page holds the ten original English exchanges. Verify its public URL from a signed-out browser after hosting. |
+| 4 | Team name, student names, and division | Cover and form | Confirm with the team. Do not infer High School division from the draft filename. |
+| 5 | Student contribution and AI-assistance disclosure | Slide 24 | Team must accurately state who did each task and identify AI tools, mentor help, and other contributors. |
+| 6 | Final English PDF | Export from artifact | The owner exports after reviewing the artifact. Inspect every page, image, line wrap, and link; remove all `[ ... ]` and `TO ADD` placeholders. |
+| 7 | Drive folder and permissions | Form | If the team confirms High School, planned folder/file name is `LLM_High_CareKitchen` / `LLM_High_CareKitchen.pdf`. Test access in a logged-out browser. |
 
-## 建議完成（不阻擋，但影響分數）
+## Recommended improvements
 
-| # | 項目 | 影響 |
-|---|---|---|
-| 8 | 再核對官方頁面（評分表、提交頁、Guidebook） | 本次沒有連線核對，若規則有更新可能影響必填內容或檔名 |
-| 9 | 核對外部數據的原始頁面 | 見 `research-notes.md`。WHO、內政部與法國研究的數字取自搜尋結果摘要，請開原頁確認；Taipei Times/Liberty Times 的日期亦需確認 |
-| 10 | 2–3 位真人受試者的匿名回饋 | 動機與迭代兩項的最大加分，需同意書與匿名化。若做不到，維持現在「尚未測試」的揭露即可 |
-| 11 | 英文母語者或老師校閱 | Presentation 項目 |
-| 12 | 英文操作體驗 | 網站介面與測試案例都是繁體中文。評審若要自行操作，請在公開站實測英文輸入是否可用；結果良好才可在第 19 頁寫「支援英文輸入」，目前簡報未作此宣稱 |
-| 13 | 補 1–2 篇同行審查文獻 | 參考文獻完整度 |
-| 14 | 決賽準備 | 12/4–12/6 決賽約三分鐘簡報、三分鐘 Demo、四分鐘 Q&A；可沿用本簡報第 5–12、15、18 頁 |
+| # | Item | Why it matters |
+|---:|---|---|
+| 8 | Recheck official rubric, submission page, and Guidebook | Rules, dates, required contents, and filenames may change. |
+| 9 | Verify original external sources | See [research notes](research-notes.md). Keep only claims that the source itself supports. |
+| 10 | Anonymous feedback from 2–3 target users | Could inform usability and motivation, with consent and anonymization. If unavailable, retain the explicit statement that no user study has occurred. |
+| 11 | English-language review | A teacher or fluent reviewer should review clarity and the final PDF. |
+| 12 | English operation check | The English V5 interface and case suite passed locally. Repeat the English browser check on the hosted assistant before submission. |
+| 13 | Add peer-reviewed references | Only after reading and verifying the original work and its relevance. |
+| 14 | Prepare for final | The prior project plan records approximately a 3-minute presentation, 3-minute demo, and 4-minute Q&A on December 4–6; confirm the schedule with organizers. |
 
-## 簡報內刻意保留的待補標記
+## Placeholders intentionally left in the deck
 
-第 1 頁（隊名、網址、連結、組別）、第 19 頁（網址、QR、對話連結）、第 24 頁（學生貢獻與 AI 揭露）。這些都以藍色虛線框或方括號標示，不會被誤認為已完成。
+Slide 1: team, URL, transcript link, and division. Slide 19: URL, QR code, and transcript link. Slide 24: student contribution and AI disclosure. These remain visibly marked and are not completed facts.

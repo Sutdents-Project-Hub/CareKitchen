@@ -1,45 +1,38 @@
-# CareKitchen｜資料來源、保存與刪除規劃
+# Data Sources, Retention, and Deletion Plan
 
-> 現行原型只在當前瀏覽器分頁保存對話與條件，重新載入即清除。伺服器沒有對話儲存。使用者可預覽並複製採買文字。以下為公開展示及持久化的規劃。
+> Current behavior: conversation and conditions exist only in the current browser tab and clear on reload. The server does not store conversations. Users may preview and copy shopping text. No database, schema, migration, or real-user dataset has been created. This document describes proposed future work only; see the [API and data contract](api-and-data-contracts.md).
 
-> 狀態：PROPOSED／尚無任何已建立的資料庫、schema、migration 或實際使用者資料。
-> 會話、分享資料欄位規格詳見 `docs/api-and-data-contracts.md`。
+## Data minimization
 
-## 1. 最小資料原則
+- Meal planning needs only role, ingredients and quantities, budget, known prices, equipment, preferences, and ingredient exclusions.
+- Do not collect older adults' names, medical records, prescriptions, identity data, photos, or contact information. A dietary restriction is not a verified medical record.
+- Prefer synthetic test cases. Interviews or real-user trials require consent and de-identification.
+- Label user-provided prices as `user-supplied` and retain their units. Any future external price source needs its own source and update time.
 
-- 為完成一餐規劃，僅需要 persona、食材與數量、預算、已知價格、設備、偏好與食材排除條件。
-- 不收長者姓名、病歷、處方、身分資料、照片或聯絡資料；食材限制不等於已驗證的醫療紀錄。
-- 優先使用**合成測試案例**；真人訪談／試用必須取得同意並匿名。
-- 價格若由使用者提供，保存來源為 `user-supplied` 及可用單位；若有未來外部價格來源，另記來源與更新時間，不能混淆。
+## Data classes
 
-## 2. 本階段資料類別
-
-| 類別 | 需要存多久 | 可公開嗎 |
+| Data | Proposed handling | Public? |
 |---|---|---|
-| 即時 `MealContext` | 維持當次聊天，保留期尚待核准 | 預設不可 |
-| 對話訊息 | 要能多輪對話，盡量限期保存 | 預設不可 |
-| 經同意的最終版對話快照 | 評審閱讀期內有效，過期撤回 | 經去識別和確認後才可 |
-| 匿名實驗 case／原始模型輸出 | 支持 Baseline／版本重放及英文報告 | 可公開的合成資料才可 |
-| API Key／DB 憑證 | 不屬於資料表，不寫入檔案或 log | 絕對不可 |
-| 真實病歷／處方／學生個資 | P0 不應蒐集 | 不可 |
+| Live `MealContext` | Needed for the current chat; retention policy not approved. | Private by default. |
+| Conversation messages | Minimize retention; policy not approved. | Private by default. |
+| Consented final conversation snapshot | Available only during evaluator review, then expired/revoked. | Only after de-identification and explicit approval. |
+| Synthetic cases and model outputs | Support baseline/version replay and reporting. | Only if the case is synthetic and safe to publish. |
+| API/database credentials | Not application data; never write to files or logs. | Never. |
+| Real medical records/prescriptions/student personal data | Do not collect for P0. | Never. |
 
-## 3. 技術儲存提案
+## Storage proposal (not approved or implemented)
 
-暫建議使用持久化資料庫讓不同 serverless instance 保留會話與分享快照，PostgreSQL 是公司基線候選，**供應商／ORM／費用均未確認**。不能以 Next.js process memory 假裝具備長期可靠保存能力。若為免資料庫使用匿名外部文件分享，必須仍保留**真正由最終 AI 對話產生**的證據且可讀取。
+A persistent database may be needed for sessions across serverless instances and share snapshots. PostgreSQL is a candidate baseline, but provider, ORM, and cost are undecided. Do not treat Next.js process memory as durable storage. If an external document-sharing service is considered instead, evidence must still come from the actual final AI conversation and remain readable.
 
-原始測試結果存入 `docs/evidence/` 之後要分離合成資料與私人內容；敏感的原始真人對話不得隨 GitHub 開放上傳。
+Keep synthetic and private materials separate under `docs/evidence/`. Do not commit sensitive raw conversations.
 
-## 4. 留存、刪除、備份（必須先定案）
+## Retention and deletion decisions required
 
-- 提案：私有 session 24 小時、分享快照 14 天，到期自動不可讀；需要涵蓋競賽評分期間，實際期限須先確認。
-- 使用者可撤銷公開分享；刪除後須檢查 cache、備份與 CDN 的可能殘留。
-- 若資料庫真正上線，需設 schema migration、備份／還原驗證、連線最小權限、preview 與 production 隔離、刪除排程和故障回滾。
-- 不自行建立正式資料庫、真實 secret 或 retention job；這些需要後續明確授權。
+- A 24-hour private-session and 14-day shared-snapshot lifetime were proposed for discussion only; no retention policy has been approved.
+- A user should be able to revoke a public share. Deletion review must include caches, backups, and CDN copies.
+- If a database is approved, define migrations, tested backup/restore, least-privilege access, preview/production separation, deletion jobs, and rollback.
+- Do not create a production database, real secrets, or retention job without the required explicit authorization.
 
-## 5. 驗證
+## Verification status
 
-已在固定合成案例確認十輪條件延續。持久化會話的訪客隔離、公開快照預覽、撤回、過期、刪除及上線後的錯誤回應仍待驗收。 [十輪實測](evidence/README.md#十輪對話)
-
-## 合成對話資料
-
-本機 `/evidence/waicy` 內含固定合成情境的十輪實測。頁面資料隨程式碼編譯，取自 [交件前完整重跑](evidence/runs/luna-waicy-final-recheck.json)的 `DEMO-10`。互動會話由瀏覽器當前分頁持有，採買摘要由使用者預覽後複製。
+Ten-turn condition retention has been checked with fixed synthetic cases. Visitor isolation, public snapshot preview, withdrawal, expiry, deletion, and production failure behavior are unverified. The local [`/evidence/waicy` record](evidence/README.md) is compiled from the synthetic `DEMO-10` run; interactive state remains in the current tab and shopping summaries are copied by the user.

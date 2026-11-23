@@ -6,6 +6,12 @@ import {
   type Persona,
 } from "../contracts.ts";
 import { assessMeals, canonicalIngredient } from "./meals.ts";
+import {
+  englishCard,
+  englishContext,
+  englishQuestion,
+  ingredientEnglish,
+} from "./english.ts";
 import { inspectTurn, requestsShopping, type Turn } from "./turn.ts";
 
 export type RankableMeal = Pick<
@@ -37,7 +43,7 @@ export type Decision = {
 };
 
 export type RankMeals = (
-  turn: Pick<Turn, "persona" | "text" | "previousMealIds">,
+  turn: Pick<Turn, "persona" | "text" | "previousMealIds" | "language">,
   context: Pick<
     MealContext,
     | "servings"
@@ -78,7 +84,18 @@ function pickInOrder(cards: MealCard[], preferredIds: string[]) {
   });
 }
 
-function requestedCount(text: string, persona: Persona) {
+function requestedCount(text: string, persona: Persona, english = false) {
+  const englishCount =
+    english &&
+    text.match(
+      /\b(one|two|three|[123])\s+(?:meal(?:s)?|dish(?:es)?|option(?:s)?|candidate(?:s)?)\b/i,
+    );
+  if (englishCount)
+    return /^(?:one|1)$/i.test(englishCount[1])
+      ? 1
+      : /^(?:three|3)$/i.test(englishCount[1])
+        ? 3
+        : 2;
   const count = text
     .normalize("NFKC")
     .match(
@@ -92,6 +109,7 @@ function modelQuestion(
   decision: Decision | undefined,
   text: string,
   context: MealContext,
+  english = false,
 ) {
   const clarification =
     decision?.action === "clarify" ? decision.clarification : null;
@@ -103,7 +121,54 @@ function modelQuestion(
     !text.normalize("NFKC").includes(phrase.normalize("NFKC"))
   )
     return null;
-  const parsed = inspectTurn(phrase, emptyContext).context;
+  const parsed = inspectTurn(
+    phrase,
+    emptyContext,
+    english ? "en" : undefined,
+  ).context;
+  if (english) {
+    switch (clarification.field) {
+      case "goal":
+        return null;
+      case "restriction":
+        return parsed.excludedIngredients.length > 0 &&
+          parsed.excludedIngredients.every((item) =>
+            context.excludedIngredients.some(
+              (stored) =>
+                canonicalIngredient(item) === canonicalIngredient(stored),
+            ),
+          )
+          ? null
+          : "Which ingredient needs to be excluded from this meal? I will keep the other confirmed restrictions.";
+      case "servings":
+        return /people|persons?|servings?|portions?|guests?|more|fewer/i.test(
+          phrase,
+        ) && parsed.servings === null
+          ? "How many servings should I prepare this time? I will recalculate for that number."
+          : null;
+      case "equipment":
+        return /cooker|microwave|stove|heat|cook|appliance/i.test(phrase) &&
+          parsed.equipment.length === 0 &&
+          /change|only|cannot|can.t|broken|unavailable|left/i.test(phrase)
+          ? "Can you use a rice cooker, microwave or stove, or do you need a no-cook option?"
+          : null;
+      case "budget":
+        return parsed.budgetTwd === null &&
+          /budget|spend|cost|total/i.test(phrase) &&
+          /change|limit|reduce|lower|raise|adjust|under/i.test(phrase)
+          ? "What is the TWD limit for new purchases for this meal?"
+          : null;
+      case "time":
+        return /minutes?|hours?|time/i.test(phrase) &&
+          parsed.maxTimeMinutes === null
+          ? "How many minutes can you spend preparing this meal?"
+          : null;
+      case "pantry":
+        return context.onlyPantry && context.pantryItems.length === 0
+          ? "To use only your pantry, please list the ingredients you have and their approximate amounts."
+          : null;
+    }
+  }
   switch (clarification.field) {
     case "goal":
       return null;
@@ -144,7 +209,35 @@ function modelQuestion(
   }
 }
 
-function explainMeal(card: MealCard, persona: Persona, context: MealContext) {
+function explainMeal(
+  card: MealCard,
+  persona: Persona,
+  context: MealContext,
+  english = false,
+) {
+  if (english) {
+    if (persona === "caregiver")
+      return context.excludedIngredients.length
+        ? `Recalculated for ${card.servings} serving(s), with confirmed exclusions checked against the recipe ingredients.`
+        : `Calculated for ${card.servings} serving(s), using the equipment confirmed for this turn.`;
+    if (persona === "family") {
+      if (card.unknownPantry.length)
+        return "Check the amounts at home before confirming the full shopping list.";
+      return card.toBuy.length
+        ? `${card.toBuy.length} item(s) to buy${card.missingPrices.length ? `; ${card.missingPrices.length} price(s) still need confirmation` : ""}.`
+        : "The amounts you entered cover this dish using the ingredients at home.";
+    }
+    const available = [
+      ...new Set(
+        card.fromPantry
+          .filter((item) => item.quantity !== null)
+          .map(({ name }) => ingredientEnglish(name)),
+      ),
+    ];
+    return available.length
+      ? `Start with the ${available.join(", ")} you already have.`
+      : `The instructions have ${card.steps.length} steps.`;
+  }
   if (persona === "caregiver") {
     return context.excludedIngredients.length
       ? `按 ${card.servings} 人份重算，已依食譜材料檢查排除項目。`
@@ -169,11 +262,12 @@ function explainMeal(card: MealCard, persona: Persona, context: MealContext) {
     : `做法整理成 ${card.steps.length} 個步驟。`;
 }
 
-export async function planTurn(
-  turn: Turn,
-  rank?: RankMeals,
-): Promise<ChatReply> {
-  const local = inspectTurn(turn.text, turn.context);
+async function plan(turn: Turn, rank?: RankMeals): Promise<ChatReply> {
+  const english = turn.language === "en";
+  const localizedReferral = english
+    ? "This question needs a professional. Ask a doctor or pharmacist about medicines, and a medical professional about food reactions, disease-specific diets or swallowing problems. For everyday meal planning, you can enter ingredients already confirmed for exclusion."
+    : referral;
+  const local = inspectTurn(turn.text, turn.context, turn.language);
   const { context } = local;
   const reply: ChatReply = {
     context,
@@ -186,20 +280,32 @@ export async function planTurn(
   if (local.intent === "refer")
     return {
       ...reply,
-      message: referral,
+      message: localizedReferral,
       responseType: "professional_referral",
     };
   if (local.intent === "clarify" && local.question)
-    return { ...reply, message: local.question };
+    return {
+      ...reply,
+      message: english ? englishQuestion(local.question) : local.question,
+    };
 
   if (context.servings === null || !context.equipment.length) {
     const missing = [];
-    if (context.servings === null) missing.push("份量（例如一人份）");
+    if (context.servings === null)
+      missing.push(
+        english ? "servings (for example, one person)" : "份量（例如一人份）",
+      );
     if (!context.equipment.length)
-      missing.push("設備（例如只有電鍋，或免開火）");
+      missing.push(
+        english
+          ? "equipment (for example, rice cooker only or no cooking)"
+          : "設備（例如只有電鍋，或免開火）",
+      );
     return {
       ...reply,
-      message: `還需要確認${missing.join("和")}。`,
+      message: english
+        ? `Please confirm ${missing.join(" and ")}.`
+        : `還需要確認${missing.join("和")}。`,
       unknowns: missing,
     };
   }
@@ -207,15 +313,21 @@ export async function planTurn(
   if (!eligible.length && minimumOverBudgetTwd !== null) {
     return {
       ...reply,
-      message: `其他條件適用的餐點，已知採買小計最低為 ${minimumOverBudgetTwd} 元，已超過 ${context.budgetTwd} 元預算。可以改用更多現有食材、減少份量，或調整預算後重算。`,
+      message: english
+        ? `The lowest known purchase subtotal among meals meeting the other conditions is TWD ${minimumOverBudgetTwd}, above your TWD ${context.budgetTwd} budget. You can use more pantry ingredients, reduce servings, or adjust the budget and recalculate.`
+        : `其他條件適用的餐點，已知採買小計最低為 ${minimumOverBudgetTwd} 元，已超過 ${context.budgetTwd} 元預算。可以改用更多現有食材、減少份量，或調整預算後重算。`,
     };
   }
   if (!eligible.length) {
     return {
       ...reply,
-      message: context.onlyPantry
-        ? "目前的餐點庫沒有能只用這些庫存完成的搭配。可以補上家裡其他食材，或改為允許採買。"
-        : "目前的餐點庫找不到符合這些條件的搭配。請核對排除食材、時間和設備，再看看哪些備餐條件能調整。",
+      message: english
+        ? context.onlyPantry
+          ? "The current catalog has no combination that uses only this pantry. Add other ingredients you have, or allow purchases."
+          : "The current catalog has no combination meeting these conditions. Check the exclusions, time and equipment, then choose which meal-planning conditions can change."
+        : context.onlyPantry
+          ? "目前的餐點庫沒有能只用這些庫存完成的搭配。可以補上家裡其他食材，或改為允許採買。"
+          : "目前的餐點庫找不到符合這些條件的搭配。請核對排除食材、時間和設備，再看看哪些備餐條件能調整。",
     };
   }
   const model = rank
@@ -224,18 +336,23 @@ export async function planTurn(
           persona: turn.persona,
           text: turn.text,
           previousMealIds: turn.previousMealIds,
+          language: turn.language,
         },
         {
           servings: context.servings,
           mealCount: context.mealCount,
           equipment: context.equipment,
-          preferences: context.preferences,
-          excludedIngredients: context.excludedIngredients,
+          preferences: english
+            ? englishContext(context).preferences
+            : context.preferences,
+          excludedIngredients: english
+            ? context.excludedIngredients.map(ingredientEnglish)
+            : context.excludedIngredients,
           budgetTwd: context.budgetTwd,
           maxTimeMinutes: context.maxTimeMinutes,
           onlyPantry: context.onlyPantry,
         },
-        eligible.map(
+        (english ? eligible.map(englishCard) : eligible).map(
           ({ id, title, minutes, fromPantry, toBuy, missingPrices }) => ({
             id,
             title,
@@ -253,16 +370,21 @@ export async function planTurn(
   if (decision?.action === "refer")
     return {
       ...reply,
-      message: referral,
+      message: localizedReferral,
       responseType: "professional_referral",
     };
-  const followup = modelQuestion(decision, turn.text, context);
+  const followup = modelQuestion(decision, turn.text, context, english);
   if (followup) return { ...reply, message: followup };
   if (
     local.intent === "clarify" &&
     (!decision || decision.action === "clarify")
   ) {
-    return { ...reply, message: "您想請我推薦餐點、換一道，還是整理採買？" };
+    return {
+      ...reply,
+      message: english
+        ? "Would you like meal ideas, a different option, or a shopping list?"
+        : "您想請我推薦餐點、換一道，還是整理採買？",
+    };
   }
 
   const swap = local.intent === "swap" || decision?.action === "swap";
@@ -274,15 +396,18 @@ export async function planTurn(
     ? eligible.filter(({ id }) => !turn.previousMealIds.includes(id))
     : eligible;
   const cards = pickInOrder(candidates, decision?.preferredIds ?? [])
-    .slice(0, requestedCount(turn.text, turn.persona))
+    .slice(0, requestedCount(turn.text, turn.persona, english))
     .map((card) => ({
       ...card,
-      reason: explainMeal(card, turn.persona, context),
+      reason: explainMeal(card, turn.persona, context, english),
     }));
 
   if (cards.length === 0) {
-    const message =
-      swap && eligible.length > 0
+    const message = english
+      ? swap && eligible.length > 0
+        ? "All meals meeting these conditions have already been shown. Change the available ingredients, time or equipment so I can look again."
+        : "The current catalog has no combination meeting these conditions. Check exclusions, time, equipment and budget, then choose which conditions can change."
+      : swap && eligible.length > 0
         ? "目前符合這些條件的餐點都已列過了。調整可用食材、時間或設備後，我可以再找。"
         : "目前的餐點庫找不到符合這些條件的搭配。請核對排除食材、時間、設備和預算，再看看哪些條件能調整。";
     return { ...reply, message };
@@ -295,33 +420,64 @@ export async function planTurn(
   ];
   const unknowns = [
     ...(missingPrices.length
-      ? [`採買價格待確認：${missingPrices.join("、")}`]
+      ? [
+          english
+            ? `Purchase prices to confirm: ${missingPrices.map(ingredientEnglish).join(", ")}`
+            : `採買價格待確認：${missingPrices.join("、")}`,
+        ]
       : []),
     ...(unknownPantry.length
-      ? [`家中份量待確認：${unknownPantry.join("、")}`]
+      ? [
+          english
+            ? `Pantry amounts to confirm: ${unknownPantry.map(ingredientEnglish).join(", ")}`
+            : `家中份量待確認：${unknownPantry.join("、")}`,
+        ]
       : []),
   ];
-  const count =
-    cards.length === 1
+  const count = english
+    ? cards.length === 1
+      ? "There is 1 option meeting the current conditions. "
+      : `Found ${cards.length} meals for this turn. `
+    : cards.length === 1
       ? "目前有 1 道符合條件的方向。"
       : `依這一輪的條件找到 ${cards.length} 道餐點。`;
   const allergyNote =
-    /過敏/.test(turn.text) && context.excludedIngredients.length
-      ? "已依食譜材料排除您確認的食材。請另核對包裝標示，並向專業人員確認交叉接觸風險。"
+    (english ? /過敏|allerg/i.test(turn.text) : /過敏/.test(turn.text)) &&
+    context.excludedIngredients.length
+      ? english
+        ? " Confirmed ingredients have been excluded from the recipe ingredients. Also check packaging labels and ask a professional about cross-contact risk."
+        : "已依食譜材料排除您確認的食材。請另核對包裝標示，並向專業人員確認交叉接觸風險。"
       : "";
   const priceDetail =
     local.intent === "budget"
       ? missingPrices.length || unknownPantry.length
-        ? "其中有採買價格或家中份量待確認，請看每道的已知小計；目前無法確認這些選項的總額。"
+        ? english
+          ? "Some purchase prices or pantry amounts are unconfirmed. See each known subtotal; the full totals cannot be confirmed yet."
+          : "其中有採買價格或家中份量待確認，請看每道的已知小計；目前無法確認這些選項的總額。"
         : context.budgetTwd === null
-          ? "各道採買金額已列出。填入預算後，就能對照是否超支。"
-          : `這些選項按您提供的價格核算，已知新增採買均未超過 ${context.budgetTwd} 元。`
+          ? english
+            ? "Purchase amounts are listed for each dish. Enter a budget to check for overspending."
+            : "各道採買金額已列出。填入預算後，就能對照是否超支。"
+          : english
+            ? `Based on your supplied prices, the known new purchases for each option are within TWD ${context.budgetTwd}.`
+            : `這些選項按您提供的價格核算，已知新增採買均未超過 ${context.budgetTwd} 元。`
       : "";
   const detail =
     priceDetail ||
     (shopping
-      ? "請從下面選一道，查看待買項目與待確認價格，也可以預覽再複製採買摘要。"
-      : intros[turn.persona]);
+      ? english
+        ? "Choose a dish below to see what to buy and which prices need confirmation. You can preview and copy its shopping summary."
+        : "請從下面選一道，查看待買項目與待確認價格，也可以預覽再複製採買摘要。"
+      : english
+        ? {
+            elder:
+              "Choose a dish you like and open it for simple instructions.",
+            caregiver:
+              "Each dish is rechecked for the current servings, equipment and exclusions. Check pantry amounts and packaging ingredients.",
+            family:
+              "Each dish separates pantry items from purchases. Preview and copy a summary from its card to share with your family.",
+          }[turn.persona]
+        : intros[turn.persona]);
   return {
     ...reply,
     cards,
@@ -332,4 +488,18 @@ export async function planTurn(
         ? "shopping_summary"
         : "meal_candidates",
   };
+}
+
+export async function planTurn(
+  turn: Turn,
+  rank?: RankMeals,
+): Promise<ChatReply> {
+  const reply = await plan(turn, rank);
+  return turn.language === "en"
+    ? {
+        ...reply,
+        context: englishContext(reply.context),
+        cards: reply.cards.map(englishCard),
+      }
+    : reply;
 }

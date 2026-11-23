@@ -1,16 +1,16 @@
-# CareKitchen｜OpenAI 串接
+# OpenAI Integration
 
-## 實作
+## Implementation
 
-- `web/lib/server/openai.ts` 使用官方 Node SDK 的 Responses API，以 Structured Outputs 回傳意圖與既有候選 ID。預設模型為 `gpt-6-luna`，提示詞版本為 `carekitchen-v4`。選用 Luna 時固定 `reasoning.effort: "none"`，以配合 250 token 的結構化回應上限。切換 `OPENAI_MODEL` 時依所選模型使用其預設設定。
-- 模型呼叫送出本輪文字、角色、份量、餐數、設備、費用與料理時間上限、偏好、排除食材與已核對的候選摘要。整包成本、原始報價、完整庫存與聊天歷史由本機程式處理。Responses API 請求設定 `store: false`。
-- 逾時 12 秒，不自動重送。每個執行程序每分鐘最多 20 個模型請求，並行最多 3 個。分散式配額與公開展示帳戶預算仍待部署前確認。
-- 無金鑰的預設模式為本機規劃。OpenAI 啟用後，上游失敗會清楚提示重試。明確醫療問題與可判定需由使用者確認的條件由本機直接回應。
-- 真實金鑰只應存放在伺服器的 `.env.local` 或部署機密設定。變數和模式見 [Web README](../web/README.md)。
+- `web/lib/server/openai.ts` uses the official Node SDK Responses API with Structured Outputs for intent and existing candidate IDs. The default model is `gpt-6-luna`; the English system prompt is `carekitchen-v5`. Luna requests set `reasoning.effort: "none"` to fit the structured response budget. Other models use their model-specific defaults when `OPENAI_MODEL` is changed.
+- The model receives the current turn, role, servings, meals, equipment, budget, cooking-time limit, preferences, exclusions, and summaries of checked candidates. Local code handles package costs, original price quotes, full inventory, and conversation history. Responses API requests set `store: false`.
+- Timeout is 12 seconds with no automatic retry. Each process allows at most 20 model requests per minute and three concurrent requests. Distributed quotas and public-demo account limits require deployment-time validation.
+- Without a key, default mode uses local planning. With OpenAI enabled, upstream failures are reported with a retry option. Local code directly handles explicit medical questions and conditions that require clarification.
+- Store real API keys only in server-side `.env.local` or deployment secrets. See [Web README](../web/README.md) for environment variables and modes.
 
-## 真實 API 驗收
+## Recorded API checks
 
-GPT-6 Luna 已使用於本機三角色、十輪合成案例及版本比較。回應中有 `modelInfo` 才代表這輪有實際模型決策。公開環境中的逾時、配額、費用上限與評審可及性需依部署設定驗收。 [實測資料](evidence/README.md)
+GPT-6 Luna has been used in local three-role flows, synthetic multi-turn cases, and version comparisons. A response's `modelInfo` indicates model output for that turn. Public availability, timeouts, quota, cost controls, and evaluator access have not been validated. See the [evaluation record](evidence/README.md).
 
 - [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 - [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna)

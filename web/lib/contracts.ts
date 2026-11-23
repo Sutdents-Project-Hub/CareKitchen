@@ -13,16 +13,16 @@ export type Equipment = (typeof equipmentOptions)[number];
 export type ChatMode = "openai" | "local" | "unavailable";
 
 export const personaLabels: Record<Persona, string> = {
-  elder: "獨居長者",
-  caregiver: "家庭照護者",
-  family: "家屬",
+  elder: "Cooking for myself",
+  caregiver: "Cooking for someone I care for",
+  family: "Planning with family",
 };
 
 export const equipmentLabels: Record<Equipment, string> = {
-  rice_cooker: "電鍋",
-  microwave: "微波爐",
-  stove: "爐具",
-  no_cook: "免開火",
+  rice_cooker: "Rice cooker",
+  microwave: "Microwave",
+  stove: "Stovetop",
+  no_cook: "No-cook",
 };
 
 export type ItemAmount = {

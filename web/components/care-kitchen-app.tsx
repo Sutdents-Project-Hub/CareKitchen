@@ -32,30 +32,36 @@ import {
 
 type Entry = { role: "assistant" | "user"; text: string; changes?: string[] };
 const roles: Record<Persona, { title: string; line: string }> = {
-  elder: { title: "我自己準備", line: "找簡單的家常菜和做法" },
-  caregiver: { title: "幫家人準備", line: "照顧份量與已確認的限制" },
-  family: { title: "和家人一起安排", line: "整理採買，方便一起討論" },
+  elder: { title: "Cooking for myself", line: "Find simple meals and easy steps" },
+  caregiver: { title: "Cooking for someone I care for", line: "Plan portions and confirmed restrictions" },
+  family: { title: "Planning with family", line: "Organize groceries for a shared plan" },
 };
 const roleOrder: Persona[] = ["elder", "caregiver", "family"];
 const modeNames: Record<ChatMode, string> = {
-  openai: "AI 對話",
-  local: "本機規劃",
-  unavailable: "暫時無法連線",
+  openai: "AI planner",
+  local: "Local planner",
+  unavailable: "Service unavailable",
 };
+const displayUnit = (unit: Unit | null) =>
+  unit === "個" ? "ea" : unit === "份" ? "servings" : unit;
 const split = (value: string) =>
   value
-    .split(/[，,、\n]/)
+    .split(/[,，、\n]/)
     .map((x) => x.trim())
     .filter(Boolean);
 function parsePantry(value: string, previous: ItemAmount[]): ItemAmount[] {
   return split(value).map((raw) => {
-    const match = raw.match(/^(.+?)\s+(\d+(?:\.\d+)?)\s*(g|ml|個|份)?$/i);
-    if (match)
+    const match = raw.match(/^(.+?)\s+(\d+(?:\.\d+)?)\s*(g|grams?|ml|milliliters?|個|份|ea|items?|pieces?|servings?)$/i);
+    if (match) {
+      const unit = match[3].toLowerCase();
       return {
         name: match[1].trim(),
         quantity: Number(match[2]),
-        unit: (match[3] as Unit | undefined) ?? null,
+        unit: /^(g|grams?)$/.test(unit) ? "g"
+          : /^(ml|milliliters?)$/.test(unit) ? "ml"
+          : /^(份|servings?)$/.test(unit) ? "份" : "個",
       };
+    }
     const old = previous.find((item) => item.name === raw);
     return {
       name: raw,
@@ -67,61 +73,63 @@ function parsePantry(value: string, previous: ItemAmount[]): ItemAmount[] {
 const itemNames = (items: ItemAmount[]) =>
   items.map(
     (x) =>
-      x.name + (x.quantity == null ? "" : " " + x.quantity + (x.unit || "")),
+      x.name + (x.quantity == null ? "" : ` ${x.quantity} ${displayUnit(x.unit)}`),
   );
-const money = (value: number) => "NT$ " + value.toLocaleString("zh-TW");
+const money = (value: number) => "NT$ " + value.toLocaleString("en-US");
+const countLabel = (count: number, singular: string, plural = singular + "s") =>
+  `${count} ${count === 1 ? singular : plural}`;
 
 function conditionChanges(before: MealContext, after: MealContext) {
   const changes: string[] = [];
   if (before.servings !== after.servings && after.servings !== null) {
-    changes.push(`${after.servings} 人份`);
+    changes.push(countLabel(after.servings, "serving"));
   }
   if (before.mealCount !== after.mealCount)
-    changes.push(`${after.mealCount} 餐`);
+    changes.push(countLabel(after.mealCount, "meal"));
   if (before.budgetTwd !== after.budgetTwd && after.budgetTwd !== null) {
-    changes.push(`預算 ${money(after.budgetTwd)}`);
+    changes.push(`Budget ${money(after.budgetTwd)}`);
   }
   if (before.equipment.join() !== after.equipment.join()) {
     changes.push(
       after.equipment.length
-        ? after.equipment.map((item) => equipmentLabels[item]).join("、")
-        : "設備待確認",
+        ? after.equipment.map((item) => equipmentLabels[item]).join(", ")
+        : "Equipment not specified",
     );
   }
   const exclusions = after.excludedIngredients.filter(
     (item) => !before.excludedIngredients.includes(item),
   );
-  if (exclusions.length) changes.push(`排除 ${exclusions.join("、")}`);
+  if (exclusions.length) changes.push(`Exclude ${exclusions.join(", ")}`);
   if (
     itemNames(before.pantryItems).join() !== itemNames(after.pantryItems).join()
   )
-    changes.push("更新現有食材");
+    changes.push("Updated available ingredients");
   if (
     JSON.stringify(before.purchasePrices) !==
     JSON.stringify(after.purchasePrices)
   )
-    changes.push("已記下你提供的報價");
+    changes.push("Saved your price quotes");
   if (before.onlyPantry !== after.onlyPantry)
-    changes.push(after.onlyPantry ? "只用現有食材" : "可採買");
+    changes.push(after.onlyPantry ? "Use available ingredients only" : "Can shop for ingredients");
   return changes;
 }
 
 function priceLabel(card: MealCard) {
   if (card.toBuy.length === 0 && card.unknownPantry.length === 0)
-    return "這道不用另外採買";
+    return "No additional shopping needed";
   if (card.budgetStatus === "unknown") {
     const reason = card.missingPrices.length
-      ? "採買總額待確認"
-      : "請先確認家裡的食材份量";
+      ? "Shopping total needs confirmation"
+      : "Please confirm the amounts you have";
     return card.knownCostTwd > 0
-      ? reason + " · 已知小計 " + money(card.knownCostTwd)
+      ? reason + " · Known subtotal: " + money(card.knownCostTwd)
       : reason;
   }
   if (card.budgetStatus === "within")
-    return "依提供價格估算 " + money(card.knownCostTwd);
+    return "Estimated from provided prices: " + money(card.knownCostTwd);
   if (card.budgetStatus === "over")
-    return "已知採買 " + money(card.knownCostTwd) + "，高於預算";
-  return "已知採買 " + money(card.knownCostTwd) + " · 未設定預算";
+    return "Known shopping cost " + money(card.knownCostTwd) + " exceeds your budget";
+  return "Known shopping cost " + money(card.knownCostTwd) + " · No budget set";
 }
 
 export default function CareKitchenApp() {
@@ -160,19 +168,19 @@ export default function CareKitchenApp() {
   );
   const activeCards = current ? cards : [];
   const keyConditions = [
-    context.servings ? context.servings + " 人" : "人數待補",
-    context.mealCount + " 餐",
-    context.budgetTwd == null ? "預算待補" : context.budgetTwd + " 元",
+    context.servings ? countLabel(context.servings, "person", "people") : "Serving size not set",
+    countLabel(context.mealCount, "meal"),
+    context.budgetTwd == null ? "Budget not set" : "Budget NT$ " + context.budgetTwd,
   ];
   if (context.equipment.length)
     keyConditions.push(
-      context.equipment.map((item) => equipmentLabels[item]).join("、"),
+      context.equipment.map((item) => equipmentLabels[item]).join(", "),
     );
   if (context.excludedIngredients.length)
-    keyConditions.push("排除 " + context.excludedIngredients.join("、"));
-  if (context.uncertainty) keyConditions.push("飲食限制待確認");
+    keyConditions.push("Exclude " + context.excludedIngredients.join(", "));
+  if (context.uncertainty) keyConditions.push("Dietary restrictions need confirmation");
   const summary = context.pantryItems.length
-    ? [...keyConditions, itemNames(context.pantryItems).slice(0, 3).join("、")]
+    ? [...keyConditions, itemNames(context.pantryItems).slice(0, 3).join(", ")]
     : keyConditions;
 
   useEffect(() => {
@@ -272,8 +280,9 @@ export default function CareKitchenApp() {
     try {
       const r = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Accept-Language": "en" },
         body: JSON.stringify({
+          language: "en",
           persona,
           text,
           context: submittedContext,
@@ -288,7 +297,7 @@ export default function CareKitchenApp() {
         setNotice(
           typeof data?.message === "string"
             ? data.message
-            : "目前無法取得新的建議，條件和輸入都保留了，請稍後重試。",
+            : "We could not get a new suggestion. Your conditions and message are saved; please try again.",
         );
         setDraft(text);
         return;
@@ -299,9 +308,9 @@ export default function CareKitchenApp() {
       setMode(reply.mode);
       setContext(reply.context);
       setAnswerContext(reply.context);
-      setPantryText(itemNames(reply.context.pantryItems).join("、"));
-      setExcludedText(reply.context.excludedIngredients.join("、"));
-      setPreferencesText(reply.context.preferences.join("、"));
+      setPantryText(itemNames(reply.context.pantryItems).join(", "));
+      setExcludedText(reply.context.excludedIngredients.join(", "));
+      setPreferencesText(reply.context.preferences.join(", "));
       setCards(reply.cards);
       setUnknowns(reply.unknowns || []);
       setThread((old) => [
@@ -316,7 +325,7 @@ export default function CareKitchenApp() {
       setExpanded(null);
       setRetryRequest(null);
     } catch {
-      setNotice("目前無法取得新的建議，條件和輸入都保留了，請稍後重試。");
+      setNotice("We could not get a new suggestion. Your conditions and message are saved; please try again.");
       setMode("unavailable");
       setDraft(text);
     } finally {
@@ -331,10 +340,10 @@ export default function CareKitchenApp() {
     if (busy) return;
     const exampleText =
       persona === "elder"
-        ? "我想準備一人份晚餐，家裡有豆腐 150 克和青菜 120 克，預算 100 元，只有電鍋。"
+        ? "Plan a dinner for one. I have 150 g tofu and 120 g greens, a budget of NT$ 100, and a rice cooker."
         : persona === "caregiver"
-          ? "我幫家人準備兩人份晚餐，手邊有豆腐 300 克和青菜 240 克，預算 100 元，只有電鍋，不能吃蛋。"
-          : "請安排三人份晚餐，家裡有豆腐 150 克和青菜 120 克，預算 100 元，只有電鍋，請整理採買清單。";
+          ? "Plan dinner for two. I have 300 g tofu and 240 g greens, a budget of NT$ 100, and a rice cooker. No eggs."
+          : "Plan dinner for three. I have 150 g tofu and 120 g greens, a budget of NT$ 100, and a rice cooker. Include a shopping list.";
     setDraft(exampleText);
     document.getElementById("message")?.focus();
   }
@@ -390,31 +399,25 @@ export default function CareKitchenApp() {
   }
   function shareLines(card: MealCard) {
     return [
-      "餐點：" +
-        card.title +
-        "（" +
-        card.servings +
-        " 人份 · " +
-        card.mealCount +
-        " 餐）",
-      "時間：約 " + card.minutes + " 分鐘 · " + equipmentLabels[card.equipment],
-      "家裡已有：" + (itemNames(card.fromPantry).join("、") || "待確認"),
-      "需要採買：" +
+      `Meal: ${card.title} (${countLabel(card.servings, "serving")} · ${countLabel(card.mealCount, "meal")})`,
+      "Time: about " + card.minutes + " min · " + equipmentLabels[card.equipment],
+      "Available at home: " + (itemNames(card.fromPantry).join(", ") || "To confirm"),
+      "To buy: " +
         (card.toBuy.length
           ? card.toBuy
               .map(
                 (x) =>
                   itemNames([x])[0] +
                   (x.priceTwd == null
-                    ? "（價格待確認）"
-                    : "（NT$ " + x.priceTwd + "）"),
+                    ? " (price to confirm)"
+                    : " (NT$ " + x.priceTwd + ")"),
               )
-              .join("、")
-          : "暫無"),
-      "採買金額：" + priceLabel(card),
-      "料理步驟：",
+              .join(", ")
+          : "None"),
+      "Shopping cost: " + priceLabel(card),
+      "Steps: ",
       ...card.steps.map((x, i) => i + 1 + ". " + x),
-      "不確定的飲食限制，請先向專業人員確認。",
+      "Please confirm any uncertain dietary restrictions with a qualified professional.",
     ];
   }
   async function copyShare() {
@@ -423,35 +426,35 @@ export default function CareKitchenApp() {
     const lines = shareLines(c);
     try {
       await navigator.clipboard.writeText(lines.join("\n"));
-      setShareNotice("已複製餐點摘要。");
+      setShareNotice("Meal summary copied.");
       setShareCard(null);
     } catch {
-      setShareNotice("無法自動複製，請選取預覽文字後自行複製。");
+      setShareNotice("Could not copy automatically. Select and copy the preview text.");
     }
   }
 
   return (
     <div id="top" className={"app-shell" + (largeText ? " large-text" : "")}>
       <a className="skip-link" href="#workspace">
-        跳到餐點工作區
+        Skip to meal planner
       </a>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="#top" aria-label="CareKitchen 首頁">
+          <a className="brand" href="#top" aria-label="CareKitchen home">
             CareKitchen
           </a>
-          <nav className="top-links" aria-label="主要導覽">
-            <a href="#workspace">餐點規劃</a>
-            <a href="#how-it-works">使用說明</a>
+          <nav className="top-links" aria-label="Main navigation">
+            <a href="#workspace">Meal planner</a>
+            <a href="#how-it-works">How it works</a>
           </nav>
-          <div className="access-tools" aria-label="閱讀設定">
+          <div className="access-tools" aria-label="Reading settings">
             <button
               type="button"
               className="text-tool"
               aria-pressed={simpleMode}
               onClick={() => setSimpleMode(!simpleMode)}
             >
-              簡易模式
+              Simple steps
             </button>
             <button
               type="button"
@@ -459,7 +462,7 @@ export default function CareKitchenApp() {
               aria-pressed={largeText}
               onClick={() => setLargeText(!largeText)}
             >
-              {largeText ? "縮小文字" : "放大文字"}
+              {largeText ? "Smaller text" : "Larger text"}
             </button>
           </div>
         </div>
@@ -469,12 +472,12 @@ export default function CareKitchenApp() {
         <div className="entry-grid">
           <section className="hero" aria-labelledby="hero-heading">
             <h1 id="hero-heading">
-              <span>用手邊食材</span>
-              <span>規劃今天這一餐</span>
+              <span>Use what you have</span>
+              <span>Plan a meal for today</span>
             </h1>
-            <p>依照預算、設備和已確認的飲食限制，找出幾道做得來的家常菜。</p>
+            <p>Find home-style meals based on your budget, equipment, and confirmed dietary restrictions.</p>
             <a className="button button-primary" href="#roles">
-              開始規劃一餐 <ArrowDown size={18} aria-hidden="true" />
+              Plan a meal <ArrowDown size={18} aria-hidden="true" />
             </a>
           </section>
           <section
@@ -483,8 +486,8 @@ export default function CareKitchenApp() {
             tabIndex={-1}
             aria-labelledby="role-heading"
           >
-            <h2 id="role-heading">這餐為誰準備？</h2>
-            <div className="role-tabs" role="group" aria-label="選擇使用情境">
+            <h2 id="role-heading">Who are you cooking for?</h2>
+            <div className="role-tabs" role="group" aria-label="Choose a planning scenario">
               {roleOrder.map((key) => (
                 <button
                   key={key}
@@ -499,7 +502,7 @@ export default function CareKitchenApp() {
                     <small>{roles[key].line}</small>
                   </span>
                   {persona === key ? (
-                    <span className="role-current">目前選用</span>
+                    <span className="role-current">Selected</span>
                   ) : (
                     <ArrowUpRight size={18} aria-hidden="true" />
                   )}
@@ -517,7 +520,7 @@ export default function CareKitchenApp() {
         >
           <div className="workspace-heading">
             <div>
-              <h2 id="workspace-title">餐點工作區</h2>
+              <h2 id="workspace-title">Meal planner</h2>
             </div>
             <div
               className={
@@ -525,7 +528,7 @@ export default function CareKitchenApp() {
                 (mode === "unavailable" ? " state-muted" : "")
               }
             >
-              {modeReady ? modeNames[mode] : "正在確認服務…"}
+              {modeReady ? modeNames[mode] : "Checking service…"}
             </div>
           </div>
           <div className="workspace-grid">
@@ -538,7 +541,7 @@ export default function CareKitchenApp() {
                 <div className="conversation-top">
                   <div className="panel-title">
                     <h3 id="conversation-title" tabIndex={-1}>
-                      對話規劃
+                      Meal planning chat
                     </h3>
                   </div>
                   <div className="conversation-tools">
@@ -546,7 +549,7 @@ export default function CareKitchenApp() {
                       {personaLabels[persona]}
                     </span>
                     <a href="#meal-conditions" className="text-link">
-                      修改條件
+                      Edit conditions
                     </a>
                   </div>
                 </div>
@@ -565,12 +568,12 @@ export default function CareKitchenApp() {
                       <div className={"message-row " + entry.role} key={i}>
                         <div className="message-content">
                           <span className="message-author">
-                            {entry.role === "assistant" ? "CareKitchen" : "你"}
+                            {entry.role === "assistant" ? "CareKitchen" : "You"}
                           </span>
                           <p>{entry.text}</p>
                           {Boolean(entry.changes?.length) && (
                             <p className="turn-changes">
-                              這輪已更新 · {entry.changes?.join("、")}
+                              Updated this turn · {entry.changes?.join(", ")}
                             </p>
                           )}
                         </div>
@@ -582,7 +585,7 @@ export default function CareKitchenApp() {
                           <span className="message-author">CareKitchen</span>
                           <p className="thinking">
                             <LoaderCircle size={16} />
-                            正在依照目前條件整理…
+                            Planning with your current conditions…
                           </p>
                         </div>
                       </div>
@@ -599,14 +602,14 @@ export default function CareKitchenApp() {
                         onClick={() => void send(retryRequest.text)}
                         disabled={busy || draft.trim() !== retryRequest.text}
                       >
-                        重試
+                        Try again
                       </button>
                     )}
                   </div>
                 )}
                 <form className="composer" onSubmit={submit}>
                   <label className="composer-label" htmlFor="message">
-                    描述今天想準備的餐點
+                    Describe the meal you want to make
                   </label>
                   <textarea
                     id="message"
@@ -614,7 +617,7 @@ export default function CareKitchenApp() {
                     maxLength={600}
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
-                    placeholder="例如：我有豆腐和青菜，想煮簡單一點…"
+                    placeholder="Example: I have tofu and greens. I want something simple…"
                     readOnly={busy}
                     onKeyDown={(e) => {
                       if (
@@ -629,13 +632,13 @@ export default function CareKitchenApp() {
                   />
                   <div className="composer-bottom">
                     <span>
-                      {draft.length}/600 · Enter 送出 · Shift + Enter 換行
+                      {draft.length}/600 · Enter to send · Shift + Enter for a new line
                     </span>
                     <button
                       className="send-button"
                       type="submit"
                       disabled={busy || !draft.trim()}
-                      aria-label="送出訊息"
+                      aria-label="Send message"
                     >
                       {busy && (
                         <LoaderCircle
@@ -644,7 +647,7 @@ export default function CareKitchenApp() {
                           aria-hidden="true"
                         />
                       )}
-                      <span>{busy ? "處理中" : "送出"}</span>
+                      <span>{busy ? "Working…" : "Send"}</span>
                     </button>
                   </div>
                 </form>
@@ -656,65 +659,65 @@ export default function CareKitchenApp() {
                       onClick={example}
                     >
                       <span>
-                        <strong>試試看一個例子</strong>
+                        <strong>Try an example</strong>
                         <small>
                           {persona === "elder"
-                            ? "一人份 · 豆腐和青菜 · 100 元"
+                            ? "1 serving · tofu and greens · NT$ 100"
                             : persona === "caregiver"
-                              ? "幫家人準備 · 帶入備餐條件"
-                              : "三人份 · 看看要買什麼"}
+                              ? "Cooking for someone · include meal details"
+                              : "3 servings · plan a shopping list"}
                         </small>
                       </span>
                       <ArrowUpRight size={18} aria-hidden="true" />
                     </button>
-                    <div className="quick-prompts" aria-label="快速開始">
+                    <div className="quick-prompts" aria-label="Quick prompts">
                       <button
                         type="button"
                         onClick={() =>
-                          choosePrompt("我想用家裡現有的食材規劃一餐。")
+                          choosePrompt("Plan a meal using ingredients I already have.")
                         }
                       >
-                        用現有食材
+                        Use what I have
                       </button>
                       <button
                         type="button"
                         onClick={() =>
                           choosePrompt(
-                            "請依照我填的預算規劃，並標出還沒確認的價格。",
+                            "Plan within my budget and flag any prices that need confirmation.",
                           )
                         }
                       >
-                        看看預算
+                        Plan within my budget
                       </button>
                       <button
                         type="button"
                         onClick={() =>
-                          choosePrompt("請依照我已確認不使用的食材調整餐點。")
+                          choosePrompt("Adjust the meal to exclude the ingredients I listed.")
                         }
                       >
-                        套用已確認限制
+                        Apply confirmed restrictions
                       </button>
                       <button
                         type="button"
                         onClick={() =>
                           choosePrompt(
-                            "請整理這餐的採買清單，列出數量和待確認價格。",
+                            "Make a shopping list for this meal with amounts and prices to confirm.",
                           )
                         }
                       >
-                        整理採買
+                        Make a shopping list
                       </button>
                     </div>
                   </div>
                 )}
                 {activeCards.length > 0 && (
                   <a className="result-jump text-link" href="#meal-results">
-                    查看 {activeCards.length} 道餐點{" "}
+                    View {activeCards.length} meal options{" "}
                     <ArrowDown size={16} aria-hidden="true" />
                   </a>
                 )}
                 <p className="conversation-privacy">
-                  OpenAI 模式會傳送這一輪的訊息與規劃條件。
+                  In AI mode, this turn’s message and meal-planning details are sent to OpenAI.
                 </p>
               </section>
               <section
@@ -725,7 +728,7 @@ export default function CareKitchenApp() {
               >
                 <div className="results-heading">
                   <h3 id="results-title" tabIndex={-1}>
-                    餐點建議
+                    Meal suggestions
                   </h3>
                   {activeCards.length > 0 && (
                     <button
@@ -733,21 +736,21 @@ export default function CareKitchenApp() {
                       type="button"
                       disabled={busy}
                       onClick={() =>
-                        void send("請依照目前條件換一道，並避開前面列出的餐點。")
+                        void send("Suggest another meal using my current details, avoiding the options already listed.")
                       }
                     >
                       <RefreshCw size={16} />
-                      換一道
+                      Try another meal
                     </button>
                   )}
                 </div>
                 {!activeCards.length ? (
                   <p className="results-empty">
                     {busy
-                      ? "正在檢查這一輪的條件。"
+                      ? "Checking this turn’s conditions."
                       : thread.length
-                        ? "目前沒有可顯示的餐點。"
-                        : "送出需求後，這裡會列出候選餐點。"}
+                        ? "No meals to show yet."
+                        : "Meal options will appear here after you send a request."}
                   </p>
                 ) : (
                   <>
@@ -755,9 +758,9 @@ export default function CareKitchenApp() {
                       (context.servings > 2 || context.mealCount > 1) && (
                         <p className="meal-batch-note">
                           {context.mealCount > 1
-                            ? `各候選按同一道料理準備 ${context.mealCount} 餐。`
+                            ? `Each option makes the same meal for ${context.mealCount} meals.`
                             : ""}
-                          加熱料理以每批約 2 人份估時，實際批次依設備容量調整。
+                          Heating time is estimated for batches of about 2 servings; actual batch size depends on your equipment.
                         </p>
                       )}
                     <div className="meal-grid">
@@ -792,7 +795,7 @@ export default function CareKitchenApp() {
                   <div className="unknown-notes">
                     <strong>
                       <CircleAlert size={17} />
-                      還需要確認
+                      Needs confirmation
                     </strong>
                     <ul>
                       {unknowns.map((x) => (
@@ -811,7 +814,7 @@ export default function CareKitchenApp() {
             >
               <div className="panel-top">
                 <h3 id="conditions-title" tabIndex={-1}>
-                  這餐的條件
+                  Meal details
                 </h3>
               </div>
               <p className="conditions-summary" aria-live="polite">
@@ -820,11 +823,11 @@ export default function CareKitchenApp() {
               <fieldset className="conditions-controls" disabled={busy}>
                 <div className="condition-fields">
                   <div className="field-row">
-                    <label htmlFor="servings">準備幾人份</label>
+                    <label htmlFor="servings">Servings</label>
                     <div className="number-control">
                       <button
                         type="button"
-                        aria-label="減少人數"
+                        aria-label="Decrease servings"
                         onClick={() =>
                           setField(
                             "servings",
@@ -840,7 +843,7 @@ export default function CareKitchenApp() {
                         min="1"
                         max="12"
                         value={context.servings ?? ""}
-                        placeholder="未設定"
+                        placeholder="Not set"
                         onChange={(e) =>
                           setField(
                             "servings",
@@ -855,7 +858,7 @@ export default function CareKitchenApp() {
                       />
                       <button
                         type="button"
-                        aria-label="增加人數"
+                        aria-label="Increase servings"
                         disabled={(context.servings || 0) >= 12}
                         onClick={() =>
                           setField(
@@ -869,7 +872,7 @@ export default function CareKitchenApp() {
                     </div>
                   </div>
                   <div className="field-row">
-                    <label htmlFor="budget">預算上限</label>
+                    <label htmlFor="budget">Budget limit</label>
                     <div className="input-suffix">
                       <span>NT$</span>
                       <input
@@ -877,7 +880,7 @@ export default function CareKitchenApp() {
                         type="number"
                         min="0"
                         inputMode="numeric"
-                        placeholder="還沒決定"
+                        placeholder="Not decided"
                         value={context.budgetTwd ?? ""}
                         onChange={(e) =>
                           setField(
@@ -888,18 +891,18 @@ export default function CareKitchenApp() {
                       />
                       <small>
                         {context.mealCount > 1
-                          ? `共 ${context.mealCount} 餐`
-                          : "這餐"}
+                          ? `For ${context.mealCount} meals`
+                          : "This meal"}
                       </small>
                     </div>
                   </div>
                   <div className="field-row field-column">
-                    <label htmlFor="pantry">家裡現有食材</label>
+                    <label htmlFor="pantry">Ingredients available at home</label>
                     <input
                       className="text-input"
                       id="pantry"
                       value={pantryText}
-                      placeholder="例如：豆腐、青菜、雞蛋"
+                      placeholder="Example: tofu, greens, eggs"
                       onChange={(e) => {
                         setPantryText(e.target.value);
                         invalidateAnswer();
@@ -912,11 +915,11 @@ export default function CareKitchenApp() {
                       }
                     />
                     <span className="field-hint">
-                      用逗號或頓號分開；數量可寫在後面，例如豆腐 150g。
+                      Separate items with commas. Add amounts after an item, for example: tofu 150 g.
                     </span>
                   </div>
                   <div className="field-row field-column">
-                    <span className="field-label">可以使用的設備</span>
+                    <span className="field-label">Available equipment</span>
                     <div className="equipment-options">
                       {(Object.keys(equipmentLabels) as Equipment[]).map(
                         (equipment) => (
@@ -947,7 +950,7 @@ export default function CareKitchenApp() {
                 >
                   <span>
                     <Plus size={16} />
-                    再補充其他條件
+                    Add more details
                   </span>
                   {detailsOpen ? (
                     <ChevronUp size={17} />
@@ -958,11 +961,11 @@ export default function CareKitchenApp() {
                 {detailsOpen && (
                   <div className="extra-fields">
                     <div className="field-row">
-                      <label htmlFor="meal-count">想規劃幾餐</label>
+                      <label htmlFor="meal-count">Number of meals</label>
                       <div className="number-control">
                         <button
                           type="button"
-                          aria-label="減少餐數"
+                          aria-label="Decrease meal count"
                           onClick={() =>
                             setField(
                               "mealCount",
@@ -987,7 +990,7 @@ export default function CareKitchenApp() {
                         />
                         <button
                           type="button"
-                          aria-label="增加餐數"
+                          aria-label="Increase meal count"
                           onClick={() =>
                             setField(
                               "mealCount",
@@ -1000,13 +1003,13 @@ export default function CareKitchenApp() {
                       </div>
                     </div>
                     <div className="field-row">
-                      <label htmlFor="time">最多料理時間</label>
+                      <label htmlFor="time">Maximum cooking time</label>
                       <div className="input-suffix">
                         <input
                           id="time"
                           type="number"
                           min="1"
-                          placeholder="不限"
+                          placeholder="No limit"
                           value={context.maxTimeMinutes ?? ""}
                           onChange={(e) =>
                             setField(
@@ -1015,16 +1018,16 @@ export default function CareKitchenApp() {
                             )
                           }
                         />
-                        <small>分鐘</small>
+                        <small>min</small>
                       </div>
                     </div>
                     <div className="field-row field-column">
-                      <label htmlFor="excluded">已確認不使用的食材</label>
+                      <label htmlFor="excluded">Ingredients to exclude</label>
                       <input
                         className="text-input"
                         id="excluded"
                         value={excludedText}
-                        placeholder="例如：花生、蝦"
+                        placeholder="Example: peanuts, shrimp"
                         onChange={(e) => {
                           setExcludedText(e.target.value);
                           invalidateAnswer();
@@ -1034,16 +1037,16 @@ export default function CareKitchenApp() {
                         }
                       />
                       <span className="field-hint">
-                        只填已確認的限制；不必提供病名或藥物。
+                        List confirmed restrictions only. You do not need to share diagnoses or medications.
                       </span>
                     </div>
                     <div className="field-row field-column">
-                      <label htmlFor="preferences">口味或料理偏好</label>
+                      <label htmlFor="preferences">Taste or cooking preferences</label>
                       <input
                         className="text-input"
                         id="preferences"
                         value={preferencesText}
-                        placeholder="例如：清淡、不辣、軟一點"
+                        placeholder="Example: mild, not spicy, softer texture"
                         onChange={(e) => {
                           setPreferencesText(e.target.value);
                           invalidateAnswer();
@@ -1061,7 +1064,7 @@ export default function CareKitchenApp() {
                           setField("onlyPantry", e.target.checked)
                         }
                       />
-                      <span>希望只用家裡現有食材</span>
+                      <span>Use only ingredients available at home</span>
                     </label>
                     <label className="check-row">
                       <input
@@ -1071,11 +1074,11 @@ export default function CareKitchenApp() {
                           setField("uncertainty", e.target.checked)
                         }
                       />
-                      <span>有些條件不太確定，請先問我</span>
+                      <span>Some details are uncertain; ask me first</span>
                     </label>
                     <div className="price-editor">
-                      <div className="field-label">我知道的食材價格</div>
-                      <p>只依你提供的價格估算，沒有價格會標示待確認。</p>
+                      <div className="field-label">Ingredient prices I know</div>
+                      <p>Estimates use only the prices you provide. Missing prices are marked for confirmation.</p>
                       {context.purchasePrices.map((q) => (
                         <div className="quote-row" key={q.name}>
                           <span>
@@ -1085,7 +1088,7 @@ export default function CareKitchenApp() {
                           <strong>NT$ {q.priceTwd}</strong>
                           <button
                             type="button"
-                            aria-label={"移除" + q.name + "價格"}
+                            aria-label={"Remove price for " + q.name}
                             onClick={() =>
                               setField(
                                 "purchasePrices",
@@ -1099,16 +1102,16 @@ export default function CareKitchenApp() {
                           </button>
                         </div>
                       ))}
-                      <div className="price-inputs">
+                <div className="price-inputs">
                         <label>
-                          食材名稱
+                          Ingredient
                           <input
                             value={priceName}
                             onChange={(e) => setPriceName(e.target.value)}
                           />
                         </label>
                         <label>
-                          包裝數量
+                          Package amount
                           <input
                             type="number"
                             min="0.1"
@@ -1118,7 +1121,7 @@ export default function CareKitchenApp() {
                           />
                         </label>
                         <label>
-                          單位
+                          Unit
                           <select
                             value={priceUnit}
                             onChange={(e) =>
@@ -1126,12 +1129,12 @@ export default function CareKitchenApp() {
                             }
                           >
                             {units.map((unit) => (
-                              <option key={unit}>{unit}</option>
+                              <option key={unit} value={unit}>{displayUnit(unit)}</option>
                             ))}
                           </select>
                         </label>
                         <label>
-                          價格（新台幣）
+                          Price (TWD)
                           <input
                             type="number"
                             min="0"
@@ -1145,7 +1148,7 @@ export default function CareKitchenApp() {
                           type="button"
                           onClick={addPrice}
                         >
-                          新增價格
+                          Add price
                         </button>
                       </div>
                     </div>
@@ -1155,7 +1158,7 @@ export default function CareKitchenApp() {
               <div className="conditions-footnote">
                 <CircleAlert size={16} />
                 <p>
-                  不需要輸入姓名、病歷或藥物資訊。飲食限制不明時，我們會先請你確認。
+                  Do not enter names, medical records, or medication details. If a dietary restriction is unclear, we will ask you to confirm it.
                 </p>
               </div>
             </aside>
@@ -1167,26 +1170,26 @@ export default function CareKitchenApp() {
           id="how-it-works"
           aria-labelledby="help-title"
         >
-          <h2 id="help-title">使用說明</h2>
+          <h2 id="help-title">How it works</h2>
           <ol className="how-steps" role="list">
             <li>
-              <strong>說明需求</strong>
-              <p>先說家裡有什麼、要煮給幾個人，或這餐想花多少。</p>
+              <strong>Describe your needs</strong>
+              <p>Tell us what you have, how many people you are cooking for, or your budget.</p>
             </li>
             <li>
-              <strong>選一道料理</strong>
-              <p>對照所需食材、做法和待確認的價格。</p>
+              <strong>Choose a meal</strong>
+              <p>Review ingredients, steps, and any prices that need confirmation.</p>
             </li>
             <li>
-              <strong>需要時再調整</strong>
-              <p>更改人數或食材後送出，系統會依新條件重新檢查。</p>
+              <strong>Adjust as needed</strong>
+              <p>Change the servings or ingredients and send again to check the updated details.</p>
             </li>
           </ol>
           <aside className="scope-note">
-            <strong>適用範圍</strong>
+            <strong>Scope</strong>
             <p>
-              若有醫療飲食、過敏或藥物相關疑問，請先向醫師、藥師或營養師確認。CareKitchen
-              不提供診斷或醫療飲食處方。
+              For questions about medical diets, allergies, or medications, consult a doctor, pharmacist, or dietitian.CareKitchen
+              CareKitchen does not provide diagnoses or medical diet prescriptions.
             </p>
           </aside>
         </section>
@@ -1196,10 +1199,10 @@ export default function CareKitchenApp() {
           CareKitchen
         </a>
         <Link href="/evidence/waicy" className="text-link" prefetch={false}>
-          WAICY 實測紀錄
+          WAICY test evidence
         </Link>
         <a className="text-link" href="#top">
-          返回頁首
+          Back to top
         </a>
       </footer>
 
@@ -1221,19 +1224,19 @@ export default function CareKitchenApp() {
           >
             <div className="modal-heading">
               <div>
-                <h2 id="share-title">先看看要分享的內容</h2>
+                <h2 id="share-title">Preview what you will share</h2>
               </div>
               <button
                 type="button"
                 className="icon-button"
-                aria-label="關閉預覽"
+                aria-label="Close preview"
                 onClick={() => setShareCard(null)}
               >
                 <X size={20} />
               </button>
             </div>
             <p className="modal-intro">
-              只整理這道餐點資訊，不包含聊天內容或個人條件。
+              This includes information about this meal only, not your chat or personal conditions.
             </p>
             <pre className="share-preview-text">
               {shareLines(shareCard).join("\n")}
@@ -1249,7 +1252,7 @@ export default function CareKitchenApp() {
                 className="button button-quiet"
                 onClick={() => setShareCard(null)}
               >
-                返回
+                Back
               </button>
               <button
                 type="button"
@@ -1257,7 +1260,7 @@ export default function CareKitchenApp() {
                 onClick={() => void copyShare()}
               >
                 <Copy size={17} />
-                複製這份摘要
+                Copy summary
               </button>
             </div>
           </section>
@@ -1296,10 +1299,10 @@ function MealOption({
         : "cost-unknown";
   return (
     <article className="meal-card">
-      <p className="meal-index">餐點 {index + 1}</p>
+      <p className="meal-index">Meal {index + 1}</p>
       <h4>{card.title}</h4>
       <p className="meal-meta">
-        {card.servings} 人份 · {card.mealCount} 餐 · 約 {card.minutes} 分鐘 ·{" "}
+        {countLabel(card.servings, "serving")} · {countLabel(card.mealCount, "meal")} · about {card.minutes} min ·{" "}
         {equipmentLabels[card.equipment]}
       </p>
       {card.reason && <p className="meal-reason">{card.reason}</p>}
@@ -1308,23 +1311,23 @@ function MealOption({
         <p className="meal-unknown">
           <CircleAlert size={15} />
           {[
-            ...card.unknownPantry.map((x) => x + "數量待確認"),
-            ...card.missingPrices.map((x) => x + "價格待確認"),
+            ...card.unknownPantry.map((x) => x + " amount to confirm"),
+          ...card.missingPrices.map((x) => x + " price to confirm"),
           ].join(" · ")}
         </p>
       )}
       {context.excludedIngredients.length > 0 && (
         <p className="applied-restrictions">
-          已套用排除：{context.excludedIngredients.join("、")}
+          Excluded ingredients: {context.excludedIngredients.join(", ")}
         </p>
       )}
       <div className="meal-items">
         <div>
-          <span className="item-label">家裡已有</span>
-          <span className="item-names">{existing.join("、") || "待確認"}</span>
+          <span className="item-label">Available at home</span>
+          <span className="item-names">{existing.join(", ") || "To confirm"}</span>
         </div>
         <div>
-          <span className="item-label">還需要買</span>
+          <span className="item-label">To buy</span>
           <span className="item-names">
             {missing.length
               ? card.toBuy
@@ -1332,11 +1335,11 @@ function MealOption({
                     (x) =>
                       itemNames([x])[0] +
                       (x.priceTwd == null
-                        ? " · 價格待確認"
+                        ? " · price to confirm"
                         : " · NT$ " + x.priceTwd),
                   )
-                  .join("、")
-              : "暫無"}
+                  .join(", ")
+              : "None"}
           </span>
         </div>
       </div>
@@ -1347,7 +1350,7 @@ function MealOption({
         onClick={onToggle}
         disabled={busy}
       >
-        <span>{expanded ? "收起料理步驟" : "查看簡單作法"}</span>
+        <span>{expanded ? "Hide cooking steps" : "View simple steps"}</span>
         {expanded ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
       </button>
       {expanded && (
@@ -1355,11 +1358,11 @@ function MealOption({
           <ol>
             {card.steps.map((step, i) => (
               <li key={i}>
-                {simpleMode ? step : "步驟 " + (i + 1) + "：" + step}
+                {simpleMode ? step : "Step " + (i + 1) + ": " + step}
               </li>
             ))}
           </ol>
-          <p>食材新鮮度、保存與加熱方式，請依包裝標示與日常安全習慣確認。</p>
+          <p>Check ingredient freshness, storage, and heating instructions on the packaging and follow safe food-handling practices.</p>
         </div>
       )}
       <button
@@ -1369,7 +1372,7 @@ function MealOption({
         onClick={(event) => onPreview(event.currentTarget)}
       >
         <Copy size={16} />
-        預覽並複製餐點摘要
+        Preview and copy meal summary
       </button>
     </article>
   );

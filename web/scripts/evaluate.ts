@@ -10,7 +10,8 @@ import {
   type MealContext,
   type Persona,
 } from "../lib/contracts.ts";
-import { rankWithOpenAI } from "../lib/server/openai.ts";
+import { getInstructions, rankWithOpenAI } from "../lib/server/openai.ts";
+import { canonicalIngredient } from "../lib/server/meals.ts";
 import { planTurn } from "../lib/server/planner.ts";
 import { turnSchema } from "../lib/server/turn.ts";
 
@@ -27,6 +28,7 @@ type Expectations = {
   responseType?: ChatReply["responseType"];
   messageIncludes?: string;
   priceUncertainty?: boolean;
+  knownSubtotalTwd?: number;
 };
 type Scenario = {
   id: string;
@@ -66,7 +68,9 @@ const scenarios: Scenario[] = [
   })),
   ...fixture.scenarios,
 ];
-const baselinePrompt = "請以繁體中文回答使用者。";
+const language = fixture.language === "en" ? "en" : undefined;
+const baselinePrompt =
+  language === "en" ? "Answer the user in English." : "請以繁體中文回答使用者。";
 const adapter = await readFile(
   new URL("../lib/server/openai.ts", import.meta.url),
   "utf8",
@@ -74,7 +78,7 @@ const adapter = await readFile(
 const prompt =
   mode === "baseline"
     ? baselinePrompt
-    : adapter.match(/const instructions = `([\s\S]*?)`;/)?.[1];
+    : getInstructions(language);
 assert.ok(prompt, "Prompt text could not be identified");
 const results: unknown[] = [];
 const client =
@@ -101,11 +105,14 @@ function check(reply: ChatReply, expected: Expectations) {
       JSON.stringify(context.equipment) === JSON.stringify(expected.equipment);
   if (expected.excluded)
     actual.excluded = expected.excluded.every((item) =>
-      context.excludedIngredients.includes(item),
+      context.excludedIngredients.some((entry) =>
+        canonicalIngredient(entry) === canonicalIngredient(item),
+      ),
     );
   if (expected.quoteNames)
     actual.quoteNames = expected.quoteNames.every((item) =>
-      context.purchasePrices.some(({ name }) => name === item),
+      context.purchasePrices.some(({ name }) =>
+        canonicalIngredient(name) === canonicalIngredient(item)),
     );
   if (expected.responseType)
     actual.responseType = reply.responseType === expected.responseType;
@@ -117,7 +124,7 @@ function check(reply: ChatReply, expected: Expectations) {
     actual.disallowedIngredient = cards.every(
       (card) =>
         ![...card.fromPantry, ...card.toBuy].some(
-          ({ name }) => name === expected.disallowedIngredient,
+          ({ name }) => canonicalIngredient(name) === canonicalIngredient(expected.disallowedIngredient!),
         ),
     );
   if (expected.disallowedExclusion)
@@ -134,6 +141,10 @@ function check(reply: ChatReply, expected: Expectations) {
         (card) =>
           card.missingPrices.length === 0 || card.budgetStatus !== "within",
       );
+  if (expected.knownSubtotalTwd !== undefined)
+    actual.knownSubtotalTwd = cards.some(
+      (card) => card.knownCostTwd === expected.knownSubtotalTwd,
+    );
   return actual;
 }
 
@@ -149,10 +160,14 @@ for (const scenario of scenarios) {
     try {
       if (client) {
         const setup = Array.isArray(scenario.context?.equipment)
-          ? `（以下是我已填的餐點條件，數字均為我提供的資料：${JSON.stringify(scenario.context)}。）\n`
+          ? language === "en"
+            ? `Here are my saved meal conditions and my quoted prices: ${JSON.stringify(scenario.context)}.\n`
+            : `（以下是我已填的餐點條件，數字均為我提供的資料：${JSON.stringify(scenario.context)}。）\n`
           : "";
         const form = turn.formUpdate
-          ? "（我已將未確認的限制改成已確認。）\n"
+          ? language === "en"
+            ? "I confirmed the previously uncertain dietary restriction in the form.\n"
+            : "（我已將未確認的限制改成已確認。）\n"
           : "";
         history.push({
           role: "user",
@@ -186,6 +201,7 @@ for (const scenario of scenarios) {
         const reply = await planTurn(
           turnSchema.parse({
             persona: scenario.persona,
+            language,
             text: turn.text,
             context,
             previousMealIds,
@@ -235,6 +251,7 @@ await writeFile(
       label,
       mode,
       model,
+      language,
       fixtureVersion: fixture.fixtureVersion,
       sourceHead: revision,
       promptSha256: sha256(prompt),

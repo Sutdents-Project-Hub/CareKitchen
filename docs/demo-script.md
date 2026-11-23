@@ -1,77 +1,78 @@
-# CareKitchen｜競賽 Demo 腳本與對話證據指引
+# Competition Demo Script and Conversation Evidence
 
-> 本文是競賽 Demo 預演腳本。本機已完成 GPT-6 Luna 合成案例操作，真實資料見 [十輪測試](evidence/README.md#十輪對話)。公開展示與正式交件仍待驗收。
+> This is a rehearsal outline. Local GPT-6 Luna synthetic-case runs are recorded in the [evidence index](evidence/README.md). Public showcase access and formal submission remain unverified.
 
-## A. 90 秒產品主線（長者角色，演練目標）
+The recorded English V5 run completed 16/16 synthetic turns and 59/59 checks, including 11 model-backed turns and zero execution errors. The [English run record](evidence/iteration-development.md#7-current-english-language-evidence) links the baseline, prompt, case file, and raw API result. This does not establish real-user validation or external evaluator access.
 
-| 順序 | 操作 | 預期在畫面看到 |
+## 90-second product story (older-adult role)
+
+| Step | Action | Show |
 |---|---|---|
-| 1 | 進首頁，選「我自己準備」 | 大字輸入、簡單快捷入口 |
-| 2 | 按「試試看一個例子」，再送出 | 一人份、電鍋、NT$100 和兩道候選 |
-| 3 | 點候選卡查看 | 已有／待買、價格未知、短步驟 |
-| 4 | 輸入「改成兩人份，預算 80 元，不要蛋，其他照舊。」 | 顯示本輪改了什麼；電鍋保留且排除蛋 |
-| 5 | 開啟一張餐點卡的「預覽並複製餐點摘要」 | 顯示已有、待買與採買總額待確認 |
-| 6 | 展示 `/evidence/waicy#round-6` | 同一預算案例的實測，知道豆腐包裝價，仍未確認菜價 |
+| 1 | Open the app and choose “I’m cooking for myself.” | Large text and simple entry options. |
+| 2 | Choose an example and submit it. | One serving, rice cooker, NT$100, and meal options. |
+| 3 | Open a meal card. | Ingredients on hand, items to buy, unknown prices, short steps. |
+| 4 | Enter: “Make it two servings, budget NT$80, no eggs; keep everything else.” | Updated conditions; rice cooker retained and eggs excluded. |
+| 5 | Preview a shopping summary. | On-hand items, purchases, and total pending price confirmation where applicable. |
+| 6 | Open `/evidence/waicy#round-6` on the running CareKitchen site. | A recorded synthetic run; do not present it as the current live response. |
 
-新版已用本機 Chromium 驗證範例、追問、預覽，以及一次模擬中斷後實際成功重試。整段 90 秒須由參賽者以實際講話與操作計時。 [操作腳本](evidence/browser/waicy-readiness-check.js)
+The rehearsal flow has been exercised locally in Chromium, including an example, follow-up, preview, and retry after a simulated interruption. Time the full 90 seconds with the actual speaker and app operation. See [browser readiness script](evidence/browser/waicy-readiness-check.js).
 
-## B. 三角色對照（使用同題）
+## Three-role comparison
 
-固定題目：「我有豆腐和青菜，準備晚餐，預算 100 元，價格沒提供。」
-- 長者：希望簡短、容易照做、選擇不多。
-- 照護者：希望確認份量、限制、備餐設備與需追問條件。
-- 家屬：希望有採買清單、已知／未知成本、讓長者自行選擇。
+Use the same prompt for all three roles: “I have tofu and greens for dinner. My budget is NT$100, and I do not know the prices.” Compare the actual outputs:
 
-把**三個真正執行後**的模型回答並排，截圖／原始紀錄標示 prompt 版、模型和測試日期。
+- Older adult: concise, easy steps, few choices.
+- Caregiver: servings, confirmed restrictions, equipment, and questions to resolve.
+- Family member: shopping list, known versus unknown costs, and support for the older adult's choice.
 
-## C. 預定的最終版 10 輪對話問題（供真人操作）
+Label captured outputs with prompt version, model, and run date. Do not write illustrative answers as if they were model results.
 
-以下是 10 個**使用者輸入提示**；仍需以最後版 AI 實際產生的相對回覆組成 10 輪，至少保留約 20 則訊息：
+## Final ten-turn conversation task
 
-1. 我一個人吃晚餐，有豆腐、雞蛋和青菜，預算 100 元。
-2. 我只有電鍋，可以怎麼做？
-3. 如果我不想吃蛋，有替代選擇嗎？
-4. 我明天會有兩個人一起吃，份量怎麼調整？
-5. 目前我知道米的價格是 40 元，其他食材沒查到價格。
-6. 這樣你確定總價在 100 元內嗎？
-7. 我想要比較濕潤、容易咀嚼的料理，但不想太辣。
-8. 我有一項專業人士提醒的飲食限制，但我還沒記清楚。
-9. 如果我還有在吃藥，你能保證這些料理都安全嗎？
-10. 幫我整理目前已知條件、兩個可討論方向與要確認的採買清單。
+The following are prompts for a real final-version run. Preserve the actual replies to form at least ten user/assistant exchanges:
 
-**注意：** 第 8–9 回合可能觸發專業確認；不應以「讓 Demo 順利」為由要求模型保證安全。若系統不能提供可行候選，正確轉介／未知也是值得呈現的安全能力。真實對話內容須於實作與驗證後，依正式分享機制發布。
+1. I am cooking dinner for myself. I have tofu, eggs, and greens, and a budget of NT$100.
+2. I only have a rice cooker. What could I make?
+3. I do not want eggs. What could replace them?
+4. Two people will eat tomorrow. How should I adjust the servings?
+5. I know rice costs NT$40, but I have not checked prices for the other ingredients.
+6. Can you confirm that the total is within NT$100?
+7. I prefer moist, easy-to-chew food, but not too spicy.
+8. A professional mentioned a dietary restriction, but I cannot remember exactly what it was.
+9. I take medication. Can you guarantee these meals are safe with it?
+10. Summarize the known conditions, two options to discuss, and the shopping items whose prices I need to check.
 
-## D. 可能的現場故障與降級
+The system may need to pause for professional confirmation in turns 8–9. Do not solicit a safety guarantee to make the demo flow smoothly. An appropriate referral or unknown result is valid evidence. Publish real conversation content only through an approved sharing process.
 
-- API timeout：顯示「模型暫時無法提供新的建議」，不假裝有直播建議；可切回過往**真實已記錄且有版本標記**的對話證據。
-- 供應商額度不足：先說明線上 Demo 暫時不可用，展示存檔／影片需清楚標「已錄製」；不可冒充 AI 正在回答。
-- 分享連結失效：需於交件前修復；現場只能告知限制，不能把未開放的私人連結稱為可公開證據。
-- 預算或硬限制驗證擋住推薦：正常顯示需要確認的資料，不能為維持展示效果而關掉檢查器。
+## Failure handling
 
-## E. 最終證據凍結表（交件前實際填寫）
+- API timeout: explain that a new AI suggestion is unavailable, retain entered conditions, and offer retry. A previously recorded run may be shown only as labeled evidence.
+- Provider quota: explain that the live demo is unavailable. Any saved recording must be labeled as recorded, not live.
+- Broken evidence link: disclose the limitation; do not call a private or inaccessible link public evidence.
+- Budget or hard-constraint validator blocks a candidate: show the missing information or conflict; do not disable checks for the demo.
 
-| 欄位 | 狀態 |
+## Evidence freeze checklist
+
+| Item | Current record |
 |---|---|
-| Live chatbot URL | TODO－尚未部署 |
-| Final 10+ rounds transcript URL | 本機 `/evidence/waicy`，評審連結待發布 |
-| Model name／version | `gpt-6-luna`，`reasoning.effort: none` |
-| Prompt version／commit | `carekitchen-v4`，應用原始紀錄附提示詞雜湊 |
-| True run timestamp | 2026-11-23，精確時間見 [交件前原始紀錄](evidence/runs/luna-waicy-final-recheck.json) |
-| 外部無痕瀏覽器通過 | TODO－尚未驗證 |
-| 同意、匿名化與留存期限 | TODO－尚待確認 |
+| Live chatbot URL | Not deployed; no public URL confirmed. |
+| Recorded conversation evidence | Local `/evidence/waicy`; public evaluator access unverified. |
+| Model | `gpt-6-luna`, `reasoning.effort: none` for Luna. |
+| Prompt version | English `carekitchen-v5`; confirm run artifact for exact hash. |
+| Run date | 2026-11-23; exact time is in the linked run artifact. |
+| External private-browser check | Not verified. |
+| Consent, de-identification, retention | Requires confirmation before publishing real-user conversations. |
 
-## F. 英文三分鐘敘事脈絡（非逐字稿）
+## English three-minute narrative outline
 
-1. The real problem: everyday meal decisions with limited ingredients and budgets.
-2. CareKitchen as a role-aware conversational assistant, not a medical adviser.
-3. Show an actual follow-up that changes constraints; explain cost uncertainty.
-4. Show baseline versus improved version from real results.
-5. End with transparent limitations, student contributions, and public interaction links.
+1. Explain the everyday meal-planning problem as a hypothesis to validate.
+2. Introduce the role-aware assistant and its non-medical boundary.
+3. Show a real follow-up that changes constraints and explain price uncertainty.
+4. Compare baseline and improved behavior using recorded evidence.
+5. State limitations, student contributions, and accessible project/evidence links.
 
-真正上台前依決賽通知調整時間，來源指南提到 3 分鐘介紹＋3 分鐘 demo＋4 分鐘 Q&A 只是通用格式、非已確認第 4 賽道場次規則。
+Adjust the presentation to official event instructions. A generic guide suggesting a three-minute introduction, three-minute demo, and four-minute Q&A is not confirmation of Track 4's event schedule.
 
-## G. 參賽者真人試用
+## Optional real-user study
 
-若能邀請 2–3 位長者、照護者或協助採買的家屬，先取得同意，再請他們用自己的手機完成第 A 節的晚餐任務。提供虛構食材和限制即可，操作期間避免代按。
-
-每位以匿名代號記錄用的是哪種角色、是否自行完成、在哪個步驟求助，以及能否用自己的話說明哪一項價格不知道。記下一句經同意可引用的回饋或一個實際卡點。修改後用同一任務重測。這項工作仍待實際執行，記錄只填所觀察的結果。
+If older adults, caregivers, or family members participate, obtain consent first and use fictional ingredients and restrictions. Ask them to perform the task on their own device without the presenter taking over. Record an anonymous code, role, independent completion, help requests, and whether they can explain which price is unknown. Quote feedback only with permission. Report only observed results; this study has not been completed.

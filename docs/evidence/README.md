@@ -1,46 +1,44 @@
-# CareKitchen 實測與參賽證據
+# CareKitchen Evaluation Evidence
 
-2026-11-23 以已授權的 OpenAI API 實際執行。本輪均為合成備餐情境，瀏覽器角色由代理扮演。真人參與、外部評審連結與正式送件仍待完成。
+**Evidence status as of November 23, 2026.** The archived Chinese V1–V4 runs and the current English V5/baseline runs used authorized OpenAI API calls with synthetic meal-planning scenarios. Browser roles were acted by agents. No target-user interviews, external judge testing, public reviewer link, or formal submission is evidenced here.
 
-[WAICY 第 6 項迭代開發紀錄](iteration-development.md)收錄 Baseline 與 V1 至 V4 的 Prompt 原文、逐案測試、根因分析、修正結果與瀏覽器畫面。
+The [iteration and development record](iteration-development.md) documents the historical Chinese direct baseline and V1–V4, and the current English direct baseline and V5. Raw run JSON and original prompt/case files remain the source records; English narrative summaries do not replace them.
 
-交件前另跑 10 回合新案例，修正前 7／10，修正後 10／10。既有 16 回合完整重跑通過，首次執行的錯誤也有保留。 [交件前實測](iteration-development.md#6-交件前新案例與修正)
+The historical Chinese new-case challenge improved from 7/10 to 10/10 after fixes; a later complete rerun of its established 16-turn suite passed 16/16. See [historical challenge and regression evidence](iteration-development.md#6-new-challenge-and-regression-before-submission). English V5 passed 16/16 synthetic turns and 59/59 checks (11 model-backed, zero execution errors); its direct English baseline completed 16 free-text replies with no scored assertions. See [English-language evidence](iteration-development.md#7-current-english-language-evidence). The [screenshot appendix](waicy-pdf-materials/README.md) shows actual English turns, server-side referrals and the archived English transcript.
 
-PDF 報告可使用另外拍攝的 9 張原始 PNG 與 8 頁英文圖說。圖說區分即時模型、伺服器規則與先前保存的對話。 [WAICY 截圖素材](waicy-pdf-materials/README.md)
+## Repeated fixed-suite results
 
-## 同題重跑
+The [16-turn suite](cases/meal-dialogues.json) covers a shared prompt for three roles, a ten-turn elder dialogue, budget overrun, explicit allergen exclusion, and symptom escalation. A turn passes only when every expected check for that turn passes.
 
-固定 [16 回合案例](cases/meal-dialogues.json) 涵蓋三角色同題、十輪長者對話、超支、明確過敏原和症狀轉介。單輪須通過該輪的所有預期檢查才計為通過。
-
-| 版本 | 回合通過 | 個別檢查 | 模型參與回合 | 原始紀錄 |
+| Version | Passing turns | Checks | Turns involving model | Raw record |
 |---|---:|---:|---:|---|
-| V1 | 5 / 16 | 29 / 56 | 12 | [修正前](runs/luna-pre-fix.json) |
-| V2 | 16 / 16 | 56 / 56 | 11 | [澄清、口語條件和超支修正](runs/luna-post-fix.json) |
-| V3 | 16 / 16 | 56 / 56 | 11 | [三角色分流修正](runs/luna-v3.json) |
-| V4 | 16 / 16 | 56 / 56 | 11 | [原始 V4 同題重跑](runs/luna-final.json) |
+| V1 | 5/16 | 29/56 | 12 | [pre-fix](runs/luna-pre-fix.json) |
+| V2 | 16/16 | 56/56 | 11 | [clarification, natural-language conditions, and budget fixes](runs/luna-post-fix.json) |
+| V3 | 16/16 | 56/56 | 11 | [role-routing revision](runs/luna-v3.json) |
+| V4 | 16/16 | 56/56 | 11 | [same-suite rerun](runs/luna-final.json) |
 
-V4 另通過 [5 個安全邊界回合](cases/meal-edge-cases.json)，包括「無蛋／別加蛋」、壓低預算、免開火與更新為兩人。上述各次記錄都完成執行，模型參與以每輪紀錄中的 `modelInfo` 計數。固定案例的通過數適用於本輪工程驗收。 [安全邊界結果](runs/luna-safety-recheck.json)
+V4 also passed five [conversational edge cases](cases/meal-edge-cases.json), including “no eggs,” a lower budget, no-cook equipment, and changing to two servings. Model participation counts come from each turn's `modelInfo`. These results describe only the fixed engineering cases. [Edge-case run](runs/luna-safety-recheck.json)
 
-## 直接 Luna 基準與代表案例
+## Direct Luna baseline and representative cases
 
-[直接 Luna 輸出](runs/luna-direct-baseline.json) 使用同一模型、相同案例文字與已填的情境資料。以一般對話呈現歷史，採最小繁體中文指令。CareKitchen 則使用角色資料、結構化條件與費用規則，因此以下採逐案質性對照。
+The [direct Luna baseline](runs/luna-direct-baseline.json) used the same model and case text with the scenario already filled in. It used ordinary chat history and a minimal Traditional Chinese instruction; CareKitchen used role context, structured conditions, and cost rules. This is a qualitative case comparison, not a controlled general benchmark.
 
-- **COST-OVER-1。** 直接模型按食譜用量攤提包裝價，回覆約 NT$49 且未超支。CareKitchen 把整包採買支出納入，指出其他條件適用的候選已知採買小計最低 NT$120，超過 NT$100，暫停列出候選並說明可調整的條件。
-- **DEMO-10-3／4。** V1 將「蛋先不要」存成「蛋先」，接著又留下原本的一人份和 NT$100。V4 保留原設備、改為兩人份和 NT$80，並排除蛋。
-- **SAME-ELDER／CAREGIVER／FAMILY。** V4 同一題有各自的理由。長者看到兩個簡單選擇和能用到的庫存，照護者看到份量與條件核對，家屬看到採買項目與價格缺漏，並可預覽摘要。
-- **ALLERGY-SYMPTOM-1。** 直接模型也能拒絕保證雞蛋安全。V4 由伺服器轉介，並阻止候選或把「追問」存成食材。
+- **COST-OVER-1:** The direct model apportioned package prices by recipe quantity and estimated about NT$49, saying the meal was within the NT$100 budget. CareKitchen counted whole-package shopping outlay; known required purchases were at least NT$120, so it stopped presenting candidates and explained that the known subtotal exceeded the budget.
+- **DEMO-10-3/4:** V1 parsed “no egg for now” as the ingredient “egg for now” and later retained one serving and NT$100. V4 retained the equipment, updated to two servings and NT$80, and excluded egg.
+- **SAME-ELDER / CAREGIVER / FAMILY:** V4 gave role-specific reasons for the same request. The elder saw two simple choices and pantry use; the caregiver saw servings and condition checks; the relative saw shopping items, missing prices, and a previewable summary.
+- **ALLERGY-SYMPTOM-1:** The direct model also declined to guarantee egg safety. V4 used a server-side referral and returned no candidates, preventing “follow-up” from being stored as an ingredient.
 
-## 十輪對話
+## Ten-turn recorded dialogue
 
-本機 `/evidence/waicy` 的唯讀頁取自 [交件前完整重跑](runs/luna-waicy-final-recheck.json)的 `DEMO-10`。十個問答回合共 20 則訊息，其中 7 輪取得 Luna 決策、3 輪由程式處理缺少設備、飲食限制待確認及用藥詢問。頁面保留繁中實測原文，另附英文摘要與操作指南。送件前須從外部驗證兩個連結。
+The read-only local `/evidence/waicy` page is drawn from `EN-DEMO` in the [English V5 run](runs/luna-english-v5.json). It contains ten English exchanges (20 messages): seven turns with a Luna decision and three handled by program rules for missing equipment, an unconfirmed dietary restriction, and a medication question. The [earlier Traditional Chinese rerun](runs/luna-waicy-final-recheck.json) remains archived. Both public submission links still require external verification.
 
-## 重跑方式
+## Re-running
 
-在 `web/` 使用已授權的測試環境。兩種模式都會實際呼叫模型，輸出使用新檔名。
+From `web/`, these commands make real API calls and write new files; do not overwrite the archived records:
 
 ```sh
-node --conditions=react-server --env-file-if-exists=.env.local scripts/evaluate.ts app retest ../docs/evidence/runs/retest.json
-node --conditions=react-server --env-file-if-exists=.env.local scripts/evaluate.ts baseline retest-baseline ../docs/evidence/runs/retest-baseline.json
+node --conditions=react-server --env-file-if-exists=.env.local scripts/evaluate.ts app retest-en ../docs/evidence/runs/retest-en.json ../docs/evidence/cases/waicy-english.json
+node --conditions=react-server --env-file-if-exists=.env.local scripts/evaluate.ts baseline retest-baseline-en ../docs/evidence/runs/retest-baseline-en.json ../docs/evidence/cases/waicy-english.json
 ```
 
-記錄包含時間、模型、提示詞雜湊、輸入、應用回覆與模型決策。Git 參照欄位是這輪本機開發的基底，模型設定由版本與雜湊對照。正式評分、學生貢獻與真人驗收需要另外取得證據。
+Records include timestamps, model, prompt hash, input, visible application reply, and model decision. `sourceHead` identifies the Git base for that development run; model settings and prompt hashes help identify the configuration. Student contribution, target-user validation, formal scoring, and public reviewer acceptance require separate evidence.

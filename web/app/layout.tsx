@@ -18,8 +18,8 @@ const ibmPlex = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "CareKitchen｜家常餐點規劃",
-  description: "依手邊食材、預算與已確認的飲食限制規劃一餐。",
+  title: "CareKitchen | Meal Planner",
+  description: "Plan home-style meals around ingredients, budget, and confirmed dietary restrictions.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
-      lang="zh-Hant"
+      lang="en"
       className={sourceSerif.variable + " " + ibmPlex.variable}
     >
       <body>{children}</body>

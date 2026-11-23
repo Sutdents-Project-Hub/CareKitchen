@@ -9,6 +9,7 @@ import {
   type PriceQuote,
 } from "../contracts.ts";
 import { canonicalIngredient } from "./meals.ts";
+import { inspectEnglishTurn, requestsShoppingEnglish, requiresEnglishReferral } from "./english-turn.ts";
 
 const name = z.string().trim().min(1).max(32);
 const quantity = z.number().positive().max(10_000);
@@ -55,6 +56,7 @@ export const contextSchema = z.object({
 
 export const turnSchema = z.object({
   persona: z.enum(personas),
+  language: z.literal("en").optional(),
   text: z.string().trim().min(1).max(600),
   context: contextSchema,
   previousMealIds: z.array(z.string().max(64)).max(30).default([]),
@@ -105,6 +107,7 @@ const quantityExpression = "\\d{1,5}(?:\\.\\d{1,2})?";
 const packageType = "包|袋|盒|瓶|罐|份";
 
 export function requestsShopping(text: string) {
+  if (requestsShoppingEnglish(text)) return true;
   return /採買清單|購物清單|採購清單|買什麼|(?:要|需|得)買哪些|待買品項|^(?:採買|購物|採購)$|(?:整理|列出|列一下|對照|看看|盤點).{0,12}(?:採買(?!預算)|購物|購買|清單|要買|需要補)|(?:採買|買菜).{0,6}(?:清單|方向|品項|列表)/.test(
     text.normalize("NFKC").trim(),
   );
@@ -200,7 +203,8 @@ function quotedPackage(clause: string): PriceQuote | null {
   return { name: quote[1], quantity, unit, priceTwd };
 }
 
-export function inspectTurn(text: string, context: MealContext) {
+export function inspectTurn(text: string, context: MealContext, language?: "en") {
+  if (language === "en" && (!/\p{Script=Han}/u.test(text) || requiresEnglishReferral(text))) return inspectEnglishTurn(text, context);
   const normalized = text.normalize("NFKC");
   if (medicalPattern.test(normalized) || symptomPattern.test(normalized))
     return { context, intent: "refer" as const };

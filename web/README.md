@@ -1,10 +1,10 @@
 # CareKitchen Web
 
-單一 Next.js App Router 元件，包含繁體中文 Web 介面、`/api/chat`、OpenAI 串接、家常餐點庫與價格檢查。專案使用 Node.js 24 LTS、pnpm 10、Next.js 16 及 TypeScript。依賴版本以 `package.json` 與 `pnpm-lock.yaml` 為準。
+The single Next.js App Router component contains the English-first and Traditional Chinese interfaces, `/api/chat`, the OpenAI adapter, the meal catalog, and price checks. It uses TypeScript, Node.js 24 LTS, pnpm 10, and Next.js 16. See `package.json` and `pnpm-lock.yaml` for pinned versions.
 
-## 啟動與驗證
+## Run and verify
 
-在 `web/` 執行以下指令。開發伺服器預設為 `http://localhost:3000`。
+Run these commands from `web/`. The local development URL is `http://localhost:3000`.
 
 ```sh
 pnpm install --frozen-lockfile
@@ -19,21 +19,21 @@ pnpm build
 pnpm start
 ```
 
-## AI 模式
+## AI modes
 
-| 設定 | 行為 |
+| Setting | Behavior |
 |---|---|
-| `CAREKITCHEN_CHAT_MODE=auto`（預設） | 有金鑰時使用 OpenAI，缺少時由本機規則規劃 |
-| `CAREKITCHEN_CHAT_MODE=local` | 全程使用本機規則 |
-| `CAREKITCHEN_CHAT_MODE=openai` | 必須設定金鑰，缺少設定時回應 503 |
-| `OPENAI_API_KEY` | 伺服器端專案金鑰，填於本機 `.env.local` 或部署平台機密環境 |
-| `OPENAI_MODEL` | 可覆寫，預設 `gpt-6-luna`。使用 Luna 時伺服器明確指定 `reasoning.effort: "none"` |
+| `CAREKITCHEN_CHAT_MODE=auto` (default) | Uses OpenAI when configured; otherwise uses clearly labeled local rules. |
+| `CAREKITCHEN_CHAT_MODE=local` | Uses local rules only. |
+| `CAREKITCHEN_CHAT_MODE=openai` | Requires a server-side API key; returns 503 when it is missing. |
+| `OPENAI_API_KEY` | Server-side key in local `.env.local` or deployment secret settings. |
+| `OPENAI_MODEL` | Optional model override; defaults to `gpt-6-luna`. Luna uses `reasoning.effort: "none"`. |
 
-啟用 OpenAI 後，上游錯誤、反應逾時或不可解析會提示重試。介面上的本機規劃標示也會顯示哪些結果由本機規則產生。詳見 [OpenAI 串接](../docs/integrations.md)。
+Upstream errors, timeouts, or unparseable responses prompt the user to retry. The interface labels local-rule results. See [OpenAI integration](../docs/integrations.md).
 
-## 責任與驗收
+## Responsibilities and evidence
 
-- `app/` 與 `components/` 提供角色切換、同頁多輪對話、條件編輯、料理卡及採買摘要預覽。
-- `lib/server/` 解析條件、限制候選及核算採買成本。OpenAI 只能分類意圖和排序既有候選。
-- `tests/` 使用 Node.js 測試規則與模型替身。實際 OpenAI 合成案例、逐版差異與限制見 [實測紀錄](../docs/evidence/README.md)。公開環境的配額和可用性仍待確認。
-- 會話跟隨當前分頁，採買摘要為手動複製文字。唯讀路由 `/evidence/waicy` 顯示交件前重跑的十輪合成案例，附英文操作指南與逐輪摘要。外部評審驗收見 [部署說明](../docs/deployment.md)。
+- `app/` and `components/` implement role selection, conversation, condition editing, meal cards, and shopping-summary preview.
+- `lib/server/` parses conditions, filters candidates, and calculates shopping costs. OpenAI classifies intent and ranks existing eligible candidates; server-side rules remain authoritative.
+- `tests/` use Node.js tests for rules and model substitutes. Actual local synthetic OpenAI runs, iteration records, and limitations are documented in [evaluation evidence](../docs/evidence/README.md). They do not establish public availability or real-user acceptance.
+- Conversation state belongs to the current browser tab. Shopping summaries are manually copied. `/evidence/waicy` is a read-only page for recorded synthetic cases and includes English instructions; it is not a live chat. Public evaluator access remains unverified; see the [deployment plan](../docs/deployment.md).

@@ -1,28 +1,39 @@
-# 外部研究筆記與查證程度
+# External Research Notes and Verification Status
 
-查詢日期：2026-11-23。**查證程度：**除標示「專案文件」者外，下列數字取自網路搜尋結果的摘要，並未逐一開啟原始頁面全文核對。送出前請依 `submission-todo.md` 第 9 項開原頁確認。
+**Snapshot date: November 23, 2026.** This register distinguishes primary-source facts, project records, and claims that remain unverified. Search-result snippets are not treated as sufficient support for a final competition claim. Confirm the original page and wording before exporting the final PDF.
 
-## 簡報採用的外部資料
+## Sources currently retained for the deck/report
 
-| 簡報頁 | 數字或主張 | 來源 | 查證程度與注意 |
-|---|---|---|---|
-| 3 | 2025 年 12 月底 65 歲以上占 20.06% | [內政部戶口統計資料分析](https://www.moi.gov.tw/News_Content.aspx?n=2&s=335870) | 取自 `docs/source-register.md`，為先前輪次記錄，本次未重新開啟 |
-| 3 | 65 歲以上長者獨居超過 23% | [Taipei Times／自由時報](https://news.ltn.com.tw/news/focus/breakingnews/4707398)（內政部資料，約 2024 年 7 月） | 為新聞轉述；搜尋摘要中另有「976,900／約 418 萬」的換算，因來源段落不明確未採用。發表日期需確認 |
-| 3 | 2050 年全球 60 歲以上 21 億，2023 年 11 億 | [WHO Ageing and health](https://www.who.int/news-room/fact-sheets/detail/ageing-and-health) | 搜尋結果多為鏡像頁，部分數字出自 WHO 不同頁面與年份（2030 年 14 億來自另一頁）。簡報只用 2023 與 2050 兩項 |
-| 3 | 委託他人購物或烹飪的長者約半數營養不良或有風險，無協助者 4% | [Van Wymelbeke-Delannoy 等人，Age and Ageing，2022](https://academic.oup.com/ageing/article/51/1/afab208/6406696) | 法國觀察性研究，作者自述不推論因果，簡報已加註。題名取自圖書館目錄 |
-| 4 | 通用 ChatGPT 為過敏族群設計的飲食，56 份中 4 份（約 7%）含禁用過敏原 | [Niszczota 與 Rybicka，2023（PubMed 37269717）](https://pubmed.ncbi.nlm.nih.gov/37269717/) | 使用 2023 年初模型版本，樣本小，簡報已註明。作者姓名由搜尋與記憶整理，請對照原文確認 |
-| 4 | 直接 Luna 基準回覆約 NT$49；V1 把「蛋先不要」存成「蛋先」 | 專案實測：`docs/evidence/runs/luna-direct-baseline.json`、`luna-pre-fix.json` | 本專案原始紀錄 |
+| Claim or use | Source | Verification and limits |
+|---|---|---|
+| Taiwan's population aged 65+ was 20.06% at the end of December 2025 | [Taiwan Ministry of the Interior, household registration statistics](https://www.moi.gov.tw/News_Content.aspx?n=2&s=335870) | The linked MOI release reports this statistic. It is demographic context only; it does not establish a meal-planning need or product impact. |
+| At the end of June 2025, 25.8% of registered people aged 65+ were in one-person households | [Taiwan Ministry of the Interior, June 2025 household registration statistics](https://www.moi.gov.tw/News_Content.aspx?Create=1&n=9&s=334815&sms=9009) | This is a household-registration measure. It does not establish that a person was observed living alone, lacked support, or experienced meal-planning difficulty. Do not shorten it to “25.8% live alone.” |
+| Global population aged 60+ projections | [WHO, Ageing and health](https://www.who.int/news-room/fact-sheets/detail/ageing-and-health) | The current WHO fact sheet (1 October 2025) states 1.0 billion people aged 60+ in 2020, 1.4 billion projected in 2030, and 2.1 billion projected in 2050. Use the page's stated years and definitions; do not substitute a different 2023 estimate. |
+| An observational French study reported malnutrition or risk in about half of older adults receiving help with shopping/cooking, compared with 4% among those without such help | [Van Wymelbeke-Delannoy et al., Age and Ageing, 2022](https://doi.org/10.1093/ageing/afab208) | The linked paper's indexed abstract reports the comparison. The authors describe an observational association and do not establish causation. Preserve population and measurement context from the paper if this statistic appears in the deck. |
+| A 2023 pilot evaluated AI meal plans for people with food allergies | [Niszczota & Rybicka, Nutrition, 2023, DOI 10.1016/j.nut.2023.112076](https://doi.org/10.1016/j.nut.2023.112076); [author repository copy](https://bazawiedzy.ue.poznan.pl/seam/resource/rest/download/inline/UEP3d484d8d452b4baf924fb2d046f576b7) | The original paper reports 52 of 56 prompts correctly excluded the allergen of interest; an error included almond milk in nut-free menus. It is a small pilot using an early-2023 model/version and cannot establish performance of current systems. Do not repeat the previously circulated “4/56 contained a prohibited allergen” claim. |
+| Project performance and failure examples | [Raw evaluation records](../evidence/README.md) and [iteration record](../evidence/iteration-development.md) | Primary project evidence. All scenarios are synthetic; this does not establish real-user preference, clinical safety, or general model accuracy. |
 
-## 刻意不採用的數字
+## Claims removed or held pending primary-source verification
 
-| 內容 | 原因 |
+| Previously considered claim | Decision |
 |---|---|
-| 社區長者營養不良 8.5%、機構 17.5%、住院 28.0% | 搜尋摘要把它歸給一篇 2016 年統合分析，但無法驗證；另一篇回顧引用同一篇卻是社區 3%。兩者矛盾，先不使用 |
-| 國發會對 2037、2045、2050、2065 年老年人口占比 | 不同報導的數字互相矛盾，需從國發會原報告取得 |
-| 「獨居者營養風險較高」的合併效應量 | 搜尋只找到方向性結論，沒有可核對的數值 |
-| 任何市場規模、影響人數或成效推估 | 簡報沒有使用推估或情境估算。**所有量化結果只來自專案實測**，並在第 26 頁分類標示 |
+| More than 23% of older adults live alone in Taiwan | Replaced with the MOI's precisely scoped 25.8% one-person-household statistic for registered people aged 65+ at end June 2025. It must not be restated as an observed living-alone rate. |
+| ChatGPT meal plans for people with food allergies: 4 of 56 contained a prohibited allergen | Rejected as an inaccurate reading. The original study reports 52/56 prompts correctly excluded the allergen of interest, with a documented almond-milk error in nut-free menus. |
+| Community/institution/hospital malnutrition prevalence estimates; Taiwan ageing projections; pooled effect for living alone and nutrition risk | Excluded due to inconsistent secondary summaries or missing primary-source verification. |
+| Market size, people affected, or projected impact | Not used. The project makes no market-size or impact estimate. |
 
-## 尚未做的研究
+## Research not completed
 
-- 沒有調查既有餐點、營養或長者飲食應用程式，因此簡報不宣稱「優於既有產品」，只說明通用模型的失敗模式。若要加強第 4 頁的「現有方案不足」，需另做有日期與網址的競品調查。
-- 沒有查閱營養學或照護領域的同行審查文獻，餐點庫也尚未經營養師審閱。
+- No survey of existing meal-planning, nutrition, or older-adult applications. The project does not claim to outperform commercial products.
+- No comprehensive nutrition or caregiving literature review; the meal catalogue has not been reviewed by a dietitian. The few context studies listed above do not validate CareKitchen's recommendations.
+- No interviews or usability study with older adults, caregivers, or relatives. The target users are product personas, not research participants.
+- No clinical validation or evidence of improved nutrition, health, safety, or independence.
+
+## Official WAICY sources
+
+- [WAICY 2026 event page](https://www.waicy.org/waicy-2026/)
+- [WAICY rubrics](https://www.waicy.org/rubrics/)
+- [WAICY 2026 Guidebook (PDF)](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf)
+- [WAICY 2026 submission form](https://www.waicy.org/2026-submission/)
+
+Recheck dates, eligibility, file naming, required contents, and sharing settings from the official pages immediately before submission. See [submission checklist](submission-todo.md).

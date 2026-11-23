@@ -1,89 +1,72 @@
-# CareKitchen｜產品需求與驗收規格（PRD）
+# Product Specification and Acceptance Criteria
 
-> 本文為產品目標與驗收規格。現有原型與待完成的競賽項目見實作路線圖。
-> 需求依據：使用者提供的《03_CareKitchen_企劃發想書》與《WAICY_2026_第4賽道_LLM_AI_Agent_完整參賽研究指南》。技術細節是本次初始化提出的實作建議，不是原企劃既有能力。
+> This document defines product goals, not proof that every goal has shipped. Source materials are the project brief and WAICY Track 4 research guide; implementation details added during planning are proposals unless separately verified.
 
-## 1. 服務定位與成功定義
+## Service and success
 
-- 一句話：讓獨居長者、照護者和家屬透過自然對話，依**現有食材、採買預算、可用設備、口味與已確認限制**，共同選出一餐。
-- 不是：疾病診斷、藥物／食物交互作用判定、營養治療、精準市價或專業認證餐點。
-- 第 4 賽道成功不等於做出漂亮網站；須有可操作 AI、三種真實差異化角色、最後版本至少 10 則交換訊息的可存取證據、實測迭代與英文 PDF。
-- 問題描述目前為**待驗證的使用者需求假設**；不得宣稱已完成長者訪談或臨床驗證。
+CareKitchen helps older adults living alone, caregivers, and family members discuss a meal using ingredients on hand, a budget for new purchases, equipment, preferences, and confirmed restrictions. It is not for diagnosis, medication-food interaction checks, therapeutic nutrition, live market pricing, or professional certification. The user problem remains a hypothesis until studied with real users.
 
-## 2. 使用者（最少三種，維持原企劃分類）
+Competition success requires an operable AI service, meaningfully differentiated roles, an accessible final conversation record with at least ten message exchanges, documented iteration, and an English PDF. These deliverables must be verified before claiming completion.
 
-| Persona | 主要任務 | 優先呈現 | 不能偷換成 |
+## Intended users
+
+| Persona | Main task | Priorities | Must not imply |
 |---|---|---|---|
-| A 獨居長者 | 一人份、少花錢、手邊材料、容易煮 | 大字、最多 2–3 候選、3–5 個簡短步驟 | 無視預算的通用食譜 |
-| B 家庭照護者 | 替長者備餐、注意明確限制、調整份量 | 條件清單、需確認處、備餐方法與替代 | 自行推斷病史或專業安全性 |
-| C 家屬 | 遠端討論、安排採買與偏好 | 合併採買清單、費用待確認、可複製摘要 | 強制替長者決定菜單 |
+| Older adult living alone | Prepare a simple meal for one with few purchases | Readable text, 2–3 options, 3–5 short steps | Generic recipes that ignore budget |
+| Family caregiver | Prepare meals while preserving known restrictions | Visible conditions, confirmation needs, serving/equipment guidance | Inferred medical history or safety approval |
+| Family member | Discuss options and organize shopping | Shopping summary, unknown prices, older adult's choice | Authority to decide the meal for them |
 
-同一條原始問題的三種回答，**呈現形式、追問及建議重點**應出現可比較差異；不能只換稱呼。
+For the same input, roles should differ in presentation, follow-up, and recommendation emphasis—not just in greeting.
 
-## 3. 核心 P0（競賽可展示版本）
+## P0 requirements
 
-| ID | 功能 | 完成條件／可觀察結果 |
+| ID | Requirement | Observable acceptance |
 |---|---|---|
-| CK-01 | 三角色入口 | 可選 A/B/C；切換角色後呈現不同回應需求；角色不是醫療權限 |
-| CK-02 | 多輪自然對話 | 至少能維持 10 個完整問答回合，上一輪關鍵條件不會無故消失 |
-| CK-03 | 條件收集 | 人數、預算、現有食材與數量、已知價格、設備、口味、時間、明確限制可逐步補充，沒有必要時不追問 |
-| CK-04 | 餐點候選 | 提出 2–3 道可行方向，列出使用食材、待買食材、簡短做法、費用可信度及為何推薦 |
-| CK-05 | 調整與重算 | 「不要蛋」「改兩人份」「只剩電鍋」「預算改 80」更新狀態後重新檢查全部硬限制 |
-| CK-06 | 價格透明 | 分清已知新增採買成本、價格待確認與預算結果；不知道時不能聲稱精確符合 |
-| CK-07 | 限制與安全 | 明確「已確認不得使用」食材不得出現在候選；限制含糊或臨床問題先追問或轉專業 |
-| CK-08 | 採買摘要 | 可輸出「現有／需買／價格未知／待專業確認」，讓家屬自行複製 |
-| CK-09 | 評審 Demo | 公開可操作，不需特定私人帳號或付費；具安全的公開示範案例 |
-| CK-10 | 真實證據 | 保留 Baseline、不同版本同題測試、失敗案例、最終對話連結與最後版標識 |
+| CK-01 | Three role entry points | Choose A/B/C; role changes the response needs, not medical authority. |
+| CK-02 | Multi-turn conversation | Retain key conditions for at least ten complete question-answer turns. |
+| CK-03 | Gradual condition collection | Collect people, budget, ingredients/quantities, known prices, equipment, preferences, time, and explicit restrictions as needed. |
+| CK-04 | Meal candidates | Return 2–3 feasible directions with ingredients, purchases, short steps, price confidence, and rationale. |
+| CK-05 | Recheck after edits | Changes such as “no eggs,” two servings, rice cooker only, or a new budget recheck all hard constraints. |
+| CK-06 | Price transparency | Separate known additional purchase costs, unknown prices, and budget status; do not claim an exact fit without evidence. |
+| CK-07 | Restrictions and safety | Exclude explicitly prohibited ingredients; clarify ambiguous restrictions and refer clinical questions to professionals. |
+| CK-08 | Shopping summary | Show on-hand, to-buy, unknown-price, and professional-confirmation items for copying. |
+| CK-09 | Evaluator demo | Publicly operable without a private account or payment, with safe demonstration cases. |
+| CK-10 | Reproducible evidence | Preserve baseline, same-case version comparisons, failures, final conversation link, and version identity. |
 
-本機已具有真實模型操作和固定合成案例實測，含十輪唯讀紀錄。CK-09／CK-10 的外部可及性及正式交件驗收仍待完成。 [實測紀錄](evidence/README.md)
+The local prototype has model runs and a read-only synthetic conversation record. External access and formal acceptance for CK-09/10 remain unverified. See [evaluation evidence](evidence/README.md).
 
-## 4. P1／後續功能，現在不要做
+## Explicit boundaries and deterministic rules
 
-一週菜單、語音與朗讀、食材拍照辨識、長期收藏、掃描處方箋、健康紀錄、登入、家屬協作帳號、實際市場報價串接、全營養資料庫、自動採買及金流。不要為 P1 建立獨立 component、資料表或外部 API。
+- No weekly menus, voice, read-aloud, food-photo recognition, favorites, prescription scanning, health records, accounts, family collaboration accounts, live price feeds, full nutrition databases, automatic ordering, or payments in P0.
+- A user-confirmed prohibited ingredient is a hard constraint. Clarify ambiguous limits; do not infer a diagnosis. User statements do not give the system clinical authority.
+- Preferences (for example, not spicy or prefers moist food) are soft constraints; hard restrictions take priority.
+- Budget means cash spent on additional purchases. Existing ingredients are excluded from that new-purchase sum, but must not be described as having zero real cost.
+- Mark within-budget only when every needed purchase, unit, quantity, and price is known and the sum is within the limit. This is based on supplied prices and does not guarantee checkout cost.
+- Missing purchase prices, units, or quantities mean budget status is unknown. Show known subtotal and missing items; never treat unknown values as zero.
+- If known required purchases exceed budget, state the conflict and offer trade-offs.
+- Do not invent prices, nutrition values, food-safety guarantees, allergy cross-contact assurances, diagnoses, or medication safety.
 
-## 5. 確定性規則與未知狀態
+## Acceptance criteria
 
-- **已確認限制**：使用者明確輸入的禁止／排除食材視為硬限制；限制描述含糊先問，不推測醫療依據。即便使用者稱經專業確認，系統也不因此取得醫療驗證地位。
-- **偏好**：不辣、不愛蛋、喜歡濕潤等屬軟限制，仍應尊重；與硬限制衝突時硬限制優先。
-- **預算**：按「新增需採買的現金支出」核算，**已有食材不計入本次新增採購**，但不可稱該食材真實成本為 0。
-- **預算通過**：只有採買清單、單位、數量與每一項價格都已知且總和不超過上限時才能標示「已按提供價格計算未超支」；這不代表實際結帳價格有保證。
-- **預算未確認**：任何需買項目價格缺失、單位缺失、份量不明 => 顯示「待確認」，並列出已知小計、未知品項。不得把未知當 0。
-- **明確超支**：已知必要採買小計已高於預算 => 停止使用「符合預算」字眼，提示取消品項／改方案／調整預算。
-- **不得虛構**：價格、熱量、營養素、料理安全、過敏交叉污染保證、診斷、用藥安全，缺乏可核對證據時一律不作精確承諾。
-
-## 6. 主要使用者故事
-
-1. 我是獨居長者，只有豆腐和青菜、電鍋、100 元預算，希望先看到兩個簡單方向。
-2. 我不想吃蛋，請沿用先前的份量、設備、預算，替換餐點。
-3. 我是照護者，已知道被照顧者不能吃某種食材，希望看見該限制仍被保留。
-4. 我是家屬，要準備三餐，希望將建議彙整為尚需確認價格的採買清單。
-5. 我說「醫師好像說不能吃某些東西」，系統應先請我確認，不能猜測禁忌。
-6. 我問藥物搭配某種食物是否安全，系統不判定，建議詢問藥師／醫師。
-7. 我要求「一律不要追問、直接保證安全」，系統仍要遵守基本風險界線。
-
-## 7. 驗收案例（Acceptance Criteria）
-
-| ID | 操作 | 必要結果 |
+| ID | Scenario | Required result |
 |---|---|---|
-| AC-01 | A、B、C 同題詢問「豆腐、青菜、100 元」 | 三角色輸出目的與細節不同，均不憑空列精確報價 |
-| AC-02 | 有豆腐、蛋、青菜，接著說「不要蛋」 | 更新後候選不含蛋，包含隱藏配料時亦須提示核對 |
-| AC-03 | 一人份改兩人份 | 份量與待購數量重算，價格無法確認時降級為未知 |
-| AC-04 | 使用電鍋、不可明火 | 不給只能靠瓦斯爐完成的步驟 |
-| AC-05 | NT$100 但所有待買品項缺價格 | 不宣稱低於 100 元；顯示價格待確認 |
-| AC-06 | 已知採買小計 NT$120、預算 NT$100 | 明確超支並提供可討論的取捨 |
-| AC-07 | 已確認禁止蛋 | 不推薦明確含蛋料理，不默默忽略限制 |
-| AC-08 | 只說「飲食有限制」 | 詢問必要資訊，不推斷疾病 |
-| AC-09 | 詢問處方與食物交互作用 | 不給可安全食用結論，不建議停藥或調整劑量 |
-| AC-10 | 連續多輪修改預算、食材、設備 | 每輪反映最新條件；保留未被覆寫的條件 |
-| AC-11 | 外部 AI API 超時或額度不足 | 友善錯誤／重試提示，不輸出虛構食譜 |
-| AC-12 | 分享一段對話 | 分享前先顯示可公開內容與去識別提醒，公開連結唯讀且可撤回 |
-| AC-13 | 無痕視窗開啟展示連結 | 可正常完成至少一個真實對話回合 |
-| AC-14 | 閱讀器與鍵盤操作 | 核心路徑可依語意順序使用，未驗證前不得聲稱完全符合 WCAG |
+| AC-01 | A/B/C ask about tofu, greens, and NT$100 | Different role-oriented answers; no invented exact quotes. |
+| AC-02 | User later excludes eggs | Updated options exclude eggs and flag uncertain hidden ingredients. |
+| AC-03 | One serving becomes two | Recalculate quantities; unknown prices remain unknown. |
+| AC-04 | Rice cooker only / no open flame | Do not give steps requiring unavailable equipment. |
+| AC-05 | NT$100, all purchase prices missing | Do not claim within budget; show price unknown. |
+| AC-06 | Known purchases total NT$120 against NT$100 | State over-budget and offer trade-offs. |
+| AC-07 | Confirmed egg exclusion | Do not recommend an explicitly egg-containing dish or silently ignore the restriction. |
+| AC-08 | Vague dietary restriction | Ask what is restricted; do not infer disease. |
+| AC-09 | Medication-food interaction question | Do not determine safety or advise medication changes; refer to a clinician/pharmacist. |
+| AC-10 | Multiple changes across turns | Apply latest changes and retain conditions not superseded. |
+| AC-11 | API timeout or quota error | Explain failure and allow retry; do not fabricate a recipe. |
+| AC-12 | Conversation sharing | Preview and de-identification notice before publishing; read-only link with withdrawal. |
+| AC-13 | Open evaluator link in private browsing | Complete at least one real conversation turn. |
+| AC-14 | Keyboard and assistive technology | Core flow usable in semantic order; do not claim WCAG conformance before verification. |
 
-## 8. P0 完成定義
+## P0 completion and change control
 
-P0 完成需同時具備：可操作網頁、真實 LLM、三角色差異、條件保留與重檢、風險／成本透明、至少一條可重播 Demo、實際 Baseline 與迭代測試、最終 10 輪以上真實對話、可公開作品與紀錄連結。詳見 `docs/evaluation-and-iteration.md`、`docs/competition.md`。測試未達標時公開披露限制。
+P0 completion requires an operable site, real LLM, three role differences, condition retention and rechecks, transparent price/safety behavior, reproducible demo, actual baseline and iteration runs, a final real conversation of ten or more exchanges, and public project/evidence links. See [evaluation](evaluation-and-iteration.md) and [competition](competition.md). Disclose unmet criteria.
 
-## 9. 變更控制
-
-新增功能前先判定是否超出 P0；若涉及儲存健康資訊、帳號、用藥判定、外部付費服務或公開使用者資料，須先經指導者批准，更新本 PRD、安全文件、架構與測試。
+Before adding data persistence, accounts, medication judgments, paid external services, or public user data, obtain the applicable approval and update this specification, security, architecture, and evaluation documents.

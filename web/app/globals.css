@@ -481,7 +481,14 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 }
 
 @media (max-width: 520px) {
-  .topbar-inner { min-height: 58px; }
+  .topbar-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 10px;
+    min-height: 58px;
+    padding-block: 7px;
+  }
   .brand { font-size: 1.33rem; }
   .access-tools { gap: 6px; }
   .text-tool, .font-tool { padding-inline: 7px; }

@@ -1,32 +1,34 @@
-# 評分標準與必填內容對照
+# WAICY Rubric and Required-Content Mapping
 
-頁碼對應 26 頁簡報。分數級距為官方的 Outstanding 目標，**以下是自評，不是預測分數**。
+Page references point to the current 26-slide draft. Scores and descriptions below summarize the official rubric; this mapping is a project self-review, not a predicted score. See [source and verification notes](research-notes.md).
 
-## 官方七項評分
+## Seven scoring criteria
 
-| 評分項目（分） | 對應頁面 | 支持內容 | 可再加強 |
+| Criterion | Deck pages | Current supporting material | Gap or strengthening action |
 |---|---|---|---|
-| Specific AI Service（25） | 5、6、7、8、9、10、12 | 服務定義表（功能、問題、對象、價值、專業領域、AI 角色、範圍外）、六步驟流程、「AI 提案、伺服器驗證」架構、三角色同題三種結果、價格三態、醫療轉介 | 缺少與既有產品的實際比較（未研究市售工具，故未宣稱差異）；可補一頁在公開網址上的操作截圖 |
-| Iterative Development（25） | 4、13–18、20 | 構想演進、Baseline 與 V1–V4 提示詞表、16 回合重跑長條圖、四個失敗的觀察／根因／修正／重測、新題 7→10 測試、未解釋的錯誤也保留 | 結果為單次執行；V2、V3 提示詞檔是還原而非當時封存（已在第 14 頁揭露）。可重跑多次補範圍 |
-| Motivation & Problem Statement（10） | 3、4 | 內政部、WHO 數據、法國研究、通用模型三種失敗模式（含本專案與公開研究） | 缺真人訪談；痛點明確標為假設。若能取得 2–3 位受試者的匿名回饋，是最大的加分 |
-| Limitations & Considerations（10） | 21、22 | 證據為合成案例、AI 代理扮演使用者、餐點庫小、價格手動、非臨床、可靠度、無障礙、偏誤；自主、隱私、過度信任、誤用、分享、不主張事項 | 無 |
-| Future Development & Clear Reference（10） | 23、25、26 | 每個限制對應下一步與狀態（計畫／構想／已設計未建）、結論、APA 參考文獻與資料來源分類 | 參考文獻目前 6 筆，可再補 1–2 篇營養或長者獨居的同行審查研究 |
-| Presentation & Communication（10） | 全部 | 一致的 Term Sheet 視覺、一頁一個重點、圖表與真實截圖、英文簡潔 | 尚未由英文母語者校閱；需在最終 PDF 逐頁檢查圖片與換行 |
-| Originality & Creativity（10） | 24、7、10 | 五項原創設計（確認／不確定限制、整包計價、一狀態三角色、提案／驗證分離、證據優先迭代） | 學生實際貢獻與 AI 協助揭露仍待團隊填寫（第 24 頁） |
+| Specific AI Service (25) | 5–10, 12 | Service definition; six-step flow; AI proposal/server validation; three-role same-prompt comparison; three price states; professional referral | No comparison with existing commercial products; no claim of superiority. Add a public-site operation capture only after public testing. |
+| Iterative Development (25) | 4, 13–18, 20 | Concept history; historical V1–V4 and English V5 prompts; fixed 16-turn suite; failure/fix/retest evidence; new challenge 7→10; retained unexplained error | Each reported version used a fixed run. V2/V3 prompt snapshots are reconstructed, not archived contemporaneously. Repeat across sessions if time permits. |
+| Motivation & Problem Statement (10) | 3–4 | MOI and WHO demographic context; project-specific failure cases | No target-user interviews; the meal-planning pain point remains a design hypothesis. Remove any external study claim that lacks a checked primary source. |
+| Limitations & Considerations (10) | 21–22 | Synthetic evidence; agent-acted roles; small meal set; user-entered prices; non-clinical scope; accessibility, bias, autonomy, privacy, overreliance, and sharing risks | No known gap in the current draft; keep claims aligned with evidence. |
+| Future Development & Clear Reference (10) | 23, 25–26 | Future directions labelled by status; conclusion; bibliography and source classes | References must be checked against original sources before final export. Do not add unsupported nutrition claims. |
+| Presentation & Communication (10) | All | Consistent Term Sheet style, one idea per page, charts and genuine screenshots, concise English | No native-English review yet; inspect every page for line wraps and image integrity in the exported PDF. |
+| Originality & Creativity (10) | 7, 10, 24 | Confirmed vs uncertain restrictions; package-level cost; three role outputs; proposal/validation separation; evidence-led iteration | Student contributions and AI assistance remain unverified and must be completed by the team. |
 
-## 官方十項必填內容
+## Ten required submission items
 
-| # | 必填項目 | 頁面 | 狀態 |
-|---|---|---|---|
-| 1 | What specific service your AI provides | 5、6、7 | 完成 |
-| 2 | Who are your users（至少 3 種） | 8、9 | 完成 |
-| 3 | Motivation | 3、4 | 完成（痛點為假設） |
-| 4 | Link to the chat history（最終版、至少 10 則交換訊息） | 19、20 | **待補連結** |
-| 5 | Link to the chatbot | 19 | **待補網址與 QR** |
-| 6 | Iterative AI design process | 13–18 | 完成 |
-| 7 | Limitation | 21、22 | 完成 |
-| 8 | Future development | 23 | 完成 |
-| 9 | Conclusion | 25 | 完成 |
-| 10 | Reference | 26 | 完成（建議再補 1–2 篇） |
+The official checklist and wording should be rechecked against the [WAICY 2026 Guidebook](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf) before filing. The current interpretation is recorded in the [source register](../source-register.md).
 
-官方規則依 2026-11-23 的 `docs/source-register.md` 記錄；**本次簡報製作沒有重新連線核對官方頁面**，送出前請依 `submission-todo.md` 再核對一次。
+| # | Required content | Pages | Status in current deck |
+|---:|---|---|---|
+| 1 | Specific service provided by the AI | 5–7 | Draft complete |
+| 2 | At least three user profiles | 8–9 | Draft complete |
+| 3 | Motivation | 3–4 | Draft complete; user need is labelled as a hypothesis |
+| 4 | Link to final chat history (at least 10 message exchanges, per current project checklist) | 19–20 | **Link pending** |
+| 5 | Link to chatbot | 19 | **Public URL and QR pending** |
+| 6 | Iterative AI design process | 13–18 | Draft complete; evidence linked in repository |
+| 7 | Limitations | 21–22 | Draft complete |
+| 8 | Future development | 23 | Draft complete |
+| 9 | Conclusion | 25 | Draft complete |
+| 10 | References | 26 | Draft complete, source verification still needed |
+
+The official guide's wording and exact file requirements take precedence over this working summary. See [WAICY Guidebook](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf).

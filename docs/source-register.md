@@ -1,55 +1,38 @@
-# 來源、確認程度與設計決策對照
+# Source Register and Decision Provenance
 
-> 目的：讓學生、指導者、Codex／Claude 知道每項需求來自哪裡，避免把「原始發想」「研究建議」「本次技術提案」混為既有成果。
+This register separates the original project idea, competition guidance, research suggestions, and implementation decisions. Original attachments are local reference materials and are not automatically public or versioned.
 
-## 1. 需求來源
+## Authority by document
 
-- 原始產品構想提供定位、三個角色、核心功能、安全界線及 V1–V3 研究方向。
-- 競賽整理指南提供賽道、評分、交件、對話證據、時程與學生貢獻要求。
-- 整理後的開發規格收錄於本目錄。原始附件為本機備查資料，未納入 Git。
-
-## 2. 本次整理產出的規格
-
-| 文件 | 性質／權威範圍 |
+| Document | Scope |
 |---|---|
-| `docs/project-overview.md` | 總覽、階段、P0 邊界 |
-| `docs/product-spec.md` | Persona、功能 ID、可觀察驗收／禁止能力 |
-| `docs/architecture.md` | 技術與單一 Web 元件、責任邊界 |
-| `docs/agent-design.md` | AI Agent 角色、狀態、成本和安全策略 |
-| `docs/prompts/system-draft.md` | **尚未測試**的提示詞初稿 |
-| `docs/api-and-data-contracts.md` | 現有 API 契約及持久化與匿名分享規劃 |
-| `docs/ux-and-user-flows.md` | UI 流程、易讀與無障礙目標 |
-| `docs/evaluation-and-iteration.md` | 實測方法、Baseline、30 案例、評分 |
-| `docs/competition.md`／`docs/demo-script.md` | 提交與 Demo 證據 |
-| `docs/implementation-roadmap.md`／`docs/handoff-for-codex-claude.md` | 依序實作與交接 |
+| `project-overview.md` | Purpose, phase, and scope |
+| `product-spec.md` | Personas, requirement IDs, observable acceptance, excluded capabilities |
+| `architecture.md` | Current single-Web system and responsibility boundaries |
+| `agent-design.md` | Agent role, state, price, and safety strategy |
+| `prompts/system-draft.md` | Prompt draft; treat as untested unless evidence states otherwise |
+| `api-and-data-contracts.md` | Current API contract and sharing/storage status |
+| `ux-and-user-flows.md` | Interface flows and accessibility goals |
+| `evaluation-and-iteration.md` | Evaluation method, baseline, cases, scoring |
+| `competition.md`, `demo-script.md` | Submission requirements and demo evidence |
+| `implementation-roadmap.md`, `handoff-for-codex-claude.md` | Implementation and handoff sequence |
 
-## 3. 確認程度
+## Confirmed versus unverified
 
-- **原始企劃已確認的需求方向**：目標人群、食材／預算／明確限制下的餐點對話、簡易說明、採買與三角色差異。
-- **官方賽道要求**：2026-11-23 已核對 1 份 PDF、至少 10 則交換訊息、三種有差異的使用者、可操作助理與評分權重。 [活動頁](https://www.waicy.org/waicy-2026/) · [官方手冊](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf) · [評分表](https://www.waicy.org/rubrics/)
-- **已實作**：Next.js、TypeScript、Node.js 24、pnpm、Zod、Node.js 測試及 OpenAI adapter。已保留 GPT-6 Luna 合成案例實測。託管方案待確認。
-- **仍未確認**：部署平台、正式資料保存政策、真實使用者驗收、公開環境成本與競賽提交是否成功。
+- Original brief: target audiences, ingredient/budget/restriction-based meal conversation, simple explanations, shopping, and role differentiation.
+- Competition guidance: track, scoring, submission, conversation evidence, timeline, and student contribution expectations. Recheck official sources before submission: [WAICY 2026](https://www.waicy.org/waicy-2026/), [official guidebook](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf), [rubrics](https://www.waicy.org/rubrics/).
+- Implemented: Next.js, TypeScript, Node.js 24, pnpm, Zod, Node.js tests, and an OpenAI adapter. GPT-6 Luna synthetic-case runs are recorded. Hosting remains undecided.
+- Unverified: deployment platform, public evaluator access, data retention policy, real-user acceptance, public environment cost, and successful competition submission.
 
-## 4. 禁止虛構的證據
+## Evidence rules
 
-- 說「已完成 30 案例」「V3 通過率 90%」「藥師驗證」「正式運行」「營養精準符合」都需要可追溯證據；目前一概**沒有**。
-- 學生的實際貢獻要按開發紀錄揭露，不因使用 AI 工具就自動推定學生獨立編寫程式。
+Claims such as “30 cases completed,” “90% V3 pass rate,” “pharmacist validated,” “production ready,” or “nutritionally accurate” require traceable evidence. None should be asserted without it. Report student work and AI/tool assistance based on actual records.
 
-## 5. 官方參考網址（由原始指南提供，提交前重新驗證）
+## Design and implementation references
 
-- https://www.waicy.org/waicy-2026/
-- https://www.waicy.org/rubrics/
-- https://www.waicy.org/2026-submission/
-- https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf
-
-若官方規則與這份指南不符，記錄差異與查核日期，更新 `docs/competition.md`、`docs/demo-script.md` 及交件清單後再決定處理方式。
-
-## 6. 開發與介面來源
-
-- [UI UX Pro Max，nextlevelbuilder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) 的設計系統與可及性查詢（修訂 `6ec2bb5`）用於配色、響應式表單、鍵盤焦點與觸控範圍檢查。
-- [unslop，Damir Sokolovsky（@heydamir）](https://github.com/heydamir/unslop) 的版面檢查指引（修訂 `620163e`，[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)）用於留白、階層、材質與圖像取捨。
-- 介面使用 [Lucide](https://lucide.dev/) 的操作圖示。餐點庫為本專案撰寫。
-- OpenAI 和 Next.js 技術文件見 [OpenAI 串接](integrations.md) 與 [Next.js App Router](https://nextjs.org/docs/app/getting-started/installation)。
-- 網站自託管 [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) 與 [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) 的拉丁變體，兩者均採 SIL Open Font License，授權檔隨字型存放於 `web/app/fonts/`。
-
-英文報告引用內政部的 2025 年 12 月戶籍人口資料，當月底 65 歲以上占 20.06%。此資料用於說明人口背景，備餐痛點仍是待真人驗證的假設。 [內政部戶口統計資料分析](https://www.moi.gov.tw/News_Content.aspx?n=2&s=335870)
+- [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), revision `6ec2bb5`, informed design-system and accessibility checks.
+- [unslop](https://github.com/heydamir/unslop), revision `620163e`, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), informed layout review.
+- Interface icons use [Lucide](https://lucide.dev/); the meal catalog is original to this project.
+- Technical references include [OpenAI integration](integrations.md) and [Next.js App Router](https://nextjs.org/docs/app/getting-started/installation).
+- Self-hosted Latin variants of Source Serif 4 and IBM Plex Sans use the SIL Open Font License; license files are stored under `web/app/fonts/`.
+- The English report references Taiwan's December 2025 population statistics for demographic context. This does not validate the meal-planning problem; that remains a user-needs hypothesis. [Ministry of the Interior analysis](https://www.moi.gov.tw/News_Content.aspx?n=2&s=335870).

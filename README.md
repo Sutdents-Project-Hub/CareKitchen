@@ -1,18 +1,20 @@
-# CareKitchen｜長者 AI 餐點顧問
+# CareKitchen | AI Meal Planning for Older Adults
 
-CareKitchen 為 WAICY 2026 第 4 賽道規劃。透過對話協助獨居長者、家庭照護者與家屬，按現有食材、採買預算、設備、份量與已確認的飲食限制，找出可以討論的家常餐點。
+CareKitchen is a WAICY 2026 Track 4 conversational meal-planning prototype for older adults living alone, family caregivers, and family members. It helps users discuss practical meals using ingredients on hand, user-supplied prices and budget, available equipment, preferences, and dietary restrictions the user has confirmed.
 
-## 目前可用
+CareKitchen is not a medical, medication-interaction, nutrition-prescription, or food-safety assessment service. Unknown prices remain unknown; the app does not invent exact costs or guarantee a real checkout total.
 
-- 選擇備餐角色後即可開始對話。三種角色各自帶入合適的示例，對話旁可編輯條件、下方可比較餐點。
-- 多輪調整份量、餐數、設備、食材、預算與排除項目，或直接編輯條件。規劃依原創家常餐點庫提出最多三個候選，附料理步驟與採買明細。
-- 伺服器依使用者提供的包裝報價重算費用，標示未知份量與價格，跳過已知超預算及不符合明確條件的餐點。
-- 可放大文字、切換簡易顯示，先預覽再複製採買摘要。用藥、疾病飲食處方及吞嚥問題會提示專業確認。
-- 已實作伺服器端 OpenAI Responses API。缺少金鑰時預設以有明確標示的本機規則規劃。已以合成案例驗證真實 GPT-6 Luna 呼叫及三角色流程。真人研究、公開網站與交件驗收待完成。
+## Current prototype
 
-## 本機開發
+- Choose one of three roles and continue a conversation while editing meal conditions.
+- Review up to three meal candidates with steps, ingredients on hand, items to buy, and price confidence.
+- Server-side checks recalculate costs from user-provided package prices and filter known budget or explicit-restriction conflicts.
+- English is the default interface language; Traditional Chinese remains available. English requests may specify `language: "en"`; older callers that omit it retain the existing Chinese behavior.
+- The recorded English GPT-6 Luna V5 run completed 16/16 synthetic turns with 59/59 checks, 11 model-backed turns, and zero execution errors. This is engineering evidence from synthetic cases, not real-user or external evaluator validation. See the [English run record](docs/evidence/iteration-development.md#7-current-english-language-evidence) and [evidence index](docs/evidence/README.md).
 
-唯一可執行元件為 [web/](web/README.md)，採 Next.js App Router、TypeScript、Node.js 24 LTS 與 pnpm 10。
+## Local development
+
+The only executable component is [web/](web/README.md), built with Next.js App Router, TypeScript, Node.js 24 LTS, and pnpm 10.
 
 ```sh
 cd web
@@ -20,16 +22,16 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-預設入口為 `http://localhost:3000`。設定 OpenAI 時，將 `web/.env.example` 複製成同層的 `.env.local`，填入已授權的 `OPENAI_API_KEY`。預設模型為 `gpt-6-luna`，可用 `OPENAI_MODEL` 覆寫。詳細的執行模式與錯誤行為見 [Web 元件說明](web/README.md)。
+The local entry point is `http://localhost:3000`. To use OpenAI, copy `web/.env.example` to `web/.env.local` and set an authorized `OPENAI_API_KEY`. The default model is `gpt-6-luna`; `OPENAI_MODEL` can override it. See the [Web README](web/README.md) for modes and errors.
 
-在 `web/` 執行 `pnpm lint`、`pnpm typecheck`、`pnpm test` 和 `pnpm build`。規則與測試替身的檢查紀錄不能作為競賽模型評分。
+Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, and `pnpm build` from `web/`. Local rules, mocks, and synthetic runs are not competition-model evaluations or external acceptance.
 
-## 文件
+## Project documents
 
-- [專案總覽](docs/project-overview.md) · [產品需求與驗收](docs/product-spec.md) · [實作路線圖](docs/implementation-roadmap.md)
-- [系統架構](docs/architecture.md) · [API 與資料契約](docs/api-and-data-contracts.md) · [Agent 設計](docs/agent-design.md) · [OpenAI 串接](docs/integrations.md)
-- [使用流程、配色與可及性](docs/ux-and-user-flows.md) · [安全與隱私](docs/security-and-privacy.md) · [資料保存](docs/data-and-storage.md)
-- [實測結果](docs/evidence/README.md) · [WAICY 迭代開發紀錄](docs/evidence/iteration-development.md) · [實測計畫](docs/evaluation-and-iteration.md) · [Demo 腳本](docs/demo-script.md) · [競賽交件清單](docs/competition.md) · [部署計畫](docs/deployment.md)
-- [WAICY 英文報告草稿與報名摘要](docs/waicy-report.en.md)
+- [Project overview](docs/project-overview.md) · [Product specification](docs/product-spec.md) · [Implementation roadmap](docs/implementation-roadmap.md)
+- [Architecture](docs/architecture.md) · [API and data contracts](docs/api-and-data-contracts.md) · [Agent design](docs/agent-design.md) · [OpenAI integration](docs/integrations.md)
+- [UX and user flows](docs/ux-and-user-flows.md) · [Security and privacy](docs/security-and-privacy.md) · [Data and storage](docs/data-and-storage.md)
+- [Evaluation evidence](docs/evidence/README.md) · [Iteration log](docs/evidence/iteration-development.md) · [Evaluation plan](docs/evaluation-and-iteration.md) · [Demo script](docs/demo-script.md) · [Competition checklist](docs/competition.md) · [Deployment plan](docs/deployment.md)
+- [WAICY report draft](docs/waicy-report.en.md) · [Source register](docs/source-register.md)
 
-GitHub 版本管理使用 [Sutdents-Project-Hub/CareKitchen](https://github.com/Sutdents-Project-Hub/CareKitchen)。公開展示平台待選。開發與交接依 [AGENTS.md](AGENTS.md)，來源及設計指引見 [來源紀錄](docs/source-register.md)。
+Repository: [Sutdents-Project-Hub/CareKitchen](https://github.com/Sutdents-Project-Hub/CareKitchen). The public showcase platform and URL are not yet confirmed. Project workflow guidance is in [AGENTS.md](AGENTS.md).

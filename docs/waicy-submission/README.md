@@ -1,28 +1,27 @@
-# WAICY 2026 英文簡報與提交素材
+# WAICY 2026: English Submission Materials
 
-> 狀態：簡報初版已完成並檢查渲染，**尚未匯出正式 PDF**（依使用者指示，由使用者在 Claude 作品頁確認後自行匯出）。公開網址、對話分享連結、團隊資訊仍為待補欄位。
+> **Status as of November 23, 2026:** the repository contains an updated 26-slide English deck source and an English screenshot appendix. The public assistant and transcript URLs, verified team information, contribution statement and final submission PDF are pending.
 
-## 內容
+## Contents
 
-| 檔案 | 用途 |
+| File | Purpose |
 |---|---|
-| [project-description.md](project-description.md) | 可貼進報名表的英文專案簡述（185 字，上限 200） |
-| [rubric-mapping.md](rubric-mapping.md) | 官方七項評分與十項必填內容對應的頁面、證據與可加強處 |
-| [submission-todo.md](submission-todo.md) | 提交前待補資料，含放置位置與是否阻擋提交 |
-| [research-notes.md](research-notes.md) | 外部研究的來源、查證程度與已排除的數字 |
-| `deck-source/` | 簡報的可編輯原始檔（Claude Slides 格式，26 頁） |
+| [project-description.md](project-description.md) | Copy-ready project description, under 200 words |
+| [rubric-mapping.md](rubric-mapping.md) | Mapping of official criteria and required content to deck pages, evidence, and gaps |
+| [submission-todo.md](submission-todo.md) | Outstanding items, locations, and submission blockers |
+| [research-notes.md](research-notes.md) | Source register, verification status, and excluded claims |
+| [`deck-source/`](deck-source/) | Editable source for the 26-slide Claude Slides deck |
 
-## 簡報
+## Deck status and export
 
-- Claude 作品（私人連結，只有擁有者可開）：https://claude.ai/artifact/4kcWQeX2UYXPjrXtPrSbbY
-- 形式：Claude Slides（16:9、26 頁）。沿用專案既有的 Term Sheet 視覺（冷白底 `#F7F8FA`、深藍 `#16315C`、Source Serif 4＋IBM Plex Sans、無陰影與圖示），因此沒有採用帳號內的其他 Design System。
-- 匯出：在作品頁使用 Share › Export 匯出 PDF。官方檔名：`LLM_High_CareKitchen.pdf`；Google Drive 資料夾：`LLM_High_CareKitchen`。**組別 High 需由團隊確認。**
-- 圖片來源：`docs/evidence/waicy-pdf-materials/screenshots/` 的真實截圖（第 10、11、12 頁為裁切版，未修改內容）。截圖介面為繁體中文，頁面內以英文說明。
+- The latest deck source follows the Term Sheet style and uses the current [English interface, live responses and transcript screenshots](../evidence/waicy-pdf-materials/README.md).
+- The owner-only [Claude artifact](https://claude.ai/artifact/4kcWQeX2UYXPjrXtPrSbbY) contains the earlier edition. To use it for final export, update it with the current source and assets before choosing **Share → Export**.
+- After confirming the division, use `LLM_High_CareKitchen.pdf` and the `LLM_High_CareKitchen` Drive folder for a high-school entry.
 
-## 可編輯原始檔
+## Editable deck source
 
-`deck-source/project/` 內含 `deck.json`（頁序、字型）、`deck.css`（共用樣式）與 `slides/*.html`。投影片內的圖片以作品內部資源 ID（`/_blob/…`）引用，因此**只有在原 Claude 作品中才能顯示圖片**；若要另建新作品，需重新上傳截圖並替換 `src`。日常修改建議直接在 Claude 作品頁編輯。
+`deck-source/project/` contains `deck.json` (order and fonts), `deck.css` (shared styles), and `slides/*.html`. Image sources are relative links to versioned screenshots. Keep the repository layout when rendering locally. A hosted deck editor may require uploading those images as assets.
 
-## 簡報頁序
+## Slide sequence
 
-1 封面 · 2 摘要 · 3 動機與數據 · 4 通用聊天機器人的缺口 · 5 服務定義 · 6 使用流程 · 7 Agent 設計 · 8 三種使用者 · 9 同題三種回答 · 10 價格誠實 · 11 即時對話 · 12 安全界線 · 13 構想演進 · 14 提示詞版本 · 15 實驗結果 · 16–17 錯誤分析 · 18 新題測試 · 19 公開連結（待補） · 20 十輪紀錄 · 21 限制 · 22 倫理 · 23 未來發展 · 24 原創性與團隊貢獻（待補） · 25 結論 · 26 參考文獻
+1 Cover · 2 Summary · 3 Motivation and context · 4 Gaps in general chatbots · 5 Service definition · 6 User flow · 7 Agent design · 8 Three users · 9 Same prompt, three outputs · 10 Price transparency · 11 Live dialogue · 12 Safety boundaries · 13 Concept evolution · 14 Prompt versions · 15 Results · 16–17 Failure analysis · 18 New-case test · 19 Public links (pending) · 20 Ten-turn record · 21 Limitations · 22 Ethics · 23 Future work · 24 Originality and team contribution (pending) · 25 Conclusion · 26 References.

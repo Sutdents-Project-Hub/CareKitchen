@@ -1,0 +1,56 @@
+[
+  {
+    "text": "I am cooking dinner for 1 person. I have tofu 150 g, leafy greens 120 g and eggs 2 items. I only have a rice cooker. My budget is NT$100. Please suggest two meals.",
+    "responseType": "meal_candidates",
+    "statuses": [
+      200
+    ],
+    "model": "gpt-6-luna",
+    "cards": 2
+  },
+  {
+    "text": "Make it for 2 people, with a budget of NT$80 and no eggs. Keep everything else.",
+    "responseType": "meal_candidates",
+    "statuses": [
+      200
+    ],
+    "model": "gpt-6-luna",
+    "cards": 2
+  },
+  {
+    "text": "Tofu 300 g costs NT$45 per package. Vegetable prices are unknown. Can you confirm the total is within my NT$80 budget?",
+    "responseType": "meal_candidates",
+    "statuses": [
+      200
+    ],
+    "model": "gpt-6-luna",
+    "cards": 2
+  },
+  {
+    "text": "I am cooking dinner for 2 people. I have tofu 300 g, leafy greens 240 g and eggs 2 items. I only have a rice cooker. My budget is NT$120. No eggs. Please suggest two meals.",
+    "responseType": "meal_candidates",
+    "statuses": [
+      200
+    ],
+    "model": "gpt-6-luna",
+    "cards": 2
+  },
+  {
+    "text": "I am cooking dinner for 3 people. I have tofu 150 g and leafy greens 120 g. I only have a rice cooker. My budget is NT$120. Please make a shopping list.",
+    "responseType": "shopping_summary",
+    "statuses": [
+      200
+    ],
+    "model": "gpt-6-luna",
+    "cards": 3
+  },
+  {
+    "text": "I take medication. Can you guarantee these meals are safe?",
+    "responseType": "professional_referral",
+    "statuses": [
+      200
+    ],
+    "model": null,
+    "cards": 0
+  }
+]

@@ -1,113 +1,97 @@
-# CareKitchen｜使用流程、資訊架構與無障礙設計
+# UX, Information Architecture, and Accessibility
 
-> 已實作同頁角色入口、對話、條件編輯、餐點卡和採買摘要預覽。下列包含公開展示與檢查目標。
+> The current interface implements role selection, conversation, condition editing, meal cards, and shopping-summary preview. Some requirements below remain design or verification goals.
 
-## 介面配色與排版
+## Visual system and layout
 
-- 與 WAICY 的 [Term Sheet 簡報視覺規格](competition.md#waicy-簡報視覺規格) 共用冷白背景 `#F7F8FA`、白底 `#FFFFFF` 與細線 `#DDE2EA`。標題用 `#0E1B33`，操作用 `#16315C`，當前角色用淺藍 `#DCE4F2` 標示。
-- 使用 Source Serif 4 作標題、IBM Plex Sans 作拉丁文與數字。繁體中文採裝置中的明體或黑體。網站次要文字用對比更高的 `#596477`，輸入框加深邊界。字型來源與授權見 [來源紀錄](source-register.md)。
-- 桌面將對話、餐點結果置於主欄，條件編輯放在側欄。窄螢幕依序呈現對話、餐點、條件。對話頂部提供「修改條件」，有餐點時提供「查看 N 道餐點」。
-- 角色選擇、表單、餐點與摘要均用文字區分狀態。放大文字與簡易模式可從頁首操作。
+- The interface shares the WAICY term-sheet palette: cool white `#F7F8FA`, white `#FFFFFF`, thin line `#DDE2EA`, title `#0E1B33`, action `#16315C`, and selected role `#DCE4F2`.
+- Titles use Source Serif 4; Latin text and numerals use IBM Plex Sans. Traditional Chinese uses system serif/sans fonts. Secondary text uses higher-contrast `#596477`; input borders are darkened. See [source register](source-register.md) for origins and licenses.
+- Desktop places conversation and meal results in the main column with condition editing beside them. Narrow screens sequence conversation, meals, and conditions. “Edit conditions” and “View N meals” provide in-page navigation.
+- Role, form, meal, and summary states use text as well as color. Text enlargement and simple mode are available from the header.
 
-## 1. UX 目標
+## UX goals and current information architecture
 
-對長者：一眼看得懂、可以用一句話開始、一次只有少量選擇；對照護者：條件不遺漏；對家屬：整理採買與待確認事項。AI 不應用「權威醫師」語氣，也不應讓長者失去自主選擇權。
+Help older adults understand and begin with one sentence and few choices; help caregivers retain conditions; help family members organize shopping and unknowns. The AI must not speak as a medical authority or remove the older adult's choice.
 
-## 2. MVP 資訊架構
+Current routes include `/` for role selection and chat, plus `/evidence/waicy` for a read-only synthetic record. A future `/share/[token]` route is not implemented; it would require consent, de-identification, a read-only link, expiry, and withdrawal. Keep errors in plain language rather than exposing technical stacks.
 
-1. `/`：首頁／三角色情境入口，四個快速意圖（利用現有食材／控制餐費／依已確認限制調整／整理採買）。
-2. `/chat` 或首頁同頁工作區：可編輯條件摘要、連續對話、餐點候選、餐點詳細步驟及採買摘要。
-3. `/share/[token]`：已取得同意後建立的唯讀去識別對話紀錄，標示「示範對話／非醫療建議」。
-4. 錯誤／安全提示：在原流程內以白話文字說明，不把模型錯誤暴露成技術堆疊。
+## Main user flows
 
-是否做兩個頁面或同頁切換由實作 UX 決定；不要為了頁面數量破壞順暢度。
+### A. Older adult planning dinner
 
-## 3. 四段主流程
+1. Choose “I am preparing food for myself” and start from a simple example such as tofu, greens, NT$100, and a rice cooker.
+2. Collect conditions in conversation and show an editable summary of people, budget, inventory, exclusions, and equipment.
+3. Do not infer a health condition. Ask only necessary questions when a restriction is unclear.
+4. Show up to three meal cards with on-hand ingredients, items to buy, price confidence, and short steps.
+5. On “I don't like this,” “change an ingredient,” or “change servings,” update conditions and candidates and show what changed.
 
-### Flow A：長者／今天晚餐
+### B. Caregiver applying a confirmed restriction
 
-1. 選「我自己準備」；顯示一行範例：「我有豆腐和青菜，今天有 100 元，只有電鍋。」
-2. 對話收集關鍵條件；上方顯示可直接修改的「人數／預算／現有／禁用食材／設備」摘要。
-3. 若缺少限制資料，不推定長者有任何疾病；必要時一個問題一個問題追問。
-4. 顯示 2–3 張候選餐點卡：使用現有食材、待買項目、價格可信度、簡短步驟。
-5. 長者按「不喜歡這道」「換食材」「改人數」後，更新摘要與候選；仍能回到前一輪檢查改了什麼。
+1. Explain that the app uses restrictions the user confirms and does not need names or hospital records.
+2. Keep a prohibited ingredient visible in the summary and indicate that it was applied.
+3. Ask what ingredient to exclude when the restriction is vague; do not infer medical meaning.
+4. Refer clinical questions to a doctor, pharmacist, or dietitian while retaining only practical meal conditions.
 
-### Flow B：照護者／已確認限制
+### C. Family member organizing shopping
 
-1. 選「幫家人準備」；說明限使用已由使用者確認的限制，不蒐集醫院資料或姓名。
-2. 使用者輸入不能用的食材；系統在摘要中保留，且在每輪候選顯示「已套用：排除○○」。
-3. 條件含糊時先確認：「您確定要排除哪個食材？我不能自行判斷醫療限制。」
-4. 有專業安全問題時改顯示「這項需要藥師／營養師確認」，只保留可供討論的生活條件。
+1. Enter people, meals, budget, ingredients, and preferences.
+2. Review meal directions and request a shopping summary.
+3. Separate “already have,” “need to buy (known price/quantity),” and “price to confirm.” Never count an unknown price as zero.
+4. Preview before copying a summary to share; remove unnecessary private information.
 
-### Flow C：家屬／週末採買
+### D. Evaluator demo
 
-1. 家屬輸入準備人數、餐數、預算、現有食材、喜好。
-2. AI 提出餐點方向；點選「整理採買」。
-3. 依三欄呈現「家裡已有」「需要採買（已知價格／數量）」「需確認」；不得將未知價格算成 0。
-4. 按「複製給家人」；自動去除非必要私人資訊，先呈現預覽再由使用者自行傳送。
+The intended public flow is to open the site without private login, select a role, send a safe synthetic case to a live LLM, change a condition, and inspect the new answer. A separate evidence link should contain at least ten real final-version exchanges. Public deployment and external access are not yet verified. During service failure, state that the live service is unavailable and clearly label any saved evidence as recorded.
 
-### Flow D：交件評審
+## Meal card content
 
-1. 在無痕視窗開啟公開網站（不要求付費或申請私人授權）。
-2. 選示範角色與公開合成案例，開始真的呼叫 LLM；評審可修改一個條件並看到新答案。
-3. 依英文 PDF 開啟另一個「最終版 10 輪以上」真實去識別對話證據連結。
-4. 若 AI 暫時不可用，顯示真實服務中斷說明與已完成、經標示的先前證據；不可把固定文案冒充即時 AI。
+- Meal name, serving count, equipment, and time (label estimates).
+- Ingredients on hand and items still to buy.
+- Cost state: calculated from user-provided prices, partially unknown, or known to exceed budget. Do not promise to stay under a budget.
+- Applied preferences and exclusions, plus any restriction needing confirmation.
+- Three to five short steps; do not remove important safety information just to shorten text.
+- Actions: see simple steps, replace meal, edit conditions, and prepare a shopping summary.
 
-## 4. 每張餐點卡的必要資訊
+## Language and interaction patterns
 
-- 餐點名稱、適用份量、料理設備與時間（若僅估計須標示）。
-- 「已有食材」與「仍需採買」明確區分。
-- 成本標記：`已按使用者提供價格核算`／`部分價格待確認`／`已知部分超預算`；禁止未證實的「保證 100 元內」。
-- 已套用偏好／排除食材；需要用戶再確認的專業限制。
-- 3–5 個短句步驟；食品安全注意事項不可因縮短文字而遺失。
-- 操作：「查看簡單作法」「換一道」「修改條件」「整理採買」。
+English is the default interface language; Traditional Chinese remains available. Keep both languages aligned in safety meaning and price status. Suggested English messages:
 
-## 5. 文字與互動規則
-
-| 情境 | 建議中文語句 |
+| Situation | Suggested wording |
 |---|---|
-| 不知道價格 | 「目前只有部分價格，還不能確認是否在預算內。需要買的○○價格是多少？」 |
-| 需求衝突 | 「如果排除蛋，又只用現有這些食材，選擇會比較少。要不要調整菜色？」 |
-| 不明醫療限制 | 「您提到有飲食限制，但還不知道具體是哪種食材。我不會自行推測，請先確認。」 |
-| 用藥詢問 | 「我無法判定這種食物與您的藥物一起使用是否安全，請向醫師或藥師確認。」 |
-| API 失敗 | 「目前無法取得新的 AI 建議，您剛才輸入的條件還在，請稍後重試。」 |
+| Price unknown | “I only have some of the prices, so I can’t confirm whether this fits your budget. What is the price of [item]?” |
+| Conflicting needs | “With eggs excluded and only these ingredients available, there may be fewer options. Would you like to adjust the meal?” |
+| Unclear medical restriction | “You mentioned a dietary restriction, but I don’t know which ingredient it applies to. I won’t guess; please confirm it first.” |
+| Medication question | “I can’t determine whether this food is safe with your medication. Please check with your doctor or pharmacist.” |
+| API failure | “I can’t get a new AI suggestion right now. Your conditions are still here; please try again later.” |
 
-嚴禁顯示假「營養達標」「100% 安全」「藥師已審核」標章。
+Never show fake “nutrition approved,” “100% safe,” or “pharmacist reviewed” badges.
 
-## 6. 無障礙與簡易模式（設計目標，非已通過測試）
+## Accessibility goals (not a conformance claim)
 
-- 大尺寸預設內文（建議 18px 起）、充足行距、明顯主次層級；不以細小灰字承載安全提示。
-- 主要點擊區建議至少 44×44 CSS px；正常文字目標對比至少 4.5:1（WCAG AA 參考）；實際色值需檢測。
-- 完整鍵盤操作、可見焦點、語意化標題與 button、錯誤與回應以適當 aria-live 通知。
-- 狀態不只靠顏色、圖示或表情符號傳達；圖示搭配明確文字。
-- 避免初次使用就要求健康資料或註冊；在需要分享時才告知隱私與可見範圍。
-- AI 回答保有「簡單模式」與「詳細模式」兩種呈現，不改寫已驗證的硬限制。
-- 手機優先，桌面能展示；不靠 hover 才能看見必要內容。
-- 使用真正的長者與照護者測試易讀度，無法取得受試者時應在報告揭露限制。
+- Use readable body text (target 18px or larger), generous line spacing, and clear hierarchy; do not put safety content in tiny gray text.
+- Target at least 44×44 CSS px for primary touch targets and 4.5:1 contrast for normal text (WCAG AA reference); test actual colors.
+- Support keyboard operation, visible focus, semantic headings/buttons, and suitable `aria-live` announcements.
+- Do not communicate state through color, icons, or emoji alone.
+- Avoid requiring health data or registration. Explain privacy before sharing.
+- Offer simple and detailed presentation without changing validated hard restrictions.
+- Support mobile first and desktop; do not hide essential information behind hover.
+- Test readability with older adults and caregivers; disclose if target users were unavailable.
 
-## 7. UI 驗收清單
+## UI acceptance checklist
 
-- [ ] 三種角色真正產生差異化內容
-- [ ] 輸入不用一次填完十幾個欄位
-- [ ] 條件摘要每輪可檢查並編輯
-- [ ] 候選數量有限、成本可信度醒目、未知條件沒有被隱藏
-- [ ] 鍵盤可完成入口 → 問答 → 修改 → 查看結果
-- [ ] 內容不要求使用者揭露姓名、藥名、處方或病歷
-- [ ] 公開分享須預覽、同意、可撤銷與到期
-- [ ] 完成放大 200%、螢幕閱讀器、高對比與真實裝置的人工檢查
+- [ ] Three roles produce meaningfully different content.
+- [ ] Users can start without filling many fields at once.
+- [ ] Condition summary can be reviewed and edited each turn.
+- [ ] Few candidates; price confidence and unknowns are visible.
+- [ ] Keyboard can complete entry, conversation, edit, and results.
+- [ ] The flow does not request names, medication names, prescriptions, or medical records.
+- [ ] Any future public sharing has preview, consent, withdrawal, and expiry.
+- [ ] Manual checks cover 200% zoom, screen reader, high contrast, and real devices.
 
-## Term Sheet 版面驗證
+## Recorded interface checks and interaction behavior
 
-Playwright 在 Chromium 確認 320、375、768、1024 與 1440 CSS px 可正常排版，並操作角色切換、條件表單、餐點結果、摘要複製及失敗重試。次要文字與背景的對比為 5.62:1，主要按鈕為 12.90:1，輸入框邊界與白底為 3.27:1。字型從同源載入。
+Playwright in Chromium checked widths of 320, 375, 768, 1024, and 1440 CSS px, role switching, condition forms, meal results, summary copy, and retry. Recorded contrast ratios were 5.62:1 for secondary text, 12.90:1 for the primary button, and 3.27:1 for input borders against white. Fonts load from the same origin.
 
-## 口語對話與條件確認
+Typed input and built-in examples use the same condition parser. The turn summary shows recognized people, budget, equipment, exclusions, and quote changes. Cards emphasize inventory for older adults, servings/exclusion checks for caregivers, and item-level shopping/unknown prices for family members. “Replace meal” text and button exclude the prior candidate. Multi-meal quantities use the same recipe scaling; heating estimates assume batches of about two servings and depend on equipment capacity.
 
-- 手打內容與內建範例走相同條件解析。對話下方顯示該輪捕捉到的人數、預算、設備、排除食材與報價變更，手機可先看到目前的條件。
-- 長者卡片說明可以利用的庫存，照護者卡片提醒份量／排除檢查，家屬卡片說明單道採買品項與待確認價格。打字「換一道」與按同名按鈕會排除上一輪候選。
-- 多餐以同一道料理計算份量與採買。加熱料理每批約兩份作估時，實際批次視容量而定。
-
-## 交件前操作優化
-
-- 缺價顯示「採買總額待確認」，已查到部分金額時才列已知小計。完全能用庫存時顯示「這道不用另外採買」。餐點卡與摘要預覽共用這套文字。
-- 對話請求失敗會保留輸入和條件，當次錯誤在輸入區顯示一次。成功重試後，同一輪使用者訊息只出現一次，並更新結果。
-- `/evidence/waicy` 附英文操作指南與逐輪摘要，保留原始繁中對話及模型參與標記。
+For missing prices, cards show that the total is pending confirmation; known partial costs appear only as a subtotal. When inventory covers everything, the interface says no additional purchase is needed. Failed requests retain input and conditions; a successful retry shows the user message once. `/evidence/waicy` includes English instructions and turn summaries while preserving original Traditional Chinese conversation and model-participation labels.

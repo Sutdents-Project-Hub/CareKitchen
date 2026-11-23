@@ -1,90 +1,84 @@
-# WAICY 第 6 項｜CareKitchen 迭代開發紀錄
+# WAICY Criterion 6: CareKitchen Iteration and Evaluation Record
 
-2026 年 11 月 23 日，CareKitchen 使用 OpenAI GPT-6 Luna 跑完直接對話基準與 V1 至 V4。相同 16 回合的工程檢查從 V1 的 **5／16** 提升到 V2 的 **16／16**，V3 與 V4 重跑維持 **16／16**。V3 修正同題角色分流，V4 的另一組 5 回合檢查覆蓋了原案例未驗證的口語限制。
+**Recorded November 23, 2026.** CareKitchen ran a direct GPT-6 Luna dialogue baseline and product versions V1–V4. On the same 16-turn engineering suite, passing turns rose from 5/16 in V1 to 16/16 in V2; V3 and V4 retained 16/16. V3 addressed role routing. A separate five-turn V4 suite checked conversational constraints not covered by the original cases.
 
-## 1. Prompt 設計
+Raw JSON, prompts, case files, and screenshots preserve their original contents. The English narrative below is a translation and summary of that evidence; it does not replace or alter the historical source records.
 
-| 版本 | 當時採用的設計 | Prompt 原文 | OpenAI 呼叫程式 |
+## 1. Prompt and application revisions
+
+| Version | Design at the time | Original prompt | Application snapshot |
 |---|---|---|---|
-| Baseline | 只有「請以繁體中文回答使用者。」一般對話歷史隨回合送入 Responses API。 | [Baseline](prompts/baseline.txt) | [測試程式](../../web/scripts/evaluate.ts) |
-| V1 | 模型根據當輪文字、情境與候選分類、排序。將廣泛的未知條件交給模型判斷是否追問。 | [V1](prompts/v1.txt) | [V1 快照](prompts/adapter-v1.ts.txt) |
-| V2 | 信任伺服器已解析的條件，區分不妨礙規劃的未知項目與必須追問的條件。新增結構化 `clarification`，要求欄位及使用者原句，伺服器再驗證。 | [V2](prompts/v2.txt) | [V2 快照](prompts/adapter-v2.ts.txt) |
-| V3 | 明示「採買預算」本身仍屬餐點規劃。伺服器辨識明確採買意圖，並依角色提供不同資訊。 | [V3](prompts/v3.txt) | [V3 快照](prompts/adapter-v3.ts.txt) |
-| V4 | 提醒模型特別留意尚未套用的排除食材和預算變更。常見口語由伺服器直接解讀，再用更新後的條件檢查候選。 | [V4](prompts/v4.txt) | [V4 快照](prompts/adapter-v4.ts.txt) |
+| Baseline | General conversation history sent to the Responses API with the instruction “Reply to the user in Traditional Chinese.” | [Baseline](prompts/baseline.txt) | [Evaluation script](../../web/scripts/evaluate.ts) |
+| V1 | Model classified and ranked candidates from the current message and scenario; broad decisions about whether to clarify were left to the model. | [V1](prompts/v1.txt) | [V1 adapter](prompts/adapter-v1.ts.txt) |
+| V2 | Trusted server-parsed conditions; distinguished unknowns that do not block planning from required clarifications. Added structured `clarification` with a field and quoted user text, then server validation. | [V2](prompts/v2.txt) | [V2 adapter](prompts/adapter-v2.ts.txt) |
+| V3 | Treated a stated shopping budget as part of meal planning; server recognized explicit shopping-summary intent and role-specific output. | [V3](prompts/v3.txt) | [V3 adapter](prompts/adapter-v3.ts.txt) |
+| V4 | Emphasized exclusions and budget changes not yet applied. Server parsed common conversational edits and rechecked candidates against updated conditions. | [V4](prompts/v4.txt) | [V4 adapter](prompts/adapter-v4.ts.txt) |
 
-所有 Prompt 的 SHA-256 均與各輪 JSON 的 `promptSha256` 一致。V1 至 V4 的呼叫程式快照也與 `adapterSha256` 一致。V1 從 Git 基底 `612ef35` 與實測時的 Luna 設定復原。V2、V3 從已知提示詞差異及 V4 還原。各輪 JSON 的 `sourceHead` 是當時的 Git 基底，四版在同一基底上先後實測，當時未各自封存完整工作樹。
+Prompt SHA-256 hashes match the `promptSha256` fields in the run JSON; V1–V4 adapter snapshots match `adapterSha256`. V1 was reconstructed from Git base `612ef35` and the recorded Luna settings. V2 and V3 were reconstructed from known prompt differences and V4. Each `sourceHead` records the Git base; the four versions were run sequentially on that base, and complete working trees were not separately archived for each version. Treat these as reconstructed snapshots, not contemporaneous full checkouts.
 
-## 2. 實際測試
+## 2. Fixed evaluation and results
 
-主測試固定 [16 回合與 56 個預期檢查](cases/meal-dialogues.json)。同題分別以長者、照護者及家屬提問，再測十輪長者對話與三個獨立的價格／飲食邊界案例。應用每次沿用上一輪的條件與候選 ID，送出當輪更新，並逐項核對回傳。單輪的所有預期欄位都符合才計為通過。V4 另外執行 [5 個口語邊界回合](cases/meal-edge-cases.json)。
+The [fixed suite](cases/meal-dialogues.json) has 16 turns and 56 expected checks: a shared prompt for three roles, a ten-turn elder conversation, and separate price/dietary boundary cases. Each application turn carried forward prior conditions and candidate IDs, applied the current update, and checked the response. A turn passed only when all expected checks passed. V4 also ran the [five-turn edge-case suite](cases/meal-edge-cases.json).
 
-同一模型設定為 `gpt-6-luna`、`reasoning.effort: none`、`store: false`。Baseline 的輸出上限是 650 tokens，使用自由文字及聊天歷史。CareKitchen 的輸出上限是 250 tokens，使用結構化輸入及決策欄位，後端負責限制、價格與餐點內容。Baseline 比較採逐案質性閱讀。V1 至 V4 比較衡量整個產品流程的改變，包含提示詞和伺服器邏輯。
+All runs used `gpt-6-luna`, `reasoning.effort: none`, and `store: false`. The direct baseline allowed 650 output tokens and used free text plus chat history. CareKitchen allowed 250 tokens and used structured input and decision fields; the server handled hard constraints, prices, and meal content. The baseline comparison is qualitative. V1–V4 measure the whole product flow, including both prompts and server logic.
 
-| 版本 | 首輪至末輪開始時間（台灣） | 回合通過 | 個別檢查 | Luna 參與 | 執行紀錄 |
+| Run | Taiwan time, first to last turn start | Passing turns | Checks | Model turns | Raw result |
 |---|---|---:|---:|---:|---|
-| Baseline | 13:41:08–13:41:57 | 16 個自由文字回覆 | 質性對照 | 16 | [原始回覆](runs/luna-direct-baseline.json) |
-| V1 | 13:36:13–13:36:29 | 5／16 | 29／56 | 12 | [原始結果](runs/luna-pre-fix.json) |
-| V2 | 13:41:08–13:41:22 | 16／16 | 56／56 | 11 | [原始結果](runs/luna-post-fix.json) |
-| V3 | 13:44:49–13:45:03 | 16／16 | 56／56 | 11 | [原始結果](runs/luna-v3.json) |
-| V4 | 13:48:00–13:48:14 | 16／16 | 56／56 | 11 | [原始結果](runs/luna-final.json) |
-| V4 口語邊界 | 13:48:00–13:48:06 | 5／5 | 12／12 | 5 | [原始結果](runs/luna-safety-recheck.json) |
+| Direct baseline | 13:41:08–13:41:57 | 16 free-text responses | Qualitative review | 16 | [responses](runs/luna-direct-baseline.json) |
+| V1 | 13:36:13–13:36:29 | 5/16 | 29/56 | 12 | [run](runs/luna-pre-fix.json) |
+| V2 | 13:41:08–13:41:22 | 16/16 | 56/56 | 11 | [run](runs/luna-post-fix.json) |
+| V3 | 13:44:49–13:45:03 | 16/16 | 56/56 | 11 | [run](runs/luna-v3.json) |
+| V4 | 13:48:00–13:48:14 | 16/16 | 56/56 | 11 | [run](runs/luna-final.json) |
+| V4 conversational edge cases | 13:48:00–13:48:06 | 5/5 | 12/12 | 5 | [run](runs/luna-safety-recheck.json) |
 
-六份 JSON 共保存 85 筆回合紀錄，其中 66 輪有 Luna 參與、19 輪直接由程式處理。六次執行的 `errors` 都是空陣列。Baseline 的 16 筆保留模型原文及用量。CareKitchen 的 69 筆保留輸入、逐項檢查、可見應用回覆與已解析的模型決策。應用結果未保存上游 HTTP 封包。
+The six JSON files contain 85 turns: 66 involving Luna and 19 handled directly by code. All six `errors` arrays were empty. The baseline retains 16 model responses and usage. The 69 application turns retain input, checks, visible reply, and parsed model decision; upstream HTTP packets were not saved.
 
-### 固定 16 回合逐案檢查
+### Case-level observations
 
-| 案例 | V1 未通過的檢查或額外觀察 | V2 | V3 | V4 |
+| Case | V1 | V2 | V3 | V4 |
 |---|---|---|---|---|
-| SAME-ELDER-1 | 通過。實際回覆錯分為採買摘要。 | 通過。仍錯分為採買摘要。 | 通過。回傳餐點建議。 | 通過。回傳餐點建議。 |
-| SAME-CAREGIVER-1 | 候選數不足。重問已知食材與人數。 | 通過。實際回覆錯分為採買摘要。 | 通過。回傳餐點建議。 | 通過。回傳餐點建議。 |
-| SAME-FAMILY-1 | 通過。回傳採買摘要。 | 通過 | 通過 | 通過 |
-| DEMO-10-1 | 通過。追問缺少的設備。 | 通過 | 通過 | 通過 |
-| DEMO-10-2 | 候選數不足。已補上電鍋，仍未出卡。 | 通過 | 通過 | 通過 |
-| DEMO-10-3 | 未正確保存排除的蛋，候選數不足。 | 通過 | 通過 | 通過 |
-| DEMO-10-4 | 人數、預算、排除食材錯誤，候選數不足。 | 通過 | 通過 | 通過 |
-| DEMO-10-5 | 報價未寫入，預算錯誤，候選數不足。 | 通過 | 通過 | 通過 |
-| DEMO-10-6 | 未交代候選中的價格不確定性，預算錯誤，候選數不足。 | 通過 | 通過 | 通過 |
-| DEMO-10-7 | 人數、設備、排除食材錯誤，候選數不足。 | 通過 | 通過 | 通過 |
-| DEMO-10-8 | 通過。追問待確認的飲食限制，無候選。 | 通過 | 通過 | 通過 |
-| DEMO-10-9 | 通過。用藥相關問題轉介，無候選。 | 通過 | 通過 | 通過 |
-| DEMO-10-10 | 人數、預算、設備、排除食材、回覆類型錯誤，候選數不足。 | 通過 | 通過 | 通過 |
-| COST-OVER-1 | 未說明已知採買小計超過預算。 | 通過 | 通過 | 通過 |
-| ALLERGY-CONFIRMED-1 | 排除項目寫入，但候選數不足。 | 通過 | 通過 | 通過 |
-| ALLERGY-SYMPTOM-1 | 把「追問」寫成排除食材，回傳通用追問。 | 通過。轉介且無候選。 | 通過。轉介且無候選。 | 通過。轉介且無候選。 |
+| `SAME-ELDER-1` | Checks passed, but actual reply was routed as a shopping summary. | Same routing issue. | Meal suggestions. | Meal suggestions. |
+| `SAME-CAREGIVER-1` | Too few candidates; asked again for known ingredients and servings. | Checks passed, but actual reply was a shopping summary. | Meal suggestions. | Meal suggestions. |
+| `SAME-FAMILY-1` | Shopping summary. | Pass | Pass | Pass |
+| `DEMO-10-1/2` | Turn 1 asked for missing equipment; turn 2 still returned no cards after equipment was supplied. | Both pass | Both pass | Both pass |
+| `DEMO-10-3` through `DEMO-10-7` | Missed or misapplied exclusions, servings, budgets, supplied prices, or price uncertainty; too few candidates. | Pass | Pass | Pass |
+| `DEMO-10-8/9` | Asked about an unconfirmed dietary restriction; referred medication question. | Both pass | Both pass | Both pass |
+| `DEMO-10-10` | Servings, budget, equipment, exclusions, response type, and candidate count failed. | Pass | Pass | Pass |
+| `COST-OVER-1` | Did not state that known shopping subtotal exceeded budget. | Pass | Pass | Pass |
+| `ALLERGY-CONFIRMED-1` | Saved exclusion but returned too few candidates. | Pass | Pass | Pass |
+| `ALLERGY-SYMPTOM-1` | Stored “follow-up” as an excluded ingredient and returned a generic question. | Referred; no candidates. | Same | Same |
 
-分流與轉介的部分差異來自檢閱已保存的回覆。例如初版同題檢查未要求三角色的回覆類型，症狀案例的固定檢查也未指定 `professional_referral`。表中保留原本的執行分數。
+Some routing/referral observations came from reviewing saved replies rather than the original scoring rubric: the initial shared-prompt checks did not require distinct role response types, and the symptom case did not initially specify `professional_referral`. The table preserves the original run scores.
 
-## 3. 錯誤分析與改善結果
+## 3. Failures, fixes, and observed outcomes
 
-| 問題與當時觀察 | 根因與修正 | 可回查的結果 |
+| Failure observed | Cause and change | Evidence after change |
 |---|---|---|
-| **條件俱全仍被追問。** V1 照護者同題未取得餐點。長者補了電鍋後，系統仍回覆「請告訴我這餐想用哪些食材、要煮給幾個人」。 | V1 提示詞允許廣泛追問，模型可用 `clarify` 直接阻擋有效候選。V2 將必要的缺項交給伺服器先檢查，模型追問須指出新的重要條件與對應原句。 | `SAME-CAREGIVER-1` 與 `DEMO-10-2` 在 V2 均取得候選。V4 照護者同題有 3 道，補電鍋的長者有 2 道。 |
-| **口語修改被漏掉或寫錯。** 「蛋先不要」變成排除「蛋先」。「那就兩位吧，抓八十塊就好」仍是 1 人／NT$100。更新設備後保留了已停用的電鍋。 | 舊解析規則對口語順序及停用設備的覆蓋不足。V2 解析當輪更新，沿用未改動條件，並依新狀態重算候選。 | V4 的 `DEMO-10-3／4／7` 保留排除蛋，更新為 2 人／NT$80，再更新到只用微波爐。第 10 輪採買摘要仍保留這組條件。 |
-| **缺價與超支說不清楚。** V1 要使用者重新填寫已用對話提供的報價。Baseline 的超支題估 NT$49，並說未超過 NT$100，列出的分項 24、40、24 加總為 NT$88，且採按用量攤價。 | V2 接受明確的品項、包裝數量和總價。伺服器以實際需購買的整包計價，缺價顯示待確認，已知小計已超支時停止列候選。 | V4 的 `DEMO-10-5／6` 保留豆腐 300g／NT$45、白米 500g／NT$60，菜價未知時清楚說總額未確定。`COST-OVER-1` 回覆「已知採買小計最低為 120 元，已超過 100 元預算」，卡片為 0。 |
-| **明確排除和疑似症狀被當成同一種問題。** V1 清楚收到黃豆限制，但未產生候選。症狀案例把「追問」存成食材。 | V2 先處理症狀、用藥與不確定限制，再檢查合格餐點。明確食材限制持續過濾關聯成分，疑似反應進入轉介。 | V4 的 `ALLERGY-CONFIRMED-1` 有 3 道且未列豆腐。`ALLERGY-SYMPTOM-1` 為轉介，卡片為 0，排除欄位未寫入「追問」。Baseline 也拒絕保證安全，但同時提供替代做法。 |
-| **通過數看不出角色分流。** V2 同題已有 16／16，但看到「採買預算」時，三角色均回覆採買摘要。 | V3 把預算描述與實際採買請求分開，加入依角色生成的理由與畫面資訊。 | V3、V4 的 `SAME-ELDER-1`（2 道）與 `SAME-CAREGIVER-1`（3 道）回傳餐點建議，`SAME-FAMILY-1`（3 道）回傳採買摘要。照護者可看到人份與排除條件，家屬可預覽已有、需買與待確認項目。 |
-| **原案例沒覆蓋其他常見講法。** 檢查者用測試替身指出「無蛋／別加蛋」、「總開銷壓到七十以下」、「今天不開火」、「原本只有我一個人，現在要兩位」可能沿用舊條件。 | V4 修正當輪排除語句、中文預算、免開火、最新人數及庫存用完的處理。新增本機回歸檢查，並以同一模型跑新版的口語邊界案例。 | 口語邊界 **5／5、12／12**。兩輪排除蛋都保留排除項目且無雞蛋卡，其餘分別更新成 NT$70、免開火及 2 人。庫存用完另有本機規則檢查。 |
+| A caregiver with complete conditions was asked to repeat known ingredients and servings. | V1 allowed broad model-led clarification. V2 moved required-field checks to the server and required a new, relevant missing condition with a matching user quote. | `SAME-CAREGIVER-1` and `DEMO-10-2` returned candidates in V2; V4 returned three and two candidates respectively. |
+| Conversational edits were missed or parsed incorrectly: “no egg for now” became the ingredient “egg for now”; “make it two people, around NT$80” retained one person/NT$100; replaced equipment remained active. | Updated turn parsing and re-evaluation retained unchanged conditions while applying the new state. | V4 `DEMO-10-3/4/7` retained the egg exclusion, changed servings and budget, then updated equipment; the tenth-turn summary retained those conditions. |
+| Known prices were re-requested or budget status was unclear. The direct baseline estimated NT$49 and said it was under NT$100 although listed line items (24, 40, 24) total NT$88; it prorated package costs by recipe quantity. | V2 accepted explicit item, package quantity, and total price. Server logic counted whole packages required for new shopping, kept missing prices unknown, and stopped when the known subtotal exceeded budget. | V4 `DEMO-10-5/6` retained tofu 300 g/NT$45 and rice 500 g/NT$60; unknown vegetable price kept total unconfirmed. `COST-OVER-1` reported known shopping of at least NT$120 against NT$100 and returned zero cards. |
+| Explicit exclusions and possible symptoms were handled as the same kind of issue. | V2 handled symptoms, medication, and uncertain restrictions before candidate generation; confirmed exclusions filtered related ingredients, while possible reactions triggered referral. | `ALLERGY-CONFIRMED-1` returned three candidates without tofu. `ALLERGY-SYMPTOM-1` referred, returned zero cards, and did not store “follow-up” as an exclusion. The baseline also declined a safety guarantee but offered alternatives. |
+| A passing score did not ensure role differentiation: V2 routed all three shared-prompt roles to shopping summaries. | V3 separated budget mentions from explicit shopping requests and added role-specific reasons and interface information. | In V3/V4, elder and caregiver cases returned meal suggestions (two and three); the family case returned a shopping summary (three). Caregivers saw servings/exclusions; relatives could preview pantry, purchase, and unknown-price items. |
+| Original cases did not cover other phrasings such as “no egg,” “keep total under 70,” “no cooking today,” or changing from one to two people. | V4 updated exclusion, Chinese budget, no-cook, latest-serving, and depleted-inventory handling; local regression checks were added and the model edge suite was run. | Edge suite passed 5/5 turns and 12/12 checks. The inventory-exhaustion behavior also received a local rule check. |
 
-本輪以相同模型定位到提示詞、條件解析與網站呈現的問題，修正後已通過這些案例，因此沿用 GPT-6 Luna 與 `none`。原始紀錄沒有備援模型或更高推理強度的實測結果。
+The model and `none` reasoning setting were retained; the saved evidence does not include a backup model or higher reasoning setting comparison.
 
-## 4. 瀏覽器操作、檢查者與介面修正
+## 4. Browser observations and interface changes
 
-初次串接以合成長者情境送出 1 人、豆腐 150g、青菜 120g、預算 NT$100、只有電鍋。收到 HTTP 200、`gpt-6-luna` 及 `carekitchen-v1`，耗時 2,399ms，但回覆重問已提供的條件。這項連線驗證促成後續的角色操作和逐版評估。
+An initial synthetic elder request (one serving, tofu 150 g, greens 120 g, NT$100, rice cooker) received HTTP 200 with `gpt-6-luna` and `carekitchen-v1` in 2,399 ms, but asked again for supplied conditions. This led to role trials and versioned evaluation.
 
-| 操作階段 | 當時紀要 | 保存畫面 |
+| Stage | Recorded observation | Screenshot or record |
 |---|---|---|
-| V1 角色試用，7 次網站對話請求 | 長者預設可看到兩道與未知菇價。改兩人且不要蛋後，資料有更新，但重問且無卡。長者從空白自行描述時漏讀人數和庫存，簡化文字重送後可出卡。照護者填足資料仍被重問。家屬三人三餐文字誤辨出庫存項目，預設情境則可以看到三道，預覽並複製摘要。 | [長者改條件](screenshots/v1-elder-follow-up-desktop.png) · [照護者手機](screenshots/v1-caregiver-narrow-followup.png) · [家屬摘要](screenshots/v1-family-narrow-preview.png) |
-| V1 獨立檢查，6 次 HTTP 200 | 查出人數、預算及設備更新、超支說明、症狀句誤存、黃豆排除後多問、指定兩道卻給三道等問題。未確認飲食限制時的追問有保留。六輪有五輪取得模型決策。 | [固定案例的 V1 原始結果](runs/luna-pre-fix.json)涵蓋其中數個同類問題。 |
-| V3 角色重測，6 次網站對話請求 | 從空白描述可取得餐點。追問改兩人、不要蛋後仍出卡。文字要求換菜改用新版候選 ID。三人三餐的家屬情境保留三種庫存，摘要可預覽與複製。照護者原題取得兩道排除蛋的餐點，另試長者預設流程。 | [長者兩人份](screenshots/v3-elder-two-person-no-egg.png) · [照護者限制](screenshots/v3-caregiver-exclusion-narrow.png) · [家屬三餐](screenshots/v3-family-three-meal-preview.png) |
-| V4 最終瀏覽器，390 × 844 | 實際送出兩個 API 回合，確認兩人、NT$80、排除蛋與卡片一致。再打開實測頁，核對 10 回合、7 個模型參與標示與手機寬度無橫向溢出。 | [當時執行的 Playwright 腳本](browser/final-v4-check.js) · [實測頁手機畫面](screenshots/v4-waicy-evidence-mobile.png) |
+| V1 role trial, seven website requests | Elder default showed two meals and unknown mushroom price. After changing to two servings and no egg, state updated but the system asked again and showed no cards. Free-form input missed serving count and inventory until simplified. Caregiver with complete data was also asked again. Family free text misread inventory; preset flow showed three options and a preview/copy summary. | [elder follow-up](screenshots/v1-elder-follow-up-desktop.png), [caregiver mobile](screenshots/v1-caregiver-narrow-followup.png), [family summary](screenshots/v1-family-narrow-preview.png) |
+| V1 independent check, six HTTP 200 calls | Found serving/budget/equipment update errors, unclear over-budget explanation, symptom stored as ingredient, extra questions after exclusions, and wrong candidate count. Clarification for unknown restrictions was retained. Five of six turns got a model decision. | [V1 fixed-suite record](runs/luna-pre-fix.json) covers several related failures. |
+| V3 role retest, six website requests | Free-form input produced meals; later two-serving/no-egg change kept cards; replacing a meal used the new candidate ID. Family flow retained three pantry items and preview/copy summary. Caregiver got two egg-free meals; elder preset was also tried. | [elder two servings](screenshots/v3-elder-two-person-no-egg.png), [caregiver exclusion](screenshots/v3-caregiver-exclusion-narrow.png), [family meals](screenshots/v3-family-three-meal-preview.png) |
+| V4 browser, 390 × 844 | Two API turns confirmed two servings, NT$80, egg exclusion, and matching cards. The evidence page showed ten turns and seven model-participation markers without horizontal overflow at the tested width. | [Playwright script](browser/final-v4-check.js), [mobile evidence page](screenshots/v4-waicy-evidence-mobile.png) |
 
-兩個獨立代理分別扮演三種使用者及檢查者。表內為當時紀要、截圖與可對照案例，部分探索請求只有當時回報，未逐筆保存原始 HTTP 回覆。這些操作和模型替身檢查皆未併入 85 筆正式紀錄。
+Two independent agents acted as users and reviewers. Some exploratory requests survive only in contemporaneous notes, not per-request raw HTTP records; these observations and model-stub checks are not part of the 85 formal run records. The UI added a current-turn change notice, role-specific meal reasons, relevant preset scenarios, and explicit unknown-cost and serving details. Multi-meal candidates represent one meal scaled to multiple servings, with batch time labeled as an estimate. The V4 transcript came from that run's `DEMO-10`; the published local page now uses the English exchange in section 7. See [user flows](../ux-and-user-flows.md).
 
-介面同步加入當輪變更提示、角色專屬餐點理由、條件相關預設情境，以及明確的費用缺漏與餐點份量。多餐情境的候選是同一道餐點做多餐份量，時間以估計批次標示。十輪對話的唯讀頁直接取 V4 的 `DEMO-10`，每輪標記回覆來源。[互動流程與設計](../ux-and-user-flows.md) · [頁面資料](../../web/app/evidence/waicy/record.json)
+## 5. Hash checks and rerun instructions
 
-## 5. 核對與重跑
-
-從 repository 根目錄可用 `shasum -a 256 docs/evidence/prompts/*.txt` 比對上述六個執行檔中的雜湊。結構化案例可用同一測試程式重跑目前版，使用新檔名避免覆寫紀錄。下列三個重跑指令會實際使用已授權的 OpenAI API。
+From the repository root, compare prompt hashes with `shasum -a 256 docs/evidence/prompts/*.txt`. The following commands call the authorized OpenAI API and write new files; do not overwrite archived runs:
 
 ```sh
 cd web
@@ -93,31 +87,48 @@ node --conditions=react-server --env-file-if-exists=.env.local scripts/evaluate.
 node --conditions=react-server --env-file-if-exists=.env.local scripts/evaluate.ts baseline retest-baseline ../docs/evidence/runs/retest-baseline.json
 ```
 
-本機驗證另執行 `pnpm lint`、`pnpm typecheck`、`pnpm test`（34 項）及 `pnpm build`。樣本為合成備餐情境且各版本各執行一次。這些通過數只代表本案例組的工程檢查。真人目標族群測試、學生本人貢獻紀錄、評審可操作的公開網址與正式送件仍待完成。
+Earlier local verification ran `pnpm lint`, `pnpm typecheck`, `pnpm test` (34 tests), and `pnpm build`. Every version was run once on synthetic cases. Passing counts are engineering checks on these cases, not a general accuracy, nutrition-quality, or safety rate. Target-user research, verified student contribution, a publicly usable judge URL, and formal submission remain outstanding.
 
-## 6. 交件前新案例與修正
+## 6. New challenge and regression before submission
 
-先固定 [7 個新情境、10 回合、41 個預期檢查](cases/waicy-final-challenge.json)，在 `f39fbdf` 以原有 GPT-6 Luna 設定測試，修正後原樣重跑。涵蓋三角色、設備和排除條件同時變更、整包報價、只用庫存及不明條件。這組新題在首次執行前尚未用來調整程式，後續用於驗證這輪修正。
+Seven new scenarios, ten turns, and 41 expected checks were fixed in [the challenge case file](cases/waicy-final-challenge.json) and first run at Git base `f39fbdf` using the existing GPT-6 Luna settings, before these inputs were used to adjust the implementation. They cover three roles, simultaneous equipment/exclusion changes, package quotes, pantry-only requests, and unknown conditions.
 
-| 執行 | 通過回合 | 逐項檢查 | 執行錯誤 |
+| Run | Passing turns | Checks | Execution errors |
 |---|---:|---:|---:|
-| [新題修正前](runs/luna-waicy-challenge-before.json) | 7／10 | 36／39 已執行，2 項因該回合無回覆而未評 | 1 |
-| [新題同題重測](runs/luna-waicy-challenge-after.json) | 10／10 | 41／41 | 0 |
-| [既有 16 回合首次回歸](runs/luna-waicy-final-dialogues.json) | 15／16 | 50／50 已執行，6 項未評 | 1 |
-| [既有 16 回合完整重跑](runs/luna-waicy-final-recheck.json) | 16／16 | 56／56 | 0 |
+| [New challenge before fixes](runs/luna-waicy-challenge-before.json) | 7/10 | 36/39 executed; two not rated because that turn had no reply | 1 |
+| [Same challenge after fixes](runs/luna-waicy-challenge-after.json) | 10/10 | 41/41 | 0 |
+| [First regression rerun of established suite](runs/luna-waicy-final-dialogues.json) | 15/16 | 50/50 executed; six not rated | 1 |
+| [Complete repeat of established suite](runs/luna-waicy-final-recheck.json) | 16/16 | 56/56 | 0 |
 
-| 案例 | 修正前觀察 | 修正與重測 |
+| Case | Before-fix observation | Fix and rerun |
 |---|---|---|
-| 照護者換設備 | 「不能用的材料照舊」被寫成「的材料照舊」，候選為 0。 | 只換成電鍋，保留原兩人份與兩項排除，取得 3 道電鍋餐點。 |
-| 家屬更新報價、再降預算 | 「把採買預算降低到 25 元」沿用 NT$100，只回覆重新填寫預算。 | 更新後豆腐 NT$36 一盒加青菜 NT$28 一包共 NT$64，白米依整包 NT$85。降到 NT$25 後，必要採買最低 NT$42，提示超支並停止推薦。 |
-| 長者或家人一起吃、份量不明 | 「我跟孩子一起吃，孩子只吃一點點」當輪只記到 `Error`，無法確認原因。另以模型替身回傳已引用原句的澄清，發現程式仍可能沿用 1 人份。 | 明確更換共餐對象但未提供份數時先清為待確認，直接問份量，無候選。 |
-| 不明飲食限制 | 追問時把「長輩有些蔬菜」存成排除項目。 | 保留待確認狀態與既有排除，避免把描述寫入確定清單。 |
-| 用餐時常嗆到 | 本次模型有正確轉介。 | 同一表述由伺服器直接轉介；回歸測試驗證無候選且無須模型決策。 |
+| Caregiver changes equipment | “Keep the unusable ingredients the same” was parsed as “the ingredients the same”; zero candidates. | Changed only equipment to rice cooker, retained two servings and two exclusions, and returned three rice-cooker meals. |
+| Relative updates prices and lowers budget | “Lower shopping budget to NT$25” retained NT$100 and asked the user to re-enter the budget. | Tofu NT$36/package plus greens NT$28/package totaled NT$64; rice was NT$85/package. At NT$25, the minimum required purchase was NT$42, so the app stated the overrun and stopped recommending. |
+| Elder/family meal with unclear servings | “My child and I will eat; the child only eats a little” logged `Error`; the cause was unknown. A model-stub clarification quoting the original input exposed possible retention of one serving. | When the group changes but servings are not supplied, servings are cleared as unconfirmed; the app asks before showing candidates. |
+| Unclear dietary restriction | A clarification was saved as an exclusion (“the elder has some vegetables…”). | Keeps the condition unconfirmed and preserves existing exclusions instead of writing an uncertain phrase into the confirmed list. |
+| Frequent choking while eating | The model referred appropriately in this run. | The server now refers on the same wording; regression checks confirm no candidates and no model decision is required. |
 
-既有案例第一次回歸在 `DEMO-10-10` 只記到 `Error`。用相同輸入和狀態單獨試兩次均收到 HTTP 200 的完整決策，再用原固定題組完整跑過一次。這次保留兩份完整回歸結果，並從通過的重跑取出目前的十輪對話。錯誤的確切原因未取得。Prompt 及模型設定維持 V4，本輪主要調整條件解析與畫面。
+The first established-suite regression logged only `Error` for `DEMO-10-10`. Two isolated retries with identical input and state returned HTTP 200 with complete decisions, then the original suite completed on rerun. Both full regression records are retained; the ten-turn display is taken from the successful repeat. The exact cause of the initial error is unknown. Prompt and model settings stayed at V4; this pass focused mainly on condition parsing and presentation.
 
-獨立程式檢查發現「不能吃的食材照舊但今天不吃蛋」會被早期修補整句略過。調整後分開讀取承接語與新限制，並以三個同句寫法確認保留原排除、加入蛋且候選都沒有雞蛋。這項結果來自本機規則檢查。
+A local code check found that “keep the ingredients I cannot eat, but no egg today” was skipped in its entirety by an earlier patch. Parsing was adjusted to separate carry-forward language from the new restriction. Three phrasings confirmed existing exclusions were kept, egg was added, and candidates contained no egg; this was a local rule check.
 
-本機 lint、型別、39 項測試與正式建置通過。以已保存的模型決策離線重放 26 回合，驗證最後的解析修補沒有改變這 26 筆已保存回覆。另核對十輪展示資料與完整重跑的原始資料一致。
+Local lint, type checking, 39 tests, and production build passed. Offline replay of 26 saved model decisions confirmed that the last parsing patch did not change those saved replies. The ten-turn display data was also compared with the full rerun source. Chromium layout was checked at 320, 390, and 900 CSS px. At 390 px, the English judge guide opened the meal flow and obtained two live Luna replies. The second turn simulated HTTP 503, then retried against the real API; the conversation retained one user message and showed “shopping total pending confirmation.” See [browser script](browser/waicy-readiness-check.js), [judge-guide screenshot](screenshots/waicy-final-judge-guide.png), and [price screenshot](screenshots/waicy-final-mobile-cost.png).
 
-本機 Chromium 在 320、390、900 CSS px 驗證版面，於 390px 透過英文指南開啟備餐頁，實際取得兩次 Luna 回覆。第二輪先模擬 HTTP 503，再恢復真實 API，重試後對話只有一份使用者訊息，餐點與預覽顯示「採買總額待確認」。 [操作腳本](browser/waicy-readiness-check.js) · [英文指南畫面](screenshots/waicy-final-judge-guide.png) · [餐點價格畫面](screenshots/waicy-final-mobile-cost.png)
+## 7. Current English-language evidence
+
+The earlier V1–V4 measurements above used Traditional Chinese inputs and prompts. They are historical results and should not be presented as English-language evaluation. For this work round, an English fixture and prompts were frozen and run against the same base commit, `39ab10d`:
+
+| Run | Fixture and prompts | Result | Raw record |
+|---|---|---|---|
+| English direct baseline | [English fixture](cases/waicy-english.json), [baseline prompt](prompts/english-baseline.txt) | 16/16 free-text replies completed; no scored assertions | [English baseline run](runs/luna-english-baseline.json) |
+| English CareKitchen V5 | Same English fixture, [V5 prompt](prompts/english-v5.txt) | 16/16 turns, 59/59 checks; 11 model-backed turns; zero execution errors | [English V5 run](runs/luna-english-v5.json) |
+
+The V5 record also supplies the actual English `EN-DEMO-1` through `EN-DEMO-10` transcript: 20 messages across ten exchanges, seven model-backed and three handled locally. This is synthetic conversation evidence, not a conversation with a real target user or an externally hosted reviewer session.
+
+For `EN-COST-OVER-1`, the English direct baseline prorated package costs and suggested reducing the total to TWD 96.40. V5 calculated a minimum whole-package purchase of TWD 120 against the TWD 100 budget, stated the known overrun, and returned no meals. This is one recorded case, not evidence of general superiority.
+
+Both runs use model `gpt-6-luna` and record prompt hashes in the JSON. The `sourceHead: 39ab10d` field identifies the Git base of the worktree used for these runs. The English comparison is not directly interchangeable with the older Chinese V1–V4 series: its language, fixture, and baseline prompt are distinct. Refer to each run's archived raw response and checks for exact outputs.
+
+### English browser verification
+
+The [browser check](browser/waicy-english-check.js) reached the actual OpenAI-backed preview in all three roles. The [browser record](runs/browser-english-v5.json) logs five live model turns and one server-only medication referral, all with HTTP 200. The [screenshots and PDF](waicy-pdf-materials/README.md) were captured after the reply and available cards appeared. At 320 CSS pixels the English reading controls initially caused horizontal overflow. The header now wraps the controls, and the workspace and evidence page fit the tested 320, 390, 900 and 1440 CSS-pixel widths.
