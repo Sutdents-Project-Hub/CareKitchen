@@ -2,8 +2,8 @@
 <p class="eyebrow">05 · ITERATIVE DESIGN · ADVISOR AND PROMPT DESIGN</p>
 <h2>From the first prompt to English V5</h2>
 <div class="body">
-<table style="font-size:28px; color:#41495A; width:1664px">
-<tr><th style="width:12%; text-align:left; color:#16315C; padding:20px 22px">Version</th><th style="width:46%; text-align:left; color:#16315C">Design</th><th style="width:42%; text-align:left; color:#16315C">What it was meant to fix</th></tr>
+<table style="font-size:25px; color:#41495A; width:1664px">
+<tr><th style="width:12%; text-align:left; color:#16315C; padding:12px 20px">Version</th><th style="width:46%; text-align:left; color:#16315C">Design</th><th style="width:42%; text-align:left; color:#16315C">What it was meant to fix</th></tr>
 <tr><td style="font-weight:600; color:#0E1B33">Baseline</td><td>One line: “Answer the user in Traditional Chinese.” Plain chat history, free text.</td><td>Reference point: the same model with no CareKitchen design.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">V1</td><td>Model classifies and ranks candidates from the turn text and conditions. It may ask for any unknown.</td><td>First end-to-end meal advisor.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">V2</td><td>Server-parsed conditions are trusted. Clarification must be structured, name the new missing field and quote the user.</td><td>Needless re-asking, lost spoken edits, missing price intake.</td></tr>
@@ -11,7 +11,7 @@
 <tr><td style="font-weight:600; color:#0E1B33">V4</td><td>Colloquial edits are parsed by the server. The model is reminded of pending exclusions and budget changes.</td><td>“No eggs”, “keep it under 70”, “no fire today”, “now two of us”.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">English V5</td><td>English structured instructions with the same ranking, evidence and referral boundaries.</td><td>Original English runs and transcript, with the earlier Chinese runs archived.</td></tr>
 </table>
-<div class="soft" style="padding:24px 34px"><p class="cs" style="color:#0E1B33">Same settings in every run: gpt-6-luna, reasoning effort none, store false. Each run file records the prompt’s SHA-256 hash. V2 and V3 prompt files were reconstructed from known differences and V4, not archived at the time. Prompt texts: docs/evidence/prompts/.</p></div>
+<div class="soft" style="padding:24px 34px"><p class="cs" style="color:#0E1B33; font-size:25px">Same settings in every run: gpt-6-luna, reasoning effort none, store false. Each run file records the prompt’s SHA-256 hash. V2 and V3 prompt files were reconstructed from known differences and V4, not archived at the time. Prompt texts: docs/evidence/prompts/.</p></div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
 </section>
