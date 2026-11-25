@@ -30,10 +30,10 @@ These are acceptance goals, not a claim that every competition deliverable is co
 
 Out of scope for the first release: voice, image OCR, saved favorites, weekly menus, ordering, nutrition databases, live price feeds, disease-risk prediction, medication advice, prescription recognition, health records, accounts, multi-agent systems, native apps, CMS, and separate backend services.
 
-The only executable component is `web/`, using Next.js App Router, TypeScript, Node.js 24 LTS, and pnpm. Server Route Handlers own AI calls and safety checks. No deployment platform or persistent conversation store is confirmed.
+The only executable component is `web/`, using Next.js App Router, TypeScript, Node.js 24 LTS, and pnpm. Server Route Handlers own AI calls and safety checks. Vercel Hobby is planned for hosting; no Vercel project or persistent conversation store has been created.
 
 ## Handoff and acceptance
 
 Follow [implementation-roadmap.md](implementation-roadmap.md), [agent-design.md](agent-design.md), [API and data contracts](api-and-data-contracts.md), and the [evaluation plan](evaluation-and-iteration.md). P0 acceptance is defined by CK-01–CK-10 and AC-01–AC-14 in the product specification. Mark untested items as planned or unverified. Never fabricate interviews, model results, prices, or external acceptance.
 
-Open decisions include public hosting and evaluator access, storage and retention, consent and withdrawal for shared conversations, real-user study and permissions, official eligibility/deadline confirmation, and repository licensing. Deployment is not authorized or completed by this overview.
+Open decisions include GitHub import eligibility, evaluator access, storage and retention, consent and withdrawal for shared conversations, real-user study and permissions, official eligibility/deadline confirmation, and repository licensing. Deployment is not authorized or completed by this overview.

@@ -4,7 +4,7 @@
 
 - 本檔適用於整個 `CareKitchen｜長者 AI 餐點顧問` repository；子目錄若有更具體的 `AGENTS.md`，只在該範圍內補充本檔。
 - 依序遵守使用者當次指示、本檔、根目錄 `README.md`、`docs/` 與元件 README；內容衝突時先停止並確認。
-- 目前階段：競賽／展示。部署狀態：已規劃，平台尚未確認。
+- 目前階段：競賽／展示。部署狀態：規劃使用 Vercel Hobby，尚未建立專案或部署。
 - Git repository 名稱：`CareKitchen`。全新專案的初始 branch 為 `main`。
 
 - 產品型態：`web`

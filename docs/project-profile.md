@@ -5,7 +5,7 @@
 - Project: CareKitchen | AI Meal Planning for Older Adults
 - Repository: `CareKitchen`; project slug: `carekitchen`
 - Stage: `competition`; product: `web`; bootstrap: `scaffold`
-- Deployment: planned; platform not confirmed
+- Deployment: Vercel Hobby planned; project not created or deployed
 - Team collaboration: enabled; no structure exception
 
 ## Summary
