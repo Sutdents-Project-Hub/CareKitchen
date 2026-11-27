@@ -18,7 +18,7 @@ export default function WaicyEvidence() {
       <header className="evidence-header">
         <p>WAICY 2026 · CareKitchen</p>
         <h1>Ten rounds of meal planning</h1>
-        <p>Recorded English conversation using synthetic inputs and the final CareKitchen prototype.</p>
+        <p>Recorded English conversation using scripted test inputs and the final CareKitchen prototype.</p>
         <dl className="evidence-facts">
           <div>
             <dt>Conversation rounds</dt>
