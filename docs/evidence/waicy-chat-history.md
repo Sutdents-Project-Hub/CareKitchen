@@ -1,6 +1,6 @@
 # CareKitchen — Final Chat History (WAICY 2026, LLM Track)
 
-10 rounds (20 exchanged messages) with the final CareKitchen prototype, prompt `carekitchen-en-v5`. All inputs are invented; this record holds no names, photos, email addresses or health records.
+10 rounds (20 exchanged messages) with the final CareKitchen prototype, prompt `carekitchen-en-v5`. All inputs are scripted test data; this record holds no names, photos, email addresses or health records.
 
 - Recorded: 2026-11-23 (UTC), from the project's English evaluation run (cases EN-DEMO-1 to EN-DEMO-10)
 - Model participation: 7 rounds used `gpt-6-luna` plus server checks; 3 rounds were decided by server rules only

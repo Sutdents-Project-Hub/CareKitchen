@@ -2,7 +2,7 @@
 
 **Snapshot date: November 27, 2026.** This register distinguishes primary-source facts, project records, and claims that remain unverified. Search-result snippets are not treated as sufficient support for a final competition claim. Confirm the original page and wording before exporting the final PDF.
 
-## Sources used in the 32-page deck (checked November 27, 2026)
+## Sources used in the 33-page deck (checked November 27, 2026)
 
 | Claim or use | Source | Verification and limits |
 |---|---|---|

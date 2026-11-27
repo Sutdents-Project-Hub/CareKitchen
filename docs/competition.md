@@ -113,4 +113,4 @@ A demo script is not a final ten-turn transcript. The transcript must be generat
 
 ## 9. English deck and submission materials
 
-A 32-page English deck was completed on November 27, 2026 and exported as `LLM_Middle_CareKitchen.pdf` (Middle School). The PDF holds student names and photos and is kept outside this public repository. See [submission materials](waicy-submission/README.md), [rubric mapping](waicy-submission/rubric-mapping.md), [checklist](waicy-submission/submission-todo.md), and [research notes](waicy-submission/research-notes.md).
+A 33-page English deck was completed on November 27, 2026 and exported as `LLM_Middle_CareKitchen.pdf` (Middle School). The PDF holds student names and photos and is kept outside this public repository. See [submission materials](waicy-submission/README.md), [rubric mapping](waicy-submission/rubric-mapping.md), [checklist](waicy-submission/submission-todo.md), and [research notes](waicy-submission/research-notes.md).

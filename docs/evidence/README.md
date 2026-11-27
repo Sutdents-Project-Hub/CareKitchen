@@ -2,7 +2,7 @@
 
 **Evidence status as of November 23, 2026.** The archived Chinese V1–V4 runs and the current English V5/baseline runs used authorized OpenAI API calls with synthetic meal-planning scenarios. Browser roles were acted by agents. No target-user interviews, external judge testing, or formal submission is evidenced here.
 
-**Added November 27, 2026:** the [final chat history](waicy-chat-history.md) (ten rounds, synthetic) and a [hosted-app check](runs/live-deploy-2026-11-27.json) of 23 invented requests, all HTTP 200.
+**Added November 27, 2026:** the [final chat history](waicy-chat-history.md) (ten rounds, synthetic) and a [hosted-app check](runs/live-deploy-2026-11-27.json) of 23 scripted requests, all HTTP 200, and a [form walkthrough](runs/live-walkthrough-2026-11-27.json) used for the deck screenshots.
 
 The [iteration and development record](iteration-development.md) documents the historical Chinese direct baseline and V1–V4, and the current English direct baseline and V5. Raw run JSON and original prompt/case files remain the source records; English narrative summaries do not replace them.
 

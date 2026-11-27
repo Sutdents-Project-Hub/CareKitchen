@@ -1,0 +1,422 @@
+{
+ "label": "live-walkthrough",
+ "date": "2026-11-27",
+ "url": "https://carekitchen-theta.vercel.app",
+ "note": "Form-based walkthrough run by an automated headless browser with scripted test data. Not a user study. In this run, an equipment button clicked immediately after typing did not register; it worked after leaving the text field first.",
+ "requests": [
+  {
+   "tag": "w",
+   "status": 200,
+   "request": {
+    "language": "en",
+    "persona": "caregiver",
+    "text": "Please suggest dinner using what I have.",
+    "context": {
+     "servings": 2,
+     "mealCount": 1,
+     "budgetTwd": 100,
+     "pantryItems": [
+      {
+       "name": "tofu",
+       "quantity": 150,
+       "unit": "g"
+      },
+      {
+       "name": "leafy greens",
+       "quantity": 120,
+       "unit": "g"
+      }
+     ],
+     "purchasePrices": [],
+     "excludedIngredients": [
+      "eggs"
+     ],
+     "equipment": [
+      "rice_cooker"
+     ],
+     "maxTimeMinutes": null,
+     "preferences": [],
+     "uncertainty": false,
+     "onlyPantry": false
+    }
+   },
+   "response": {
+    "context": {
+     "servings": 2,
+     "mealCount": 1,
+     "budgetTwd": 100,
+     "pantryItems": [
+      {
+       "name": "tofu",
+       "quantity": 150,
+       "unit": "g"
+      },
+      {
+       "name": "leafy greens",
+       "quantity": 120,
+       "unit": "g"
+      }
+     ],
+     "purchasePrices": [],
+     "excludedIngredients": [
+      "eggs"
+     ],
+     "equipment": [
+      "rice_cooker"
+     ],
+     "maxTimeMinutes": null,
+     "preferences": [],
+     "uncertainty": false,
+     "onlyPantry": false
+    },
+    "cards": [
+     {
+      "id": "steam-tofu-greens",
+      "title": "Rice-cooker tofu and leafy greens",
+      "servings": 2,
+      "mealCount": 1,
+      "equipment": "rice_cooker",
+      "minutes": 25,
+      "fromPantry": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g"
+       },
+       {
+        "name": "leafy greens",
+        "quantity": 120,
+        "unit": "g"
+       }
+      ],
+      "toBuy": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g",
+        "priceTwd": null
+       },
+       {
+        "name": "leafy greens",
+        "quantity": 120,
+        "unit": "g",
+        "priceTwd": null
+       }
+      ],
+      "knownCostTwd": 0,
+      "budgetStatus": "unknown",
+      "missingPrices": [
+       "tofu",
+       "leafy greens"
+      ],
+      "unknownPantry": [],
+      "steps": [
+       "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+       "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+      ],
+      "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+     },
+     {
+      "id": "steam-mushroom-tofu",
+      "title": "Steamed mushrooms and tofu",
+      "servings": 2,
+      "mealCount": 1,
+      "equipment": "rice_cooker",
+      "minutes": 25,
+      "fromPantry": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g"
+       }
+      ],
+      "toBuy": [
+       {
+        "name": "mushrooms",
+        "quantity": 160,
+        "unit": "g",
+        "priceTwd": null
+       },
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g",
+        "priceTwd": null
+       }
+      ],
+      "knownCostTwd": 0,
+      "budgetStatus": "unknown",
+      "missingPrices": [
+       "mushrooms",
+       "tofu"
+      ],
+      "unknownPantry": [],
+      "steps": [
+       "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+       "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+      ],
+      "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+     },
+     {
+      "id": "steam-pumpkin-tofu",
+      "title": "Steamed pumpkin and tofu",
+      "servings": 2,
+      "mealCount": 1,
+      "equipment": "rice_cooker",
+      "minutes": 30,
+      "fromPantry": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g"
+       }
+      ],
+      "toBuy": [
+       {
+        "name": "pumpkin",
+        "quantity": 300,
+        "unit": "g",
+        "priceTwd": null
+       },
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g",
+        "priceTwd": null
+       }
+      ],
+      "knownCostTwd": 0,
+      "budgetStatus": "unknown",
+      "missingPrices": [
+       "pumpkin",
+       "tofu"
+      ],
+      "unknownPantry": [],
+      "steps": [
+       "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+       "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+      ],
+      "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+     }
+    ],
+    "mode": "openai",
+    "message": "Found 3 meals for this turn. Each dish is rechecked for the current servings, equipment and exclusions. Check pantry amounts and packaging ingredients.",
+    "responseType": "meal_candidates",
+    "unknowns": [
+     "Purchase prices to confirm: tofu, leafy greens, mushrooms, pumpkin"
+    ],
+    "modelInfo": {
+     "model": "gpt-6-luna",
+     "promptVersion": "carekitchen-en-v5"
+    }
+   }
+  },
+  {
+   "tag": "m",
+   "status": 200,
+   "request": {
+    "language": "en",
+    "persona": "caregiver",
+    "text": "Please suggest dinner using what I have.",
+    "context": {
+     "servings": 2,
+     "mealCount": 1,
+     "budgetTwd": 100,
+     "pantryItems": [
+      {
+       "name": "tofu",
+       "quantity": 150,
+       "unit": "g"
+      },
+      {
+       "name": "leafy greens",
+       "quantity": 120,
+       "unit": "g"
+      }
+     ],
+     "purchasePrices": [],
+     "excludedIngredients": [
+      "eggs"
+     ],
+     "equipment": [
+      "rice_cooker"
+     ],
+     "maxTimeMinutes": null,
+     "preferences": [],
+     "uncertainty": false,
+     "onlyPantry": false
+    }
+   },
+   "response": {
+    "context": {
+     "servings": 2,
+     "mealCount": 1,
+     "budgetTwd": 100,
+     "pantryItems": [
+      {
+       "name": "tofu",
+       "quantity": 150,
+       "unit": "g"
+      },
+      {
+       "name": "leafy greens",
+       "quantity": 120,
+       "unit": "g"
+      }
+     ],
+     "purchasePrices": [],
+     "excludedIngredients": [
+      "eggs"
+     ],
+     "equipment": [
+      "rice_cooker"
+     ],
+     "maxTimeMinutes": null,
+     "preferences": [],
+     "uncertainty": false,
+     "onlyPantry": false
+    },
+    "cards": [
+     {
+      "id": "steam-tofu-greens",
+      "title": "Rice-cooker tofu and leafy greens",
+      "servings": 2,
+      "mealCount": 1,
+      "equipment": "rice_cooker",
+      "minutes": 25,
+      "fromPantry": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g"
+       },
+       {
+        "name": "leafy greens",
+        "quantity": 120,
+        "unit": "g"
+       }
+      ],
+      "toBuy": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g",
+        "priceTwd": null
+       },
+       {
+        "name": "leafy greens",
+        "quantity": 120,
+        "unit": "g",
+        "priceTwd": null
+       }
+      ],
+      "knownCostTwd": 0,
+      "budgetStatus": "unknown",
+      "missingPrices": [
+       "tofu",
+       "leafy greens"
+      ],
+      "unknownPantry": [],
+      "steps": [
+       "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+       "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+      ],
+      "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+     },
+     {
+      "id": "steam-mushroom-tofu",
+      "title": "Steamed mushrooms and tofu",
+      "servings": 2,
+      "mealCount": 1,
+      "equipment": "rice_cooker",
+      "minutes": 25,
+      "fromPantry": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g"
+       }
+      ],
+      "toBuy": [
+       {
+        "name": "mushrooms",
+        "quantity": 160,
+        "unit": "g",
+        "priceTwd": null
+       },
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g",
+        "priceTwd": null
+       }
+      ],
+      "knownCostTwd": 0,
+      "budgetStatus": "unknown",
+      "missingPrices": [
+       "mushrooms",
+       "tofu"
+      ],
+      "unknownPantry": [],
+      "steps": [
+       "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+       "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+      ],
+      "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+     },
+     {
+      "id": "steam-pumpkin-tofu",
+      "title": "Steamed pumpkin and tofu",
+      "servings": 2,
+      "mealCount": 1,
+      "equipment": "rice_cooker",
+      "minutes": 30,
+      "fromPantry": [
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g"
+       }
+      ],
+      "toBuy": [
+       {
+        "name": "pumpkin",
+        "quantity": 300,
+        "unit": "g",
+        "priceTwd": null
+       },
+       {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g",
+        "priceTwd": null
+       }
+      ],
+      "knownCostTwd": 0,
+      "budgetStatus": "unknown",
+      "missingPrices": [
+       "pumpkin",
+       "tofu"
+      ],
+      "unknownPantry": [],
+      "steps": [
+       "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+       "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+      ],
+      "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+     }
+    ],
+    "mode": "openai",
+    "message": "Found 3 meals for this turn. Each dish is rechecked for the current servings, equipment and exclusions. Check pantry amounts and packaging ingredients.",
+    "responseType": "meal_candidates",
+    "unknowns": [
+     "Purchase prices to confirm: tofu, leafy greens, mushrooms, pumpkin"
+    ],
+    "modelInfo": {
+     "model": "gpt-6-luna",
+     "promptVersion": "carekitchen-en-v5"
+    }
+   }
+  }
+ ]
+}

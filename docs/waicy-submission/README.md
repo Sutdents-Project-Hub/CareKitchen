@@ -1,6 +1,6 @@
 # WAICY 2026: English Submission Materials
 
-> **Status as of November 27, 2026:** the 32-page English deck for the Middle School division is complete and exported to PDF. The assistant and chat-history links are public. Uploading to Drive and sending the official form are still to be done by the team.
+> **Status as of November 27, 2026:** the 33-page English deck for the Middle School division is complete and exported to PDF. The assistant and chat-history links are public. Uploading to Drive and sending the official form are still to be done by the team.
 
 ## Contents
 
@@ -25,4 +25,4 @@
 
 ## Page sequence
 
-1 Cover · 2 Summary · 3 Requirement guide · 4 Motivation · 5 Plain-chat failures · 6 Service · 7 User journey · 8 Three users · 9 One request, three answers · 10 Agent design · 11 Final instructions · 12 Changing conditions · 13 Price states · 14 Safety · 15 Iteration overview · 16 Idea · 17 Versions · 18 Prompt changes · 19 Results · 20 Baseline comparison · 21–22 Failure analysis · 23 New-case test · 24 Links and QR codes · 25 Ten-round record · 26 Limitations · 27 Ethics · 28 Future · 29 Originality · 30 Team and AI disclosure · 31 Conclusion · 32 References
+1 Cover · 2 Summary · 3 Requirement guide · 4 Motivation · 5 Plain-chat failures · 6 Service · 7 User journey · 8 Operation walkthrough · 9 Three users · 10 One request, three answers · 11 Agent design · 12 Final instructions · 13 Changing conditions · 14 Price states · 15 Safety · 16 Iteration overview · 17 Idea · 18 Versions · 19 Prompt changes · 20 Results · 21 Baseline comparison · 22–23 Failure analysis · 24 New-case test · 25 Links and QR codes · 26 Ten-round record · 27 Limitations · 28 Ethics · 29 Future · 30 Originality · 31 Team and AI disclosure · 32 Conclusion · 33 References
