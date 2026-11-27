@@ -22,7 +22,7 @@ This register separates the original project idea, competition guidance, researc
 - Original brief: target audiences, ingredient/budget/restriction-based meal conversation, simple explanations, shopping, and role differentiation.
 - Competition guidance: track, scoring, submission, conversation evidence, timeline, and student contribution expectations. Recheck official sources before submission: [WAICY 2026](https://www.waicy.org/waicy-2026/), [official guidebook](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf), [rubrics](https://www.waicy.org/rubrics/).
 - Implemented: Next.js, TypeScript, Node.js 24, pnpm, Zod, Node.js tests, and an OpenAI adapter. GPT-6 Luna synthetic-case runs are recorded. Hosting remains undecided.
-- Unverified: deployment platform, public evaluator access, data retention policy, real-user acceptance, public environment cost, and successful competition submission.
+- Unverified: data retention policy, real-user acceptance, public environment cost, and successful competition submission.
 
 ## Evidence rules
 

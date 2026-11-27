@@ -15,20 +15,24 @@
   "order": [
     "cover",
     "glance",
+    "contents",
     "motivation",
     "gap",
     "service",
-    "flow",
     "tour",
-    "architecture",
     "users",
     "same-question",
-    "price",
+    "architecture",
+    "system-prompt",
     "in-action",
+    "price",
     "safety",
+    "roadmap",
     "idea",
     "prompts",
+    "prompt-diff",
     "results",
+    "versus",
     "failures-a",
     "failures-b",
     "fresh",
@@ -38,28 +42,29 @@
     "ethics",
     "future",
     "originality",
+    "team",
     "conclusion",
     "refs"
   ],
   "sections": {
     "s1": {
-      "description": "What CareKitchen is and why it matters: the service, the evidence for the problem and the three users.",
+      "description": "What CareKitchen is, where each requirement is, and why the problem matters.",
       "start": "cover"
     },
     "s2": {
-      "description": "How the service works for three different users, with real product screens.",
+      "description": "The service, its three users, the agent design and the live assistant.",
       "start": "service"
     },
     "s3": {
-      "description": "The iterative design process: ideas, prompt versions, tests, errors and fixes.",
-      "start": "idea"
+      "description": "The iterative design process: idea, prompts, tests, errors and improvements.",
+      "start": "roadmap"
     },
     "s4": {
-      "description": "Live assistant, the final ten-round conversation and the evidence trail.",
+      "description": "Chatbot link, chat history link and the ten-round conversation.",
       "start": "demo-links"
     },
     "s5": {
-      "description": "Limitations, ethics, future development, originality, conclusion and references.",
+      "description": "Limitations, ethics, future development, originality, team, conclusion and references.",
       "start": "limits"
     }
   },

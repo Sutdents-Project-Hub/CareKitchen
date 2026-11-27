@@ -87,8 +87,8 @@ The user-selected **Term Sheet** theme is for presentation slides. It uses a fla
 - [x] Fixed cases cover unknown prices, package-level budget overrun, and professional referral.
 - [ ] Run a complete 30-case or otherwise required evaluation, with inspectable results.
 - [x] At least one real failure → fix → same-case retest is recorded in the [iteration log](evidence/iteration-development.md).
-- [ ] Final deployed assistant has at least ten complete real exchanges in an anonymized, publicly readable transcript.
-- [ ] Assistant URL works in a logged-out browser without a student's private account.
+- [x] A ten-round synthetic transcript recorded with the final prompt is publicly readable ([web](https://carekitchen-theta.vercel.app/evidence/waicy), [repository copy](evidence/waicy-chat-history.md)). It was recorded on a local build of the same code, not on the hosted instance.
+- [x] Assistant URL works in a headless browser without a sign-in (checked November 27, 2026).
 - [ ] Verify student contribution and two public links; export the final English PDF.
 - [ ] Test Drive access and every PDF link externally.
 - [ ] Save submission receipt or confirmation screenshot.
@@ -113,4 +113,4 @@ A demo script is not a final ten-turn transcript. The transcript must be generat
 
 ## 9. English deck and submission materials
 
-A 26-slide Claude Slides draft was completed on November 23, but no final PDF was exported. Public URL, QR, chat link, team information, and contribution statement remain to be completed. See [submission materials](waicy-submission/README.md), [rubric mapping](waicy-submission/rubric-mapping.md), [checklist](waicy-submission/submission-todo.md), and [research notes](waicy-submission/research-notes.md).
+A 32-page English deck was completed on November 27, 2026 and exported as `LLM_Middle_CareKitchen.pdf` (Middle School). The PDF holds student names and photos and is kept outside this public repository. See [submission materials](waicy-submission/README.md), [rubric mapping](waicy-submission/rubric-mapping.md), [checklist](waicy-submission/submission-todo.md), and [research notes](waicy-submission/research-notes.md).

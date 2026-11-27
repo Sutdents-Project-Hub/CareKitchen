@@ -1,31 +1,22 @@
 # Submission Checklist
 
-**Deadline recorded in the prior project research:** November 29, 2026, 17:00 Eastern Time (November 30, 06:00 Taiwan time). Reconfirm this deadline and eligibility directly with WAICY before relying on it. Internal target recorded: complete upload by the evening of November 29.
+**Deadline in the official guidebook and form (read November 27, 2026):** November 29, 2026, 5:00 PM ET (November 30, 06:00 Taiwan time). Aim to submit by November 29, Taiwan time.
 
-## Submission blockers
+## To do before sending
 
-| # | Missing item | Where it belongs | Action required |
-|---:|---|---|---|
-| 1 | Public AI assistant URL | Deck slide 20 and cover | Deploy only after separately authorized. Test in a private/logged-out browser: no student login, one complete live conversation, and adequate quota/rate-limit behavior. |
-| 2 | QR code | Dotted box on slide 20 | Generate only after the public URL is final; scan-test it. |
-| 3 | Shareable final conversation link | Slide 20 and cover | Create from a real conversation with the final deployed assistant and confirm public read access. The local `/evidence/waicy` page holds the ten original English exchanges. Verify its public URL from a signed-out browser after hosting. |
-| 4 | Team name, student names, and division | Cover and form | Confirm with the team. Do not infer High School division from the draft filename. |
-| 5 | Student contribution and AI-assistance disclosure | Slide 25 | Team must accurately state who did each task and identify AI tools, mentor help, and other contributors. |
-| 6 | Final English PDF | Export from artifact | The owner exports after reviewing the artifact. Inspect every page, image, line wrap, and link; remove all `[ ... ]` and `TO ADD` placeholders. |
-| 7 | Drive folder and permissions | Form | If the team confirms High School, planned folder/file name is `LLM_High_CareKitchen` / `LLM_High_CareKitchen.pdf`. Test access in a logged-out browser. |
+| # | Action |
+|---:|---|
+| 1 | Confirm the first team member's full English name; the draft shows the given name only. |
+| 2 | Each student confirms the role on page 30 matches their real work and can explain it in Q&A. Correct any role that does not. |
+| 3 | Confirm the AI-assistance disclosure on page 30 names the tools actually used. |
+| 4 | Create the Drive folder `LLM_Middle_CareKitchen`, add `LLM_Middle_CareKitchen.pdf`, share it so anyone with the link can view, and test it signed out. |
+| 5 | Complete the [submission form](https://www.waicy.org/2026-submission/): country, participation mode, contact phone, member details, instructor if any, competition group Middle School, and the description (200 words or fewer). Teams registered through a regional organizer may not need this form. |
+| 6 | Keep the hosted app funded and online through judging; open both links on a phone signed out. |
+| 7 | Prepare for the final if invited: 3-minute presentation, 3-minute demo, 4-minute Q&A (December 4–6). |
 
-## Recommended improvements
+## Open limitations
 
-| # | Item | Why it matters |
-|---:|---|---|
-| 8 | Recheck official rubric, submission page, and Guidebook | Rules, dates, required contents, and filenames may change. |
-| 9 | Verify original external sources | See [research notes](research-notes.md). The slide 3 international figures (WHO, U.S. ACL, Eurostat, Leij-Halfwerk et al.) come from search summaries; open each primary page and confirm the number, year and scope. Edit or drop any that do not match. |
-| 10 | Anonymous feedback from 2–3 target users | Could inform usability and motivation, with consent and anonymization. If unavailable, retain the explicit statement that no user study has occurred. |
-| 11 | English-language review | A teacher or fluent reviewer should review clarity and the final PDF. |
-| 12 | English operation check | The English V5 interface and case suite passed locally. Repeat the English browser check on the hosted assistant before submission. |
-| 13 | Add peer-reviewed references | Only after reading and verifying the original work and its relevance. |
-| 14 | Prepare for final | The prior project plan records approximately a 3-minute presentation, 3-minute demo, and 4-minute Q&A on December 4–6; confirm the schedule with organizers. |
-
-## Placeholders intentionally left in the deck
-
-Slide 1: team, URL, transcript link, and division. Slide 20: URL, QR code, and transcript link. Slide 25: student contribution and AI disclosure. These remain visibly marked and are not completed facts.
+- No study with older adults, caregivers or relatives.
+- The transcript was recorded on a local build of the final code, not on the hosted instance.
+- The English condition parser can misread unusual phrasing (observed: “an oven” stored as an ingredient).
+- No native-English review of the deck.

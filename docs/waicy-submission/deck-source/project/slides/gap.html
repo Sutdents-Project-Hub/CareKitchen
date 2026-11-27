@@ -1,13 +1,14 @@
 <section id="gap" data-transition="fade">
-<p class="eyebrow">01 · WHY A GENERAL CHATBOT IS NOT ENOUGH</p>
-<h2>Three failure modes to design around</h2>
-<div class="body">
-<div class="g3" style="flex:1.7">
-<div class="card" style="justify-content:space-between"><div><p class="k">1 · BUDGET CLAIMS</p><p class="ct" style="font-size:32px">Prorated prices look cheaper</p><p class="cs">On our case COST-OVER-1, the direct GPT-6 Luna baseline prorated package prices and advised trimming the meal to about NT$96.40. The packages that must be bought cost at least NT$120.</p></div><p class="src">Our test: runs/luna-english-baseline.json</p></div>
-<div class="card" style="justify-content:space-between"><div><p class="k">2 · CONDITIONS DRIFT</p><p class="ct" style="font-size:32px">Spoken edits get lost</p><p class="cs">In our first version (V1, Chinese-language run), a spoken “no eggs for now” was stored as an excluded ingredient named “eggs-for-now”, and a later turn kept the old one-person, NT$100 conditions.</p></div><p class="src">Our test: runs/luna-pre-fix.json</p></div>
-<div class="card" style="justify-content:space-between"><div><p class="k">3 · RESTRICTIONS</p><p class="ct" style="font-size:32px">Allergens slip through</p><p class="cs">In a published test, ChatGPT-built elimination diets for hypothetical allergy profiles correctly excluded the allergens of interest in 52 of 56 prompts. The model included almond milk in nut-free menus. This was an early-2023 model.</p></div><p class="src">Niszczota &amp; Rybicka, 2023</p></div>
+<p class="eyebrow">MOTIVATION · WHY A PLAIN CHATBOT IS NOT ENOUGH</p>
+<h2>What went wrong when we just asked the model</h2>
+<div class="body" style="gap:20px">
+<p class="cb">We gave GPT-6 Luna one instruction, “Answer the user in English”, and sent it our invented test cases.</p>
+<div class="g3">
+<div class="card" style="justify-content:space-between; padding:22px 30px"><div><p class="k">1 · PRICES PRORATED</p><p class="ct" style="font-size:32px">Over budget looks affordable</p><p class="cs">With a NT$100 budget and package prices, it charged only the grams used and cut portions until the total read “about TWD 96.40”. Meeting the other conditions needs at least TWD 120 of whole packages.</p></div><p class="src">Case EN-COST-OVER-1</p></div>
+<div class="card" style="justify-content:space-between; padding:22px 30px"><div><p class="k">2 · PRICES INVENTED</p><p class="ct" style="font-size:32px">A cost nobody supplied</p><p class="cs">A user with a soy allergy gave no prices. The answer still said “Estimated cost: NT$60–90 for one serving, depending on local prices.”</p></div><p class="src">Case EN-ALLERGY-CONFIRMED-1</p></div>
+<div class="card" style="justify-content:space-between; padding:22px 30px"><div><p class="k">3 · PANTRY ASSUMED</p><p class="ct" style="font-size:32px">Food that may not be there</p><p class="cs">After “No eggs. Keep everything else.”, its recipes began from “Both assume you have rice, water, and basic seasoning”, which the user had not listed.</p></div><p class="src">Case EN-DEMO-3</p></div>
 </div>
-<div class="soft" style="flex:0.55; justify-content:center; padding:32px 44px"><p class="k">DESIGN IMPLICATION</p><p class="cb" style="color:#0E1B33">The language model should not be the source of truth for constraints, prices or medical boundaries. CareKitchen keeps those in explicit state and checks every answer with code.</p></div>
+<div class="soft" style="padding:18px 38px"><p class="k">DESIGN IMPLICATION</p><p class="cb" style="color:#0E1B33">The model should not be the source of truth for prices, restrictions or medical boundaries. CareKitchen keeps those in explicit state and checks every answer with code. (The plain chat did refuse to guarantee safety on our medical cases.)</p></div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
 </section>

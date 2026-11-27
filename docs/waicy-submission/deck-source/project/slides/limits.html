@@ -1,16 +1,15 @@
 <section id="limits" data-transition="fade">
-<p class="eyebrow">07 · LIMITATIONS</p>
-<h2>What CareKitchen cannot yet claim</h2>
-<div class="body">
-<div class="g3" style="grid-template-rows:1fr 1fr; flex:1">
-<div class="card" style="padding:20px 30px"><p class="ct" style="font-size:32px; margin-bottom:8px">Evidence is synthetic</p><p class="cs">Every case is invented and each version ran once. Browser “users” were AI agents, not older adults. Pass counts are engineering checks, not proof of user success.</p></div>
-<div class="card" style="padding:20px 30px"><p class="ct" style="font-size:32px; margin-bottom:8px">Small meal library</p><p class="cs">The model ranks a library written by the project. Variety is limited to Taiwan-style home dishes.</p></div>
-<div class="card" style="padding:20px 30px"><p class="ct" style="font-size:32px; margin-bottom:8px">Prices only as typed</p><p class="cs">There is no live market data. Unknown prices stay unknown, so many results read “total pending”.</p></div>
-<div class="card" style="padding:20px 30px"><p class="ct" style="font-size:32px; margin-bottom:8px">Not a clinical tool</p><p class="cs">No nutrient values and no allergen cross-contact guarantee. Processed foods may hide ingredients.</p></div>
-<div class="card" style="padding:20px 30px"><p class="ct" style="font-size:32px; margin-bottom:8px">Reliability</p><p class="cs">It depends on an external model API. One unexplained error occurred in testing. On failure it shows an error, never an invented recipe.</p></div>
-<div class="card" style="padding:20px 30px"><p class="ct" style="font-size:32px; margin-bottom:8px">Accessibility and language</p><p class="cs">Simple mode and large text exist, but no WCAG audit or test with older adults. English tested on synthetic cases only; other languages not yet.</p></div>
+<p class="eyebrow">LIMITATIONS</p>
+<h2>What CareKitchen cannot yet do or claim</h2>
+<div class="body" style="gap:22px">
+<div class="g3" style="grid-template-rows:1fr 1fr; gap:22px">
+<div class="card" style="padding:24px 30px"><p class="ct" style="font-size:32px">No real users yet</p><p class="cs">Every case is invented and each version ran once. Browser “users” were AI agents. Pass counts are engineering checks, not proof of user success.</p></div>
+<div class="card" style="padding:24px 30px"><p class="ct" style="font-size:32px">Small meal library</p><p class="cs">With soy excluded, suggestions shrink to plain staples such as steamed potatoes. Dishes reflect one food culture.</p></div>
+<div class="card" style="padding:24px 30px"><p class="ct" style="font-size:32px">Understanding can fail</p><p class="cs">Conditions are read by rules. In a live check, “an oven” was saved as an ingredient; the app then asked for confirmation and gave no meals.</p></div>
+<div class="card" style="padding:24px 30px"><p class="ct" style="font-size:32px">Not a clinical tool</p><p class="cs">No nutrient values and no allergen cross-contact guarantee. Processed foods may hide ingredients.</p></div>
+<div class="card" style="padding:24px 30px"><p class="ct" style="font-size:32px">Language and access</p><p class="cs">English only, while older people near us mostly use Chinese or Taiwanese. Large text exists, but no accessibility audit.</p></div>
+<div class="card" style="padding:24px 30px"><p class="ct" style="font-size:32px">Prices and reliability</p><p class="cs">Prices come only from the user. The service depends on an external model; one unexplained error occurred in testing.</p></div>
 </div>
-<div class="soft" style="padding:18px 34px"><p class="src" style="color:#0E1B33"><b>Hallucination and bias.</b> Free generation is limited by design, but ranking and wording can still be wrong. The library and defaults reflect one food culture and assume common kitchen equipment.</p></div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
 </section>

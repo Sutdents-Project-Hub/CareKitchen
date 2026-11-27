@@ -1,0 +1,15 @@
+<section id="prompt-diff" data-transition="fade">
+<p class="eyebrow">ITERATIVE DESIGN · STAGE 2: PROMPT REFINEMENT</p>
+<h2>What we changed in the prompt, and why</h2>
+<div class="body">
+<table style="font-size:25px; color:#41495A; width:1664px">
+<tr><th style="width:11%; text-align:left; color:#16315C; padding:12px 18px">Change</th><th style="width:49%; text-align:left; color:#16315C">Instruction added or rewritten</th><th style="width:23%; text-align:left; color:#16315C">Failure that triggered it</th><th style="width:17%; text-align:left; color:#16315C">Result</th></tr>
+<tr><td style="font-weight:600; color:#0E1B33">V1 → V2</td><td><b>Before:</b> “If any hard condition might be unconfirmed or missing, use clarify.”<br><b>After:</b> “Clarify only when this turn raises an important, still-undecided condition, and copy the user’s phrase as evidence. Missing prices or a blank budget are allowed; do not ask in general.”</td><td>Complete requests were asked again. Only 5 of 16 rounds passed.</td><td><b>16 / 16</b> rounds, together with server fixes</td></tr>
+<tr><td style="font-weight:600; color:#0E1B33">V2 → V3</td><td><b>Added:</b> “Merely mentioning a shopping budget is still a request to plan a meal: use keep.”</td><td>All three roles received a shopping summary.</td><td>Older adult and caregiver get meals; relative gets the list</td></tr>
+<tr><td style="font-weight:600; color:#0E1B33">V3 → V4</td><td><b>Added:</b> “Pay special attention to excluded ingredients and budget changes not yet applied.”</td><td>Everyday phrasings could be missed.</td><td><b>16 / 16</b> and <b>5 / 5</b> new edge rounds</td></tr>
+<tr><td style="font-weight:600; color:#0E1B33">V4 → V5</td><td><b>English rewrite,</b> stating: “Never lift a confirmed exclusion, invent ingredients, prices or recipe steps, or independently decide that a dish is safe for a medical condition.”</td><td>The English service needed its own evidence.</td><td><b>16 / 16</b> rounds, <b>59 / 59</b> checks</td></tr>
+</table>
+<p class="src">V1–V4 prompts were written in Traditional Chinese; the lines shown for them are translations. Results reflect prompt and server changes together, so they do not isolate the effect of one sentence.</p>
+</div>
+<p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
+</section>

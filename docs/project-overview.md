@@ -1,6 +1,6 @@
 # CareKitchen | Project Overview and Acceptance
 
-> Status: Local web prototype and GPT-6 Luna synthetic-case runs are documented. Public deployment and real-user research remain unverified. The product requirements are in [product-spec.md](product-spec.md); official competition requirements are tracked in [competition.md](competition.md).
+> Status: A web prototype is hosted at <https://carekitchen-theta.vercel.app> and was checked with invented requests on November 27, 2026. GPT-6 Luna synthetic-case runs are documented. Real-user research remains unverified. The product requirements are in [product-spec.md](product-spec.md); official competition requirements are tracked in [competition.md](competition.md).
 
 ## Purpose
 
@@ -30,10 +30,10 @@ These are acceptance goals, not a claim that every competition deliverable is co
 
 Out of scope for the first release: voice, image OCR, saved favorites, weekly menus, ordering, nutrition databases, live price feeds, disease-risk prediction, medication advice, prescription recognition, health records, accounts, multi-agent systems, native apps, CMS, and separate backend services.
 
-The only executable component is `web/`, using Next.js App Router, TypeScript, Node.js 24 LTS, and pnpm. Server Route Handlers own AI calls and safety checks. Vercel Hobby is planned for hosting; no Vercel project or persistent conversation store has been created.
+The only executable component is `web/`, using Next.js App Router, TypeScript, Node.js 24 LTS, and pnpm. Server Route Handlers own AI calls and safety checks. The app is hosted on Vercel; there is no persistent conversation store.
 
 ## Handoff and acceptance
 
 Follow [implementation-roadmap.md](implementation-roadmap.md), [agent-design.md](agent-design.md), [API and data contracts](api-and-data-contracts.md), and the [evaluation plan](evaluation-and-iteration.md). P0 acceptance is defined by CK-01–CK-10 and AC-01–AC-14 in the product specification. Mark untested items as planned or unverified. Never fabricate interviews, model results, prices, or external acceptance.
 
-Open decisions include GitHub import eligibility, evaluator access, storage and retention, consent and withdrawal for shared conversations, real-user study and permissions, official eligibility/deadline confirmation, and repository licensing. Deployment is not authorized or completed by this overview.
+Open decisions include GitHub import eligibility, evaluator access, storage and retention, consent and withdrawal for shared conversations, real-user study and permissions, official eligibility/deadline confirmation, and repository licensing. This overview does not itself authorize further deployment changes.

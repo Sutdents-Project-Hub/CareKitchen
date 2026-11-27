@@ -5,7 +5,7 @@
 - Project: CareKitchen | AI Meal Planning for Older Adults
 - Repository: `CareKitchen`; project slug: `carekitchen`
 - Stage: `competition`; product: `web`; bootstrap: `scaffold`
-- Deployment: Vercel Hobby planned; project not created or deployed
+- Deployment: hosted on Vercel at https://carekitchen-theta.vercel.app (reachability checked 2026-11-27); project settings not audited here
 - Team collaboration: enabled; no structure exception
 
 ## Summary
@@ -40,4 +40,4 @@ The implemented stack is Next.js 16, TypeScript, Node.js 24 LTS, and pnpm 10. Se
 
 ## Assumptions and unresolved decisions
 
-OpenAI Responses API is implemented with `gpt-6-luna` as the default model and `reasoning.effort: "none"` for Luna. Local synthetic runs are recorded; public quotas, cost controls, hosting, URL, persistence, deletion and sharing consent, real-user usability, eligibility, submission status, and license remain unconfirmed. See [project overview](project-overview.md), [deployment plan](deployment.md), and [source register](source-register.md).
+OpenAI Responses API is implemented with `gpt-6-luna` as the default model and `reasoning.effort: "none"` for Luna. Local synthetic runs are recorded; public quotas, cost controls, persistence, deletion and sharing consent, real-user usability, eligibility, submission status, and license remain unconfirmed. See [project overview](project-overview.md), [deployment plan](deployment.md), and [source register](source-register.md).

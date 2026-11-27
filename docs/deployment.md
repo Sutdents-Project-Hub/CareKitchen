@@ -2,12 +2,12 @@
 
 ## Current status
 
-- Vercel Hobby is the planned host. No Vercel project, URL, environment variable, or external resource has been created.
-- The GitHub repository is public, so first try Vercel's GitHub import flow. Vercel's documentation distinguishes public repositories from private organization repositories; if Git import is unavailable for this setup, use the CLI archive method below. No Vercel integration has been attempted.
-- The app is prepared for Root Directory `web`; the production branch is `main`.
-- Local deployment checks from a clean Git archive are reported below. They do not validate Vercel's build image, Git integration, deployed URL, or production runtime.
+- The app is hosted at <https://carekitchen-theta.vercel.app>. The deployment was created outside the repository workflow; the Vercel project settings, import method, deployed commit and environment variables have not been audited in this document.
+- Checked on November 27, 2026 without a sign-in: `/` and `/evidence/waicy` returned HTTP 200, and `GET /api/chat` returned `{"mode":"openai"}`.
+- 23 invented chat requests sent through a headless browser all returned HTTP 200; 18 included a model decision. [Raw record](evidence/runs/live-deploy-2026-11-27.json). One request mentioning “an oven” was misread as an ingredient; the app asked for confirmation and showed no meals.
+- The settings below are the prepared reference, and the local checks further down predate the hosted release.
 
-## Vercel project settings (prepared, not applied)
+## Vercel project settings (prepared reference)
 
 | Setting | Value |
 |---|---|
@@ -58,6 +58,6 @@ Verified against source revision `9dc54889012c613b886f908a081d3be1e2ea7fb1` usin
 
 ## Remaining deployment checks
 
-- No Vercel project, domain, production environment variable, database, persistent session store, backup, or rollback has been configured.
-- Before sharing a URL, verify the actual Vercel project and Node version, production `main` deployment, server environment, HTTPS access, live chat and follow-up turns, `/evidence/waicy`, error/retry behavior, and responsible API usage. No evaluator acceptance or public availability is claimed.
+- Confirm the Vercel project's Node version, production branch, deployed commit, environment variables, API spending limit, backup and rollback.
+- Check error and retry behavior on the hosted app and watch API usage during judging.
 - The app stores conversation state in the browser tab and has no server-side session persistence. A competition demo is not a clinical or long-term-care service.
