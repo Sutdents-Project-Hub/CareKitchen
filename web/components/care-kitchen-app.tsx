@@ -904,15 +904,13 @@ export default function CareKitchenApp() {
                       value={pantryText}
                       placeholder="Example: tofu, greens, eggs"
                       onChange={(e) => {
-                        setPantryText(e.target.value);
-                        invalidateAnswer();
+                        const value = e.target.value;
+                        setPantryText(value);
+                        edit((old) => ({
+                          ...old,
+                          pantryItems: parsePantry(value, old.pantryItems),
+                        }));
                       }}
-                      onBlur={() =>
-                        setField(
-                          "pantryItems",
-                          parsePantry(pantryText, context.pantryItems),
-                        )
-                      }
                     />
                     <span className="field-hint">
                       Separate items with commas. Add amounts after an item, for example: tofu 150 g.

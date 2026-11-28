@@ -5,7 +5,7 @@ import {
   type MealContext,
   type Persona,
 } from "../contracts.ts";
-import { assessMeals, canonicalIngredient } from "./meals.ts";
+import { assessMeals, canonicalIngredient, ingredientExcluded } from "./meals.ts";
 import {
   englishCard,
   englishContext,
@@ -365,7 +365,8 @@ async function plan(turn: Turn, rank?: RankMeals): Promise<ChatReply> {
   }
 
   const pantry = english ? context.pantryItems.filter(({ name }) =>
-    !["水", "食用水", "飲用水"].includes(canonicalIngredient(name)),
+    !["水", "食用水", "飲用水"].includes(canonicalIngredient(name)) &&
+    !ingredientExcluded(name, context.excludedIngredients),
   ) : [];
   const allowOtherDishes = /\b(?:show|suggest|give|try|recommend)\b.{0,30}\b(?:dishes|meals|options)\b.{0,25}\b(?:shop for|buy ingredients for|without using my pantry)\b/i.test(turn.text);
   if (pantry.length && !eligible.some((card) => pantryMatchCount(card) > 0) &&
