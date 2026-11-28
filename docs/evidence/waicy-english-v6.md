@@ -24,6 +24,7 @@ All 24 requests returned HTTP 200. One old turn and three new turns included GPT
 
 - [Before raw requests and responses](runs/english-v6-judge-before.json) · deployment of commit `5ee8ecb`
 - [After raw requests and responses](runs/english-v6-judge-after.json) · deployment of commit `2865717`
+- [V6 regression on the fixed English suite](runs/luna-english-v6.json) · 16/16 passing turns and 59/59 checks, 11 model-backed turns, zero execution errors; run locally on source `70f8cb0`
 - [English V5 historical suite](runs/luna-english-v5.json) · different prompts, 16/16 passing turns and 59/59 passing checks
 - [Final browser record](runs/english-v6-live-walkthrough.json) · 10 turns, 6 model-backed turns, three role flows, medication referral, Escape/focus restoration, and the successful first equipment click
 - [Public chat history](https://carekitchen-theta.vercel.app/evidence/waicy) · [Repository transcript](waicy-chat-history.md)

@@ -1,6 +1,6 @@
 # CareKitchen Evaluation Evidence
 
-Latest production evidence: [English V6 comparison](waicy-english-v6.md) and [ten-round chat history](waicy-chat-history.md). The older files below document their original versions.
+Latest production evidence: [English V6 comparison](waicy-english-v6.md) and [ten-round chat history](waicy-chat-history.md). On November 28 the [fixed English suite was rerun on V6](runs/luna-english-v6.json): 16/16 turns, 59/59 checks, zero execution errors (local run of the same code). The older files below document their original versions.
 
 **Evidence status as of November 23, 2026.** The archived Chinese V1–V4 runs and the current English V5/baseline runs used authorized OpenAI API calls with synthetic meal-planning scenarios. Browser roles were acted by agents. No target-user interviews, external judge testing, or formal submission is evidenced here.
 
