@@ -6,7 +6,7 @@
 
 | Item | Current project record |
 |---|---|
-| Global submission deadline | Previously recorded as November 29, 2026, 17:00 EST (November 30, 06:00 Taiwan time); reconfirm directly with WAICY. |
+| Global submission deadline | November 29, 2026, 17:00 Eastern Time (November 30, 06:00 Taiwan time). Verified against the guidebook and form on November 28. |
 | Internal target | Upload before the final evening, if the team is ready. |
 | Final round | Previously recorded as December 4–6, 2026; organizer notice controls the actual schedule. |
 | Event | [WAICY 2026](https://www.waicy.org/waicy-2026/) |
@@ -73,7 +73,7 @@ The user-selected **Term Sheet** theme is for presentation slides. It uses a fla
 
 ## 5. Submission folder and form
 
-- If the team confirms High School division, the planned Google Drive folder and PDF name are `LLM_High_CareKitchen` and `LLM_High_CareKitchen.pdf`.
+- The current team materials use Middle School, with folder and PDF names `LLM_Middle_CareKitchen` and `LLM_Middle_CareKitchen.pdf`. The team confirms its category.
 - The form was recorded on November 23 as requesting country, track, project title, participation type, a project description up to 200 English words, contact/team details, division, and a Drive-folder link readable by anyone with access. Verify the live form. Teacher and regional-host details depend on the team's situation. A team submits once; if a regional organizer already registered the team, confirm the process with them first. See the [official form](https://www.waicy.org/2026-submission/) and [draft description](waicy-submission/project-description.md).
 - Test both links in the PDF independently: the assistant must be usable, and the final conversation must be readable.
 - Check sharing permissions, login requirements, paid walls, expiration, and rate limits from a logged-out browser and another device.
@@ -81,15 +81,15 @@ The user-selected **Term Sheet** theme is for presentation slides. It uses a fla
 
 ## 6. Readiness checklist
 
-- [ ] Confirm eligibility and deadline from current official guidance.
+- [x] Recheck the guidebook, form, deadline and exact chat requirement. The team confirms eligibility and registration.
 - [x] Local same-prompt comparison for all three roles.
 - [x] Local synthetic ten-turn dialogue preserves changing conditions and asks when required information is missing.
 - [x] Fixed cases cover unknown prices, package-level budget overrun, and professional referral.
-- [ ] Run a complete 30-case or otherwise required evaluation, with inspectable results.
+- [x] Run the 12-case same-input production regression and retain original requests and responses.
 - [x] At least one real failure → fix → same-case retest is recorded in the [iteration log](evidence/iteration-development.md).
-- [x] A ten-round synthetic transcript recorded with the final prompt is publicly readable ([web](https://carekitchen-theta.vercel.app/evidence/waicy), [repository copy](evidence/waicy-chat-history.md)). It was recorded on a local build of the same code, not on the hosted instance.
+- [x] Ten-round final transcript recorded with fictional inputs through the production UI by Codex ([public link](https://carekitchen-theta.vercel.app/evidence/waicy), [repository copy](evidence/waicy-chat-history.md)).
 - [x] Assistant URL works in a headless browser without a sign-in (checked November 27, 2026).
-- [ ] Verify student contribution and two public links; export the final English PDF.
+- [x] Export the English technical report and verify the public assistant and final conversation. Student details and contributions remain team-owned.
 - [ ] Test Drive access and every PDF link externally.
 - [ ] Save submission receipt or confirmation screenshot.
 
@@ -109,8 +109,10 @@ The user-selected **Term Sheet** theme is for presentation slides. It uses a fla
 - **Case 4:** A relative requests a shopping summary. Separate pantry items, purchases, and unknown prices.
 - **Case 5:** A medication or food-safety question. Do not make a clinical determination; refer to a pharmacist or clinician.
 
-A demo script is not a final ten-turn transcript. The transcript must be generated from the final deployed assistant. See [demo script](demo-script.md).
+The final transcript was captured in the deployed app. The team can replace it with a student-operated session if needed to satisfy the organizer’s reading of “between you and the final edition.” See [demo script](demo-script.md).
 
 ## 9. English deck and submission materials
 
 A 33-page English deck was completed on November 27, 2026 and exported as `LLM_Middle_CareKitchen.pdf` (Middle School). The PDF holds student names and photos and is kept outside this public repository. See [submission materials](waicy-submission/README.md), [rubric mapping](waicy-submission/rubric-mapping.md), [checklist](waicy-submission/submission-todo.md), and [research notes](waicy-submission/research-notes.md).
+
+The [November 28 technical report](waicy-submission/LLM_Middle_CareKitchen.pdf) covers Track 4 submission topics. The [V6 slide handoff](waicy-submission/slide-handoff.md) identifies the updates for the existing deck.

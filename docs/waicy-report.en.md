@@ -1,110 +1,158 @@
-# CareKitchen: A Conversational Meal-Planning Assistant
+---
+title: "CareKitchen"
+subtitle: "Conversational meal planning for older adults and their families"
+lang: en
+---
 
-**WAICY 2026 · LLM & AI Agent (AI as a Service) · High School**
+::: {.report-opening}
+**WAICY 2026 · Track 4 · LLM & AI Agent**
 
-- **Student or team** · [ADD VERIFIED STUDENT NAMES AND SCHOOL]
-- **Live assistant** · [ADD PUBLIC URL TESTED IN A PRIVATE BROWSER WINDOW]
-- **Final conversation transcript** · [ADD PUBLIC READABLE URL]
+English technical report · November 28, 2026
 
-## Project summary
+[Open the live assistant](https://carekitchen-theta.vercel.app/) · [Read the final chat history](https://carekitchen-theta.vercel.app/evidence/waicy) · [Inspect project evidence](https://github.com/Sutdents-Project-Hub/CareKitchen/tree/main/docs/evidence)
 
-CareKitchen is a conversational meal-planning assistant for older adults living alone, family caregivers, and relatives who help coordinate meals. A user can provide ingredients on hand, quantities, a spending limit, cooking equipment, preferences, and confirmed ingredient restrictions. The service carries those conditions through follow-up messages, checks recipe candidates against them, and presents simple steps and a shopping summary. Unknown prices remain unknown; the tool does not claim clinical or allergy safety.
+## What the service does
 
-The current prototype uses the OpenAI Responses API when configured, with server-side checks for meal candidates, ingredient restrictions, and user-provided package prices. A clearly labeled local rules mode is available when no API key is configured. Local synthetic-case evidence is real model output, but it is not evidence of public availability, clinical validity, or success with real users.
+CareKitchen helps older adults, caregivers, and relatives turn available food into a short list of meal options. A conversation keeps track of servings, pantry quantities, kitchen equipment, available time, purchase budget, and confirmed ingredient exclusions. When the user says “make it for 2” or “microwave only,” CareKitchen recalculates the options with the updated conditions. Each dish includes preparation steps, items to buy, and any amounts or prices that still need checking.
 
-## Who it serves and what it does
+| Decision | What CareKitchen shows |
+|---|---|
+| What can I make today? | Up to three catalog dishes with suitable equipment, scaled quantities, and estimated preparation times |
+| Will I go over budget? | The subtotal for whole packages at user-supplied prices and any gaps that prevent a full total |
+| What has changed? | Recalculated servings, ingredients, and other conditions after a follow-up |
+| How do I coordinate a purchase? | A preview of the ingredients at home and the items to buy, with a copy action |
 
-| Persona | Need | What the service emphasizes |
+## Motivation
+
+In June 2025, 25.8% of registered Taiwan residents aged at least 65 belonged to one-person households. Household registration describes the household, while cooking arrangements and support may vary. (Taiwan Ministry of the Interior, 2025)
+
+Whitelock and Ensaff (2018) held focus groups with 30 adults aged 63–90 in a UK city. Cooking and shopping for one, food costs, and help with food emerged in the discussions. Low et al. (2020) documented how social connection influenced food choices among 22 participants in an Australian qualitative study.
+
+These findings led us to test three design ideas with fictional inputs: start a conversation with one serving, keep unknown prices visible, and make a shopping handoff readable on its own. The studies motivate those ideas. Their participants did not evaluate CareKitchen.
+:::
+
+::: {.print-page}
+## Three intended users
+
+| User profile | Everyday need | Interaction observed in the live walkthrough |
 |---|---|---|
-| Older adult living alone | A manageable meal using available food and equipment, often for one person | Readable choices, a few meal candidates, and short cooking steps |
-| Family caregiver | Prepare food while retaining explicitly confirmed restrictions | Visible conditions, servings, exclusions, and items that still need checking |
-| Relative | Coordinate choices and shopping with the older adult | “Already have,” “need to buy,” and “price unknown” details that can be previewed and copied |
+| Older adult cooking alone | Use what is at home and follow a manageable set of instructions | Two options for the shared input. The operator opened the steps for the first dish. |
+| Family caregiver | Recalculate quantities after a change and see all confirmed exclusions | Three options for the shared input. After changing to three servings and excluding tofu, the operator saw steamed cabbage and carrots, with the egg restriction still visible. |
+| Relative coordinating meals | Know what to buy and share a summary that omits the chat | Three options and a shopping response for the shared input. The operator previewed a dish with a purchase and an unconfirmed price. |
 
-These are product personas, not research participants. In the English V5 fixed test, all three received the same original English prompt about cooking for one with 150 g of tofu, 120 g of leafy greens, a rice cooker, and a NT$100 budget. The elder flow returned two candidates; the caregiver flow returned three and explicitly said to recheck servings, equipment, exclusions, quantities, and package ingredients; the family flow returned three and offered a previewable, copyable summary separating pantry items from purchases. This is a verified difference in presentation and workflow for the tested input, not evidence that real people prefer these differences. See `SAME-ELDER-1`, `SAME-CAREGIVER-1`, and `SAME-FAMILY-1` in the [English V5 run](evidence/runs/luna-english-v5.json).
+The shared input described two servings, tofu, leafy greens, a rice cooker, no eggs, and a NT$80 budget. The first suitable option was shared across the roles. The number of suggestions, follow-up checks, and actions differed. [Annotated comparison and screenshots](https://github.com/Sutdents-Project-Hub/CareKitchen/blob/main/docs/evidence/waicy-english-v6.md)
 
-## Motivation and problem statement
+## How the assistant makes a decision
 
-Choosing a meal can require coordinating what is already at home, what must be purchased, the available cooking equipment, the number of servings, personal preferences, and restrictions. CareKitchen is designed to keep those details together in a conversation instead of making a user repeatedly translate them into a generic recipe request.
+1. The server interprets the turn and checks required fields. It responds directly when it needs a supported appliance, sees an unresolved restriction, or detects a medical question.
+2. It checks the fixed recipe catalog against servings, equipment, time, explicit exclusions, and known purchase costs.
+3. GPT-6 Luna returns a structured action and orders eligible recipe IDs when model ranking is needed. The server gives priority to options that use more of the available pantry. The V6 prompt favors shorter preparation for the older adult, fewer unconfirmed quantities for the caregiver, and itemized purchases for the relative.
+4. The website displays only eligible recipes. The “why” follow-up uses the last displayed dishes and their checkable properties. It does not infer the model’s private reasoning.
 
-Taiwan's Ministry of the Interior reported that people aged 65 and over made up 20.06% of the registered population at the end of December 2025. At the end of June 2025, 25.8% of registered people aged 65+ were in one-person households; household registration does not establish observed isolation or lack of support. These are demographic context, not evidence of a meal-planning problem. The specific meal-planning difficulty remains a design hypothesis. Interviews and task-based usability studies with the target audience remain pending. [December 2025 population statistics](https://www.moi.gov.tw/News_Content.aspx?n=2&s=335870) · [June 2025 one-person household statistics](https://www.moi.gov.tw/News_Content.aspx?Create=1&n=9&s=334815&sms=9009)
+This design keeps costs and restrictions grounded in the user’s details even after a swap. The catalog is deliberately small. For chicken and white rice with a stovetop, the assistant reports the gap and asks how the user wants to proceed.
+:::
 
-## Iterative development and evidence
+::: {.print-page}
+## Iterative development
 
-The historical evaluation below compares a direct GPT-6 Luna conversation baseline with CareKitchen V1–V4 on the same 16 synthetic Traditional Chinese dialogue turns. A separate English-language evaluation is reported below; the historical Chinese results must not be read as English performance.
+The project moved from a general recipe response to an assistant that preserves meal conditions. Each change addresses an observed failure.
 
-| Version | Passing turns | Passing checks | What changed |
-|---|---:|---:|---|
-| V1 | 5/16 | 29/56 | Initial model-led classification and clarification behavior |
-| V2 | 16/16 | 56/56 | Server checks required missing information before blocking planning; structured clarification was validated |
-| V3 | 16/16 | 56/56 | Budget mentions were distinguished from shopping-summary requests; role-specific response details were added |
-| V4 | 16/16 | 56/56 | Common conversational edits were parsed and rechecked against updated conditions |
-
-V4 also passed a separate five-turn conversational-boundary run (5/5 turns, 12/12 checks). These are engineering checks against a small, synthetic case set, not a general accuracy rate. Each version was run once. GPT-6 Luna used `reasoning.effort: none`; the run records retain inputs, model decisions, visible application replies, and checks. The app runs did not retain upstream HTTP packets.
-
-The iteration addressed concrete failures:
-
-- V1 sometimes asked users to repeat known ingredients or servings, or returned too few meal candidates. V2 moved required-condition checks to the server and constrained clarification to a new, relevant missing condition.
-- Phrases such as “no egg,” “make it two servings,” and a revised budget could be missed or misparsed. V4 tests verified updated servings, budget, exclusions, and equipment across the covered examples.
-- A direct baseline response estimated NT$49 and said the meal stayed under a NT$100 budget, while the listed amounts—NT$24, NT$40, and NT$24—sum to NT$88. It also apportioned costs by used quantity. CareKitchen instead calculates new shopping outlay from supplied package quantities and prices, and marks missing prices as unknown. In a separate V4 case, known necessary purchases totaled NT$120 against a NT$100 budget, so the app reported the known subtotal exceeded the budget and returned no candidates.
-- V2 reached 16/16 but did not make the three role flows meaningfully distinct for the shared prompt: each could be routed to a shopping summary. V3 changed role-specific routing and response details. The English V5 same-input run also shows these role differences.
-- A confirmed ingredient restriction and a possible symptom were initially handled too similarly. The revised flow filters an explicit exclusion and refers possible reactions or medication-food questions to a qualified professional instead of making a safety determination.
-
-The direct baseline and V1–V4 results compare different systems. The baseline was free-text chat with a 650-token output limit; the application used structured inputs and decision fields, server-side recipe and cost checks, and a 250-token model output limit. The NT$49 arithmetic inconsistency is an observed baseline failure, while the later cost result is an observed application result. These findings support the value of the whole application workflow on the tested cases; they do not isolate a prompt-only effect or prove CareKitchen is generally better than a direct GPT conversation.
-
-The [iteration record](evidence/iteration-development.md) links prompts, fixed cases, run files, and browser evidence. The six historical files contain 85 recorded turns, 66 with a saved Luna decision or response. The project then ran ten new synthetic turns, frozen before the final changes.
-
-| Evaluation | Before the final changes | After the final changes |
+| Stage | Test and observation | Change and measured result |
 |---|---|---|
-| Ten new turns across all three personas | 7/10 passed, one execution error | 10/10 passed, 41/41 checks |
-| Original 16-turn suite | V4 passed 16/16 | First rerun passed 15/16 with one execution error. The complete repeat passed 16/16 and 56/56 checks. |
+| Initial baseline | A direct model response allocated only part of the cost of full packages in a budget case | The application calculates the cost of buying enough whole packages. In one later case it showed a minimum of NT$120 against a NT$100 limit and withheld the over-budget meals. |
+| V1 to V2 | The Traditional Chinese suite exposed repeated questions and too few candidates | Required-condition checks moved to the server. Passing turns rose from 5/16 (29/56 checks) to 16/16 (56/56 checks). |
+| V3 and V4 | Shopping intent, roles, and changes to known conditions needed distinct handling | Updated routing and constraint checks; both versions passed 16/16 turns in the historical Chinese suite. Some earlier prompt files are reconstructions. |
+| English V5 | A separate English fixture checked role, price, and safety flows | 16/16 turns and 59/59 assertions passed. These cases differ from the historical Chinese suite. |
+| English V6 | Short phrases from a judge-style review exposed failures in the deployed English app | Same-input comparison at the public URL. The revised version met all 12 targeted behaviors across the cases below. |
 
-In the new caregiver case, “keep the ingredients I cannot use the same” created a spurious exclusion and removed all meal options. The corrected flow changed the equipment from microwave to rice cooker and retained two servings and both existing exclusions. In the family case, lowering the budget to NT$25 used to leave the old NT$100 budget. The corrected flow applied the limit and reported that the least expensive verified purchase subtotal was NT$42. When a group changed and the new portions were unclear, the final flow asked for servings before offering options. The model and Prompt stayed the same in this pass.
+### V6 failures and same-input retest
 
-The [new inputs](evidence/cases/waicy-final-challenge.json), [before run](evidence/runs/luna-waicy-challenge-before.json), [after run](evidence/runs/luna-waicy-challenge-after.json), [first regression rerun](evidence/runs/luna-waicy-final-dialogues.json), and [complete repeat](evidence/runs/luna-waicy-final-recheck.json) are all available. That repeat preserves 20 messages across ten historical Traditional Chinese exchanges. The current judge transcript comes from the English run below.
-
-### Current English-language run
-
-For this work round, an English direct baseline and CareKitchen V5 were run against the same [English synthetic fixture](evidence/cases/waicy-english.json), using distinct archived [English baseline](evidence/prompts/english-baseline.txt) and [V5](evidence/prompts/english-v5.txt) prompts. Both runs used GPT-6 Luna and were based on commit `39ab10d`.
-
-| English evaluation | Result | Evidence |
+| Prompt | Before | After |
 |---|---|---|
-| Direct baseline | 16 free-text responses completed; no assertion scoring | [raw baseline run](evidence/runs/luna-english-baseline.json) |
-| CareKitchen V5 | 16/16 turns, 59/59 checks; 11 model-backed turns; zero execution errors | [raw V5 run](evidence/runs/luna-english-v5.json) |
+| “Dinner for 1”, “for 2”, “for one”, “I live alone” | Serving size stayed blank | Stored 1, 2, 1, and 1 respectively; asked for equipment |
+| “I have chicken and white rice.” (two servings, stovetop) | Returned unrelated dishes with no coverage explanation | Named the missing match and offered a next action |
+| “I have eggs and tomatoes, and a stove.” | Dropped the ingredients from the mixed sentence | Saved both foods and ranked stovetop tomato and eggs first |
+| “I want something different” / “Why did you choose these?” | Generic prompt to restate meal needs | Excluded the displayed IDs for the swap; explained the displayed dish using checkable facts |
+| “I have an oven” | Stored the appliance as food | Kept the pantry intact and offered supported equipment |
 
-The V5 record contains the English `EN-DEMO-1` to `EN-DEMO-10` transcript: ten synthetic exchanges (20 messages), seven model-backed and three handled locally. In `EN-COST-OVER-1`, the direct baseline prorated package prices and suggested reducing spending to TWD 96.40. V5 calculated a minimum whole-package purchase of TWD 120 against the TWD 100 limit, stated the known overrun, and returned no meals. This is a single case, not a general comparison result. The English run is separate from historical Chinese V1–V4 and does not establish real-user or clinical outcomes.
+The 12-case suite also covers a combined dinner request, switching to oven-only from a stovetop, and “Why these dishes?”. Every response returned HTTP 200. Model participation was one case on the original deployment and three on the revised deployment. The other cases use direct rules for clarification, coverage, or an evidence-based explanation. These counts describe a targeted synthetic regression suite. [Raw before and after outputs and dated V6 instructions](https://github.com/Sutdents-Project-Hub/CareKitchen/blob/main/docs/evidence/waicy-english-v6.md)
+:::
 
-## Limits, ethics, and privacy
+::: {.print-page}
+## Final live conversation
 
-- CareKitchen is not a medical, nutrition-treatment, medication-interaction, or allergy-clearance tool. It does not diagnose, prescribe, adjust medication, or guarantee food safety. Users should confirm clinical, medication, swallowing, or uncertain restriction questions with a qualified professional.
-- Prices come from the user. A missing price or quantity is not treated as zero, and a displayed calculation is not a guarantee of checkout cost. Existing pantry food is excluded from new shopping outlay; this does not mean that food has no cost.
-- The current evidence uses synthetic meal scenarios. No older-adult or caregiver interviews, clinical review, or real-user validation have been completed. Passing checks do not measure nutritional quality or safety.
-- The project is designed to avoid collecting names, medical records, prescriptions, addresses, photographs, or other unnecessary personal information. The prototype's public sharing, retention, and deployment policies still require review before release.
-- A real reviewer-facing chatbot and shareable final conversation are not yet evidenced by this local report. Do not publish personal or health information in a transcript.
+[Open the public conversation](https://carekitchen-theta.vercel.app/evidence/waicy) · [Try the same live assistant](https://carekitchen-theta.vercel.app/)
 
-## Next validation steps
+Codex operated the deployed English UI using Playwright and fictional meal details. The session contains **10 rounds, or 20 exchanged messages**, with **6 GPT-6 Luna ranking rounds**. The public transcript includes the actual messages and options.
 
-1. Complete a small, consent-based usability study with older adults, caregivers, and relatives using synthetic scenarios. Record task completion, misunderstandings, and usability feedback; do not present it as clinical validation.
-2. Have a qualified reviewer examine the wording and escalation behavior for medication, allergy, swallowing, and uncertain-restriction cases. Record what was reviewed and what remains outside scope.
-3. Use previously unseen prompts for the next evaluation and repeat them across different sessions. Track stale constraints, unnecessary clarifications, budget errors, and provider errors separately.
-4. Before submission, verify the public assistant and final conversation from a logged-out browser, confirm that sharing and retention are understood, and fill in the verified links below. Update this report with the actual student contribution record.
+| Round | User turn | What the live app did |
+|---|---|---|
+| 1 | Dinner for 1 | Stored one serving and asked for equipment |
+| 2 | Eggs and tomatoes, stove, NT$80 | Suggested stovetop tomato and eggs first |
+| 3 | Why did you choose these? | Explained the ingredients at home and purchase requirements for the previous options |
+| 4 | I want something different | Showed different dishes and indicated they use other ingredients |
+| 5 | Make it for 2, no eggs | Preserved the equipment and budget and identified the remaining pantry gap |
+| 6 | Added tofu and greens | Offered a matching stovetop dish |
+| 7 | Make a shopping list | Exposed what to buy and which prices still needed checking |
+| 8 | Added a NT$45 pumpkin package price | Applied the supplied price when checking the displayed options |
+| 9 | I only have an oven | Explained the appliance limitation and asked for a supported alternative |
+| 10 | I only have a microwave | Returned microwave dishes and retained the serving count, egg exclusion, and budget |
 
-## Conclusion and contribution record
+### What the checks measured
 
-CareKitchen progressed from 5/16 passing turns in V1 to 16/16 in V2, V3, and V4. The final fixes brought a later ten-turn challenge from 7/10 to 10/10. In the tested cases, the system kept known conditions across turns, applied new constraints, and explained when a shopping total was still unknown. The next validation step is to measure whether target users can make these changes and interpret the results without assistance.
+- Browser execution covered the ten-round exchange, the three role flows, a shopping dialog opening and closing by keyboard, a 430 px viewport, and a medication referral without meal cards.
+- Code verification used 62 local automated tests, lint, TypeScript, and a production build.
+- The targeted tests measure visible behavior with fictional data. Effects on older adults’ independent cooking, dietary quality, and caregiver workload remain unknown.
+:::
 
-**Student contribution (complete with the student's own verified account):** [Describe who personally defined the problem, designed cases and evaluation, made product decisions, implemented or reviewed code, tested the system, and prepared this report. Identify AI tools, mentor assistance, and other contributors accurately. Do not claim work that the student did not perform.]
+::: {.print-page}
+## Original contributions and dependencies
 
-## References and evidence
+| Source | Role in the project |
+|---|---|
+| CareKitchen implementation | The project-specific meal catalog, condition editor, parsing and conversation flow, recipe filtering, whole-package pricing rules, role guidance, and test cases |
+| OpenAI GPT-6 Luna | Structured intent and ranking for candidates already checked by the server |
+| Next.js, React, TypeScript, Zod, Vercel | Application framework, libraries, and hosting |
+| Published statistics and research | Motivation and scenario design |
+| Codex and Claude | AI assistance in implementation, testing, research, and drafting as detailed in the project disclosure |
 
-1. World Artificial Intelligence Competition for Youth. (2026). [WAICY 2026](https://www.waicy.org/waicy-2026/).
-2. World Artificial Intelligence Competition for Youth. (2026). [WAICY 2026 rubrics](https://www.waicy.org/rubrics/).
-3. World Artificial Intelligence Competition for Youth. (2026). [WAICY 2026 guidebook](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf).
-4. CareKitchen, [product specification](product-spec.md), [competition checklist](competition.md), and [source register](source-register.md).
-5. CareKitchen, [iteration and evaluation record](evidence/iteration-development.md), including historical [V1](evidence/runs/luna-pre-fix.json), [V2](evidence/runs/luna-post-fix.json), [V3](evidence/runs/luna-v3.json), [V4](evidence/runs/luna-final.json), and [direct baseline](evidence/runs/luna-direct-baseline.json), plus current [English baseline](evidence/runs/luna-english-baseline.json) and [English V5](evidence/runs/luna-english-v5.json).
-6. Ministry of the Interior, Taiwan. (2026). [December 2025 household registration statistics](https://www.moi.gov.tw/News_Content.aspx?n=2&s=335870).
-7. Ministry of the Interior, Taiwan. (2025). [June 2025 household registration statistics](https://www.moi.gov.tw/News_Content.aspx?Create=1&n=9&s=334815&sms=9009).
-8. World Health Organization. (2025, October 1). [Ageing and health](https://www.who.int/news-room/fact-sheets/detail/ageing-and-health).
+[AI use and project contributions](https://github.com/Sutdents-Project-Hub/CareKitchen/blob/main/docs/waicy-submission/ai-use-disclosure.md)
 
-## Project description for the submission form
+## Limitations and considerations
 
-CareKitchen helps older adults living alone, family caregivers, and relatives plan a meal through conversation. The assistant remembers ingredients on hand, equipment, servings, a shopping budget, and confirmed exclusions. When the user changes a condition, it checks the meal choices again and shows what changed. Shopping costs use actual package sizes and prices supplied by the user. A missing price stays visible, and a relative can preview and copy a shopping summary. The project uses GPT-6 Luna for interpreting requests and ranking eligible recipes, with server-side checks for portions, equipment, exclusions, and cost. Real API tests on synthetic cases documented failures, fixes, and repeat runs. A ten-exchange example shows how the service handles a change in servings, a lower budget, an egg exclusion, missing prices, and a question requiring professional confirmation.
+- **Coverage.** The catalog covers a limited set of foods and appliances. Users may need to add an ingredient, choose another method, or look elsewhere for cooking guidance.
+- **Prices and quantities.** Package prices and pantry amounts come from the user. A subtotal can remain incomplete. Actual prices, stock, and equipment capacity may differ.
+- **Medical scope.** The prototype checks listed ingredients against confirmed exclusions. Packaging labels, preparation environments, allergies, medication, and disease-specific diets need appropriate professional judgment.
+- **Privacy and autonomy.** Use fictional details in demos. AI mode sends selected turn details to OpenAI, with response storage disabled in the request. Users review the shopping summary before copying it. The project has no server-side conversation history.
+- **Testing.** Tests are authored by the project and cover a small set of inputs. Real users and qualified clinical reviewers have not evaluated the prototype.
+
+## Future development
+
+1. Observe consenting older adults, caregivers, and relatives completing three short fictional tasks. Record where they ask for help, miss price uncertainty, or lose a constraint.
+2. Expand the recipe catalog by equipment and pantry coverage. Review each addition for complete ingredients, preparation steps, equivalent translations, and exclusion checks.
+3. Repeat tests on unseen language across sessions and devices. Report how often a valid request succeeds, clarification helps the user resume, and a constraint is retained.
+
+## Conclusion
+
+CareKitchen gives users practical choices while keeping their meal conditions visible. The V6 results show how traceable failures can lead to a better conversation, including recognizing ordinary English, using the available pantry, and explaining an unsupported request. The next question is whether these interactions make meal planning easier for the people the service is designed to support.
+:::
+
+::: {.print-page}
+## References
+
+CareKitchen. (2026). *CareKitchen source code, prompts, and evaluation records*. GitHub. [Repository](https://github.com/Sutdents-Project-Hub/CareKitchen)
+
+Department of Statistics, Ministry of the Interior, Taiwan. (2025, November 29). *Weekly interior statistics, week 48: Residents aged 65 and older in June 2025*. [Original bulletin](https://www.moi.gov.tw/News_Content.aspx?Create=1&n=9&s=334815&sms=9009)
+
+Low, E., Kellett, J., Bacon, R., & Naumovski, N. (2020). Food habits of older Australians living alone in the Australian Capital Territory. *Geriatrics, 5*(3), 55. [Original study](https://pubmed.ncbi.nlm.nih.gov/32962146/)
+
+OpenAI. (n.d.). *Structured outputs*. [API documentation](https://developers.openai.com/api/docs/guides/structured-outputs)
+
+Vercel. (n.d.). *Next.js App Router*. [Framework documentation](https://nextjs.org/docs/app)
+
+WAICY. (2026). *WAICY 2026 guidebook*. [Track 4 guidance, pp. 20–23](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf)
+
+WAICY. (2026). *WAICY 2026 rubrics*. [Large Language Models criteria](https://www.waicy.org/rubrics/)
+
+Whitelock, E., & Ensaff, H. (2018). On your own: Older adults’ food choice and dietary habits. *Nutrients, 10*(4), 413. [Original study](https://doi.org/10.3390/nu10040413)
+:::

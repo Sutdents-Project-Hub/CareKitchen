@@ -2,10 +2,10 @@
 
 ## Current status
 
-- The app is hosted at <https://carekitchen-theta.vercel.app>. The deployment was created outside the repository workflow; the Vercel project settings, import method, deployed commit and environment variables have not been audited in this document.
-- Checked on November 27, 2026 without a sign-in: `/` and `/evidence/waicy` returned HTTP 200, and `GET /api/chat` returned `{"mode":"openai"}`.
-- 23 invented chat requests sent through a headless browser all returned HTTP 200; 18 included a model decision. [Raw record](evidence/runs/live-deploy-2026-11-27.json). One request mentioning “an oven” was misread as an ingredient; the app asked for confirmation and showed no meals.
-- The settings below are the prepared reference, and the local checks further down predate the hosted release.
+- Production: [CareKitchen](https://carekitchen-theta.vercel.app/) and [WAICY chat history](https://carekitchen-theta.vercel.app/evidence/waicy).
+- Vercel project `felix-eeed/carekitchen` is connected to `Sutdents-Project-Hub/CareKitchen` with production branch `main` and root `web`. The current project setting reports Node.js 26.x and the inspected functions report Node.js 24.x. Local verification used Node.js 24.16.0.
+- The November 28 production browser walkthrough ran application commit `2865717` on deployment `dpl_83sdrpmpBomNqHceSJdt9tJcx3gz`. Six of ten turns used GPT-6 Luna. The subsequent evidence commit publishes that record. [Verification and evidence](evidence/waicy-english-v6.md)
+- The Vercel CLI was used to verify project details, Git SHA and the public alias. The MCP connection lacked access to the project scope. Git integration handled the builds.
 
 ## Vercel project settings (prepared reference)
 
@@ -39,7 +39,7 @@ This CLI path requires a separately authorized Vercel deployment. Run it from an
 ## Server environment
 
 - `OPENAI_API_KEY` is read only by `web/lib/server/openai.ts`; the chat route uses the Node.js runtime. For the competition demo, set `CAREKITCHEN_CHAT_MODE=openai` and add `OPENAI_API_KEY` only in Vercel's Production environment. `OPENAI_MODEL` is optional and defaults to `gpt-6-luna`. Never create a `NEXT_PUBLIC_*` version or put the key in repository files.
-- `auto` uses OpenAI when a key is configured and otherwise uses local rules; `local` guarantees no provider call; `openai` without a key returns 503. A production key and its possible API charges require separate authorization and have not been configured.
+- `auto` uses OpenAI when a key is configured and otherwise uses local rules; `local` guarantees no provider call; `openai` without a key returns 503. The existing production environment was verified in OpenAI mode. Server-side credentials are maintained through authorized project settings.
 
 ## Local source-archive verification
 

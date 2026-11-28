@@ -28,3 +28,13 @@
 - No comprehensive nutrition or caregiving literature review; the meal catalogue has not been reviewed by a dietitian. The few context studies listed above do not validate CareKitchen's recommendations.
 - No interviews or usability study with older adults, caregivers, or relatives. The target users are product personas, not research participants.
 - No clinical validation or evidence of improved nutrition, health, safety, or independence.
+
+## Research-linked test scenarios, November 28
+
+| Study or data | Finding in its original context | Design inference tested here |
+|---|---|---|
+| [Taiwan Ministry of the Interior (2025), household registration bulletin](https://www.moi.gov.tw/News_Content.aspx?Create=1&n=9&s=334815&sms=9009) | In June 2025, 25.8% of registered residents aged 65+ belonged to one-person households. Registration cannot establish how frequently people cook alone or what support they receive. | The elder scenario starts with “Dinner for 1” and proceeds without repeating a recognized serving count. |
+| [Whitelock & Ensaff (2018), *On Your Own*, Nutrients, 10(4), 413](https://doi.org/10.3390/nu10040413) | Focus groups with 30 adults aged 63–90 in one UK city surfaced cooking and shopping for one, food cost, and support with food as themes. The qualitative study provides context; it does not estimate Taiwan prevalence. | Try one-serving amounts, expose missing prices, and make the shopping preview understandable on its own. |
+| [Low et al. (2020), *Food Habits of Older Australians Living Alone in the Australian Capital Territory*, Geriatrics, 5(3), 55](https://pubmed.ncbi.nlm.nih.gov/32962146/) | Three focus groups with 22 participants highlighted community connectedness in food choices. The study used qualitative sampling within one territory. | Let a relative copy a meal and shopping summary without sharing chat history. The caregiver restriction example is a project design hypothesis. |
+
+The scenarios informed an agent-operated walkthrough of the actual deployed app. Product usability for older adults, caregiver workload, and the usefulness of the family handoff remain open questions for a consent-based study.

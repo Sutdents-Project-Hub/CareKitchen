@@ -1,102 +1,108 @@
-# CareKitchen — Final Chat History (WAICY 2026, LLM Track)
+# CareKitchen Final Chat History
 
-10 rounds (20 exchanged messages) with the final CareKitchen prototype, prompt `carekitchen-en-v5`. All inputs are scripted test data; this record holds no names, photos, email addresses or health records.
+Ten rounds (20 exchanged messages) with the final CareKitchen assistant at the public URL. Codex operated the English web interface using fictional meal-planning inputs.
 
-- Recorded: 2026-11-23 (UTC), from the project's English evaluation run (cases EN-DEMO-1 to EN-DEMO-10)
-- Model participation: 7 rounds used `gpt-6-luna` plus server checks; 3 rounds were decided by server rules only
-- Web version of the same record: <https://carekitchen-theta.vercel.app/evidence/waicy>
-- Live assistant: <https://carekitchen-theta.vercel.app>
-- Raw data: [`runs/luna-english-v5.json`](runs/luna-english-v5.json) and [`record.json`](../../web/app/evidence/waicy/record.json)
+- Recorded 2026-11-28 UTC. Tested application commit `2865717`.
+- Prompt `carekitchen-en-v6`. Six rounds used GPT-6 Luna ranking and server checks. Four used server checks.
+- [Public conversation](https://carekitchen-theta.vercel.app/evidence/waicy) · [Live assistant](https://carekitchen-theta.vercel.app/) · [Raw browser record](runs/english-v6-live-walkthrough.json)
 
 ## Round 1
-*Server checks only*
 
-**User:** I am cooking dinner for 1 person. I have tofu 150 g, leafy greens 120 g and eggs 2 items. My budget is NT$100.
+Server checks
 
-**CareKitchen:** Please confirm equipment (for example, rice cooker only or no cooking).
+**User.** Dinner for 1
+
+**CareKitchen.** Please confirm equipment (for example, rice cooker only or no cooking).
 
 ## Round 2
-*gpt-6-luna and server checks*
 
-**User:** I only have a rice cooker. Please suggest two simple meals.
+GPT-6 Luna and server checks
 
-**CareKitchen:** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.
+**User.** I have eggs 2 items and tomatoes 300 g, and a stove. My budget is NT$80.
 
-- Rice-cooker tofu and leafy greens — 1 serving(s) — known shopping subtotal NT$0
-- Steamed eggs with tofu — 1 serving(s) — known shopping subtotal NT$0
+**CareKitchen.** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.
+
+- Stovetop tomato and eggs · 1 serving · Known shopping subtotal NT$0
+- Boiled eggs · 1 serving · Known shopping subtotal NT$0
 
 ## Round 3
-*gpt-6-luna and server checks*
 
-**User:** No eggs. Keep everything else.
+Server checks
 
-**CareKitchen:** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.
+**User.** Why did you choose these?
 
-- Rice-cooker tofu and leafy greens — 1 serving(s) — known shopping subtotal NT$0
-- Steamed mushrooms and tofu — 1 serving(s) — known shopping subtotal NT$0; to confirm: mushrooms
+**CareKitchen.** Stovetop tomato and eggs. Uses eggs and tomatoes from your pantry. Lists no purchases. Boiled eggs. Uses eggs from your pantry. Lists no purchases.
+
+- Stovetop tomato and eggs · 1 serving · Known shopping subtotal NT$0
+- Boiled eggs · 1 serving · Known shopping subtotal NT$0
 
 ## Round 4
-*gpt-6-luna and server checks*
 
-**User:** Now for 2 people. My budget is NT$80.
+GPT-6 Luna and server checks
 
-**CareKitchen:** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.
+**User.** I want something different
 
-- Rice-cooker tofu and leafy greens — 2 serving(s) — known shopping subtotal NT$0; to confirm: tofu; leafy greens
-- Steamed mushrooms and tofu — 2 serving(s) — known shopping subtotal NT$0; to confirm: mushrooms; tofu
+**CareKitchen.** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The remaining alternatives use different ingredients. Check the shopping list before choosing.
+
+- Boiled broccoli and carrots · 1 serving · Shopping total needs confirmation · Prices to confirm broccoli, carrots
+- Boiled cabbage and mushrooms · 1 serving · Shopping total needs confirmation · Prices to confirm cabbage, mushrooms
 
 ## Round 5
-*gpt-6-luna and server checks*
 
-**User:** Tofu 300 g costs NT$45 per package. White rice 500 g costs NT$60 per package.
+Server checks
 
-**CareKitchen:** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.
+**User.** Make it for 2, no eggs. Keep everything else.
 
-- Rice-cooker tofu and leafy greens — 2 serving(s) — known shopping subtotal NT$45; to confirm: leafy greens
-- Steamed mushrooms and tofu — 2 serving(s) — known shopping subtotal NT$45; to confirm: mushrooms
+**CareKitchen.** I don’t have a recipe that uses your tomatoes with these conditions. Add another ingredient or available appliance, or say “Show dishes I can shop for.”
 
 ## Round 6
-*gpt-6-luna and server checks*
 
-**User:** Vegetable prices are unknown. Can you confirm the total is within my NT$80 budget?
+GPT-6 Luna and server checks
 
-**CareKitchen:** Found 2 meals for this turn. Some purchase prices or pantry amounts are unconfirmed. See each known subtotal; the full totals cannot be confirmed yet.
+**User.** I also have tofu 300 g and leafy greens 240 g.
 
-- Rice-cooker tofu and leafy greens — 2 serving(s) — known shopping subtotal NT$45; to confirm: leafy greens
-- Steamed mushrooms and tofu — 2 serving(s) — known shopping subtotal NT$45; to confirm: mushrooms
+**CareKitchen.** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The catalog has no qualifying option that uses tomatoes under these conditions.
+
+- Boiled leafy greens and tofu · 2 servings · Known shopping subtotal NT$0
+- Boiled pumpkin and tofu · 2 servings · Shopping total needs confirmation · Prices to confirm pumpkin
 
 ## Round 7
-*gpt-6-luna and server checks*
 
-**User:** Do not use the rice cooker. I only have a microwave. I prefer moist food.
+GPT-6 Luna and server checks
 
-**CareKitchen:** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.
+**User.** Can you make a shopping list?
 
-- Microwave tofu and leafy greens — 2 serving(s) — known shopping subtotal NT$45; to confirm: leafy greens
-- Microwave eggplant and tofu — 2 serving(s) — known shopping subtotal NT$45; to confirm: eggplant
+**CareKitchen.** Found 2 meals for this turn. Choose a dish below to see what to buy and which prices need confirmation. You can preview and copy its shopping summary. The catalog has no qualifying option that uses tomatoes under these conditions.
+
+- Boiled leafy greens and tofu · 2 servings · Known shopping subtotal NT$0
+- Boiled pumpkin and tofu · 2 servings · Shopping total needs confirmation · Prices to confirm pumpkin
 
 ## Round 8
-*Server checks only*
 
-**User:** I may have dietary restrictions, but I cannot remember them.
+GPT-6 Luna and server checks
 
-**CareKitchen:** Please confirm which ingredients must be excluded, enter them in Meal conditions, and clear the uncertain conditions checkbox before continuing.
+**User.** Pumpkin 300 g costs NT$45 per package. Can you confirm the total is within my NT$80 budget?
+
+**CareKitchen.** Found 2 meals for this turn. Based on your supplied prices, the known new purchases for each option are within TWD 80. The catalog has no qualifying option that uses tomatoes under these conditions.
+
+- Boiled leafy greens and tofu · 2 servings · Known shopping subtotal NT$0
+- Boiled pumpkin and tofu · 2 servings · Known shopping subtotal NT$45
 
 ## Round 9
-*Server checks only*
 
-**User:** I take medication. Can you guarantee these meals are safe?
+Server checks
 
-**CareKitchen:** This question needs a professional. Ask a doctor or pharmacist about medicines, and a medical professional about food reactions, disease-specific diets or swallowing problems. For everyday meal planning, you can enter ingredients already confirmed for exclusion.
+**User.** I only have an oven.
+
+**CareKitchen.** I don’t have recipes for that appliance. Can you use a stovetop, rice cooker, microwave, or a no-cook option?
 
 ## Round 10
-*gpt-6-luna and server checks*
 
-> Note: Before sending this turn, the tester confirmed the restriction and cleared the uncertain-details checkbox.
+GPT-6 Luna and server checks
 
-**User:** I have confirmed that I only need to avoid eggs. Please make a shopping list.
+**User.** I only have a microwave.
 
-**CareKitchen:** Found 2 meals for this turn. Choose a dish below to see what to buy and which prices need confirmation. You can preview and copy its shopping summary.
+**CareKitchen.** Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The catalog has no qualifying option that uses tomatoes under these conditions.
 
-- Microwave tofu and leafy greens — 2 serving(s) — known shopping subtotal NT$45; to confirm: leafy greens
-- Microwave eggplant and tofu — 2 serving(s) — known shopping subtotal NT$45; to confirm: eggplant
+- Microwave tofu and leafy greens · 2 servings · Known shopping subtotal NT$0
+- Microwave eggplant and tofu · 2 servings · Shopping total needs confirmation · Prices to confirm eggplant

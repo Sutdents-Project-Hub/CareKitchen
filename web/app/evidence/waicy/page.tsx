@@ -4,7 +4,7 @@ import record from "./record.json";
 
 export const metadata: Metadata = {
   title: "CareKitchen | WAICY 2026 demo and transcript",
-  description: "A recorded ten-round English meal-planning session with OpenAI and server-side checks.",
+  description: "A ten-round English browser session with the deployed assistant, operated by Codex with fictional meal-planning inputs.",
 };
 
 const modelRounds = record.turns.filter((turn) => turn.model).length;
@@ -18,7 +18,7 @@ export default function WaicyEvidence() {
       <header className="evidence-header">
         <p>WAICY 2026 · CareKitchen</p>
         <h1>Ten rounds of meal planning</h1>
-        <p>Recorded English conversation using scripted test inputs and the final CareKitchen prototype.</p>
+        <p>Codex operated the deployed English assistant in a browser using fictional meal-planning inputs.</p>
         <dl className="evidence-facts">
           <div>
             <dt>Conversation rounds</dt>
@@ -43,7 +43,7 @@ export default function WaicyEvidence() {
         <ol>
           <li>
             <Link href="/#workspace" target="_blank" rel="noopener">Open CareKitchen in a new tab.</Link>{" "}
-            Load the example for cooking for yourself, then send it.
+            Choose “Cooking for myself” and send “Dinner for 1”.
           </li>
           <li>
             Send this update in the same conversation.
@@ -63,7 +63,6 @@ export default function WaicyEvidence() {
                 <h2 id={`round-${index + 1}`}>Round {index + 1}</h2>
                 <span>{turn.model ? `${turn.model} and server checks` : "Server checks"}</span>
               </div>
-              {turn.formNote && <p className="evidence-form-note">{turn.formNote}</p>}
               <dl>
                 <div>
                   <dt>User</dt>
@@ -81,10 +80,11 @@ export default function WaicyEvidence() {
                         {turn.meals.map((meal) => (
                           <li key={meal.id}>
                             {meal.title} · {meal.servings} {meal.servings === 1 ? "serving" : "servings"} ·{" "}
-                            {meal.unknowns.length > 0 && meal.knownCostTwd === 0
+                            {(meal.missingPrices.length > 0 || meal.unknownPantry.length > 0) && meal.knownCostTwd === 0
                               ? "Shopping total pending"
                               : `Known shopping subtotal NT$${meal.knownCostTwd}`}
-                            {meal.unknowns.length > 0 && ` · Prices needed for ${meal.unknowns.join(", ")}`}
+                            {meal.missingPrices.length > 0 && ` · Prices to confirm for ${meal.missingPrices.join(", ")}`}
+                            {meal.unknownPantry.length > 0 && ` · Pantry amounts to confirm for ${meal.unknownPantry.join(", ")}`}
                           </li>
                         ))}
                       </ul>

@@ -1,28 +1,23 @@
-# WAICY 2026: English Submission Materials
+# WAICY 2026 English Submission Materials
 
-> **Status as of November 27, 2026:** the 33-page English deck for the Middle School division is complete and exported to PDF. The assistant and chat-history links are public. Uploading to Drive and sending the official form are still to be done by the team.
-
-## Contents
+## Deliverables
 
 | File | Purpose |
 |---|---|
-| [project-description.md](project-description.md) | Copy-ready project description, under 200 words |
-| [rubric-mapping.md](rubric-mapping.md) | Official criteria and required content mapped to deck pages |
-| [submission-todo.md](submission-todo.md) | Remaining actions and open checks |
-| [research-notes.md](research-notes.md) | Source register and verification status |
-| [`deck-source/`](deck-source/) | Editable slide source (team details removed) |
+| [LLM_Middle_CareKitchen.pdf](LLM_Middle_CareKitchen.pdf) | English Track 4 technical report, with live links and references. The team can add verified member details to the editable source. |
+| [Editable report source](../waicy-report.en.md) | Contents of the report, including the complete list of official Track 4 topics. |
+| [Slide handoff](slide-handoff.md) | Replacement content for the existing deck, screenshot locations, demo steps, and Q&A. |
+| [Deck source](deck-source/project/) | Team-redacted slide files. Updated pages 10, 12, 24–26 and 30 use the production V6 evidence. Some earlier slides use private artifact asset paths. |
+| [Form description](project-description.md) | English copy below the form’s 200-word limit. |
+| [Rubric mapping](rubric-mapping.md) | The official criteria mapped to the English report, updated slides, and test evidence. |
+| [Research notes](research-notes.md) | Primary sources and research-informed scenario design. |
+| [AI use and contributions](ai-use-disclosure.md) | Tool disclosures and a place to verify each student’s own work. |
+| [Submission checklist](submission-todo.md) | Deadline, Drive naming and sharing, team fields, and handoff. |
 
-## Links used in the deck
+## Public links
 
-- Chatbot: <https://carekitchen-theta.vercel.app>
-- Chat history: <https://carekitchen-theta.vercel.app/evidence/waicy> ([repository copy](../evidence/waicy-chat-history.md))
+- [Live assistant](https://carekitchen-theta.vercel.app/)
+- [Public chat history](https://carekitchen-theta.vercel.app/evidence/waicy) with ten rounds, operated by Codex in the live browser
+- [Before-and-after evidence](../evidence/waicy-english-v6.md)
 
-## Deck and export
-
-- The [Claude artifact](https://claude.ai/artifact/4kcWQeX2UYXPjrXtPrSbbY) is owner-only and holds the complete deck. The PDF was rendered with a local browser from the same slide files.
-- File and Drive folder names: `LLM_Middle_CareKitchen.pdf` in `LLM_Middle_CareKitchen`.
-- This repository is public, so student names and photos are not stored here. In `deck-source`, the cover and team slides carry placeholders, and images point to artifact assets (`/_blob/…`).
-
-## Page sequence
-
-1 Cover · 2 Summary · 3 Requirement guide · 4 Motivation · 5 Plain-chat failures · 6 Service · 7 User journey · 8 Operation walkthrough · 9 Three users · 10 One request, three answers · 11 Agent design · 12 Final instructions · 13 Changing conditions · 14 Price states · 15 Safety · 16 Iteration overview · 17 Idea · 18 Versions · 19 Prompt changes · 20 Results · 21 Baseline comparison · 22–23 Failure analysis · 24 New-case test · 25 Links and QR codes · 26 Ten-round record · 27 Limitations · 28 Ethics · 29 Future · 30 Originality · 31 Team · 32 Conclusion · 33 References
+The team owns the [private 33-page deck](https://claude.ai/artifact/4kcWQeX2UYXPjrXtPrSbbY), member details, and official submission. The public repository holds the English technical report and the updated slide material.

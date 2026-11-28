@@ -1,25 +1,16 @@
 <section id="fresh" data-transition="fade">
-<p class="eyebrow">ITERATIVE DESIGN · STAGE 5: IMPROVEMENT ON NEW CASES (CHINESE RUN)</p>
-<h2>New scenarios, run before and after fixes</h2>
-<div class="body">
-<div class="row" style="gap:36px; align-items:stretch; flex:1">
-<div class="stack" style="width:760px; gap:14px">
-<div class="card" style="padding:20px 32px">
-<p class="k">NEW ROUNDS PASSED (OF 10)</p>
-<div style="display:grid; grid-template-columns:120px 1fr 170px; gap:18px; align-items:center; margin-bottom:12px"><p class="ct" style="margin:0; font-size:32px">Before</p><div style="background:#E8ECF3; height:44px; display:flex"><div style="background:#8FA3C6; width:70%; height:44px"></div></div><p class="mid" style="margin:0; font-size:40px">7 / 10</p></div>
-<div style="display:grid; grid-template-columns:120px 1fr 170px; gap:18px; align-items:center"><p class="ct" style="margin:0; font-size:32px">After</p><div style="background:#E8ECF3; height:44px; display:flex"><div style="background:#16315C; width:100%; height:44px"></div></div><p class="mid" style="margin:0; font-size:40px">10 / 10</p></div>
-<p class="src" style="margin-top:10px; font-size:24px">Checks: 36 of 39 executed passed before (1 execution error), 41 of 41 after.</p>
+<p class="eyebrow">ITERATIVE DEVELOPMENT · ENGLISH V6</p>
+<h2>Same prompts, a better live conversation</h2>
+<div class="body" style="gap:18px">
+<div class="stack" style="gap:0">
+<div class="gridrow" style="grid-template-columns:1fr 1fr 1.15fr; padding:14px 0"><p class="k">JUDGE-STYLE PROMPT</p><p class="k">BEFORE</p><p class="k">AFTER</p></div>
+<div class="gridrow" style="grid-template-columns:1fr 1fr 1.15fr; padding:15px 0"><p class="cs">“Dinner for 1” / “for one”</p><p class="cs">Asked for a person count</p><p class="cs">Saved one serving, asked for equipment</p></div>
+<div class="gridrow" style="grid-template-columns:1fr 1fr 1.15fr; padding:15px 0"><p class="cs">“I have an oven”</p><p class="cs">Put “anoven” in the pantry</p><p class="cs">Named the catalog limit and offered supported methods</p></div>
+<div class="gridrow" style="grid-template-columns:1fr 1fr 1.15fr; padding:15px 0"><p class="cs">Eggs and tomatoes with a stove</p><p class="cs">Lost the pantry items</p><p class="cs">Ranked stovetop tomato and eggs first</p></div>
+<div class="gridrow" style="grid-template-columns:1fr 1fr 1.15fr; padding:15px 0"><p class="cs">Chicken and white rice with a stove</p><p class="cs">Suggested unrelated dishes</p><p class="cs">Explained the gap and offered a next step</p></div>
+<div class="gridrow" style="grid-template-columns:1fr 1fr 1.15fr; padding:15px 0"><p class="cs">“Something different” / “Why these dishes?”</p><p class="cs">Generic prompt to restate the request</p><p class="cs">Changed the options or explained the displayed dishes</p></div>
 </div>
-<div class="soft" style="flex:1; justify-content:center; padding:18px 32px"><p class="k">METHOD</p><p class="cs" style="color:#0E1B33">7 scenarios, 10 rounds and 41 checks were written first and not used to tune anything before the first run. Then the fixes, then the same rounds again.</p></div>
-<div class="card" style="flex:1; justify-content:center; padding:18px 32px"><p class="k">AN UNEXPLAINED ERROR, KEPT</p><p class="cs">The first rerun of the old 16 rounds scored 15 of 16 with one execution error. Two single retries and a full rerun passed (16 of 16). The cause was not identified.</p></div>
-</div>
-<div class="stack" style="width:868px; gap:14px">
-<div class="card" style="flex:1; justify-content:center; padding:14px 28px"><p class="k" style="margin:0 0 4px">CAREGIVER SWITCHES EQUIPMENT</p><p class="cs">“Keep the unusable ingredients as before” was misread, giving 0 meals. Now: 3 rice-cooker meals, two exclusions kept.</p></div>
-<div class="card" style="flex:1; justify-content:center; padding:14px 28px"><p class="k" style="margin:0 0 4px">RELATIVE UPDATES PRICES, LOWERS BUDGET</p><p class="cs">The old NT$100 was reused. Now: at NT$25, the minimum purchase of NT$42 is flagged and meals stop.</p></div>
-<div class="card" style="flex:1; justify-content:center; padding:14px 28px"><p class="k" style="margin:0 0 4px">“MY CHILD EATS A LITTLE TOO”</p><p class="cs">Portion size was unclear and an error was stored. Now: servings are marked unknown and the assistant asks.</p></div>
-<div class="card" style="flex:1; justify-content:center; padding:14px 28px"><p class="k" style="margin:0 0 4px">“SOME VEGETABLES” AS A RESTRICTION</p><p class="cs">The vague phrase was saved as a confirmed exclusion. Now: it stays pending and nothing is assumed.</p></div>
-</div>
-</div>
+<div class="soft" style="padding:18px 30px"><p class="cb"><b>12/12 targeted behaviors met</b> in the repeat on the public app. Test inputs were fictional. <a href="https://github.com/Sutdents-Project-Hub/CareKitchen/blob/main/docs/evidence/waicy-english-v6.md">Inspect before and after evidence</a>.</p></div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
 </section>

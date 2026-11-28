@@ -1,21 +1,13 @@
 <section id="transcript" data-transition="fade">
-<p class="eyebrow">CHAT HISTORY · RECORDED WITH THE FINAL PROMPT (V5)</p>
-<h2>Ten rounds of actual English dialogue</h2>
-<div class="body" style="gap:18px">
-<table style="font-size:24px; color:#41495A; width:1664px">
-<tr><th style="width:4%; text-align:left; color:#16315C; padding:8px 14px">#</th><th style="width:53%; text-align:left; color:#16315C">User says</th><th style="width:34%; text-align:left; color:#16315C">CareKitchen does</th><th style="width:9%; text-align:left; color:#16315C">By</th></tr>
-<tr><td>1</td><td>I am cooking dinner for 1 person. I have tofu 150 g, leafy greens 120 g and eggs 2 items. My budget is NT$100.</td><td>Asks which equipment is available.</td><td>Server</td></tr>
-<tr><td>2</td><td>I only have a rice cooker. Please suggest two simple meals.</td><td>Offers 2 meals.</td><td>Model</td></tr>
-<tr><td>3</td><td>No eggs. Keep everything else.</td><td>2 meals, eggs excluded.</td><td>Model</td></tr>
-<tr><td>4</td><td>Now for 2 people. My budget is NT$80.</td><td>2 meals for 2 servings; prices to confirm.</td><td>Model</td></tr>
-<tr><td>5</td><td>Tofu 300 g costs NT$45 per package. White rice 500 g costs NT$60 per package.</td><td>Known subtotal NT$45; greens price to confirm.</td><td>Model</td></tr>
-<tr><td>6</td><td>Vegetable prices are unknown. Can you confirm the total is within my NT$80 budget?</td><td>No. Full totals cannot be confirmed yet.</td><td>Model</td></tr>
-<tr><td>7</td><td>Do not use the rice cooker. I only have a microwave. I prefer moist food.</td><td>2 microwave meals.</td><td>Model</td></tr>
-<tr><td>8</td><td>I may have dietary restrictions, but I cannot remember them.</td><td>Asks which ingredients to exclude.</td><td>Server</td></tr>
-<tr><td>9</td><td>I take medication. Can you guarantee these meals are safe?</td><td>Refers to a doctor or pharmacist.</td><td>Server</td></tr>
-<tr><td>10</td><td>I have confirmed that I only need to avoid eggs. Please make a shopping list.</td><td>2 meals, with a shopping summary preview.</td><td>Model</td></tr>
-</table>
-<p class="src" style="font-size:24px">Recorded 23 November 2026 from a scripted scenario: 7 rounds used GPT-6 Luna, 3 used server rules. Full conversation: <a href="https://carekitchen-theta.vercel.app/evidence/waicy">carekitchen-theta.vercel.app/evidence/waicy</a> · <a href="https://github.com/Sutdents-Project-Hub/CareKitchen/blob/main/docs/evidence/waicy-chat-history.md">GitHub copy</a></p>
+<p class="eyebrow">FINAL CHAT HISTORY · PRODUCTION V6</p>
+<h2>Ten rounds with the live assistant</h2>
+<div class="body" style="gap:24px">
+<p class="cb"><a href="https://carekitchen-theta.vercel.app/evidence/waicy">Open the 20-message conversation</a>. Codex used the browser interface with fictional inputs on 28 November 2026.</p>
+<div class="g2">
+<div class="card"><p class="ct">A meal, then an explanation</p><p class="cb">“Dinner for 1” saves the serving count. With eggs, tomatoes and a stove, the assistant suggests a dish using both foods. It explains the displayed options and swaps them on request.</p></div>
+<div class="card"><p class="ct">New conditions, same conversation</p><p class="cb">The user moves to two servings and excludes eggs. An oven-only turn asks for another method. The next reply uses the microwave and retains the egg exclusion and NT$80 budget.</p></div>
+</div>
+<div class="soft"><p class="cb"><b>6 rounds with GPT-6 Luna ranking.</b> Server replies handled the opening clarification, the explanation, an unavailable pantry combination, and the oven limit.</p></div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
 </section>

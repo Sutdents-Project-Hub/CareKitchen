@@ -1,0 +1,845 @@
+{
+  "executedAt": "2026-11-28T01:16:21.375Z",
+  "baseUrl": "https://carekitchen-theta.vercel.app",
+  "browser": "Chromium",
+  "transport": "browser-context HTTP requests",
+  "rows": [
+    {
+      "text": "Dinner for 1",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please confirm equipment (for example, rice cooker only or no cooking).",
+        "responseType": "ask_clarification",
+        "unknowns": [
+          "equipment (for example, rice cooker only or no cooking)"
+        ]
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "for 2",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please confirm equipment (for example, rice cooker only or no cooking).",
+        "responseType": "ask_clarification",
+        "unknowns": [
+          "equipment (for example, rice cooker only or no cooking)"
+        ]
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "for one",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please confirm equipment (for example, rice cooker only or no cooking).",
+        "responseType": "ask_clarification",
+        "unknowns": [
+          "equipment (for example, rice cooker only or no cooking)"
+        ]
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "I live alone",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please confirm equipment (for example, rice cooker only or no cooking).",
+        "responseType": "ask_clarification",
+        "unknowns": [
+          "equipment (for example, rice cooker only or no cooking)"
+        ]
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "I have chicken and white rice.",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [
+            {
+              "name": "chicken",
+              "quantity": null,
+              "unit": null
+            },
+            {
+              "name": "white rice",
+              "quantity": null,
+              "unit": null
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "I don’t have a recipe that uses your chicken and white rice with these conditions. Add another ingredient or available appliance, or say “Show dishes I can shop for.”",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "I have eggs and tomatoes, and a stove.",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": null,
+              "unit": null
+            },
+            {
+              "name": "tomatoes",
+              "quantity": null,
+              "unit": null
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "stove-egg-tomato",
+            "title": "Stovetop tomato and eggs",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": null,
+                "unit": "個"
+              },
+              {
+                "name": "tomatoes",
+                "quantity": null,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [],
+            "unknownPantry": [
+              "eggs",
+              "tomatoes"
+            ],
+            "steps": [
+              "Wash the tomatoes under running drinking water and cut them into small pieces. Beat the eggs in a bowl. Wash your hands and clean utensils after handling raw egg.",
+              "Simmer the tomatoes in a little drinking water until soft. Add the beaten eggs and stir gently.",
+              "Cook until the egg is completely set and no liquid egg remains. Serve with a clean utensil."
+            ],
+            "reason": "The instructions have 3 steps."
+          },
+          {
+            "id": "boil-egg",
+            "title": "Boiled eggs",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": null,
+                "unit": "個"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [],
+            "unknownPantry": [
+              "eggs"
+            ],
+            "steps": [
+              "Check that the eggshells are intact. Put the eggs in a pot and cover with drinking water. Wash your hands after handling raw eggs.",
+              "Bring to a boil and continue cooking until the whites and yolks are completely set. Cooking time alone does not guarantee doneness.",
+              "Remove with clean utensils, let cool slightly, peel and cut open to check that they are fully cooked."
+            ],
+            "reason": "The instructions have 3 steps."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Pantry amounts to confirm: eggs, tomatoes"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "I want something different",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-broccoli-carrot",
+            "title": "Boiled broccoli and carrots",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "broccoli",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              },
+              {
+                "name": "carrots",
+                "quantity": 120,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "broccoli",
+              "carrots"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "The instructions have 2 steps."
+          },
+          {
+            "id": "boil-cabbage-mushroom",
+            "title": "Boiled cabbage and mushrooms",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "cabbage",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              },
+              {
+                "name": "mushrooms",
+                "quantity": 160,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "cabbage",
+              "mushrooms"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "The instructions have 2 steps."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Purchase prices to confirm: broccoli, carrots, cabbage, mushrooms"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "Why did you choose these?",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-egg",
+            "title": "Boiled eggs",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "eggs",
+                "quantity": 2,
+                "unit": "個",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "eggs"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Check that the eggshells are intact. Put the eggs in a pot and cover with drinking water. Wash your hands after handling raw eggs.",
+              "Bring to a boil and continue cooking until the whites and yolks are completely set. Cooking time alone does not guarantee doneness.",
+              "Remove with clean utensils, let cool slightly, peel and cut open to check that they are fully cooked."
+            ],
+            "reason": "The instructions have 3 steps."
+          }
+        ],
+        "mode": "openai",
+        "message": "Boiled eggs. Fits the equipment and servings you selected. Needs 1 ingredient to buy. Some amounts or prices still need confirmation.",
+        "responseType": "meal_candidates",
+        "unknowns": []
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "I have an oven",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "I don’t have recipes for that appliance. Can you use a stovetop, rice cooker, microwave, or a no-cook option?",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "Dinner for 2. I have eggs and tomatoes, and a stove.",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": null,
+              "unit": null
+            },
+            {
+              "name": "tomatoes",
+              "quantity": null,
+              "unit": null
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "stove-egg-tomato",
+            "title": "Stovetop tomato and eggs",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": null,
+                "unit": "個"
+              },
+              {
+                "name": "tomatoes",
+                "quantity": null,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [],
+            "unknownPantry": [
+              "eggs",
+              "tomatoes"
+            ],
+            "steps": [
+              "Wash the tomatoes under running drinking water and cut them into small pieces. Beat the eggs in a bowl. Wash your hands and clean utensils after handling raw egg.",
+              "Simmer the tomatoes in a little drinking water until soft. Add the beaten eggs and stir gently.",
+              "Cook until the egg is completely set and no liquid egg remains. Serve with a clean utensil."
+            ],
+            "reason": "The instructions have 3 steps."
+          },
+          {
+            "id": "boil-egg",
+            "title": "Boiled eggs",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": null,
+                "unit": "個"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [],
+            "unknownPantry": [
+              "eggs"
+            ],
+            "steps": [
+              "Check that the eggshells are intact. Put the eggs in a pot and cover with drinking water. Wash your hands after handling raw eggs.",
+              "Bring to a boil and continue cooking until the whites and yolks are completely set. Cooking time alone does not guarantee doneness.",
+              "Remove with clean utensils, let cool slightly, peel and cut open to check that they are fully cooked."
+            ],
+            "reason": "The instructions have 3 steps."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Pantry amounts to confirm: eggs, tomatoes"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "I have only an oven. Dinner for 2.",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "I don’t have recipes for that appliance. Can you use a stovetop, rice cooker, microwave, or a no-cook option?",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": true
+    },
+    {
+      "text": "Why these dishes?",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-egg",
+            "title": "Boiled eggs",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "eggs",
+                "quantity": 2,
+                "unit": "個",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "eggs"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Check that the eggshells are intact. Put the eggs in a pot and cover with drinking water. Wash your hands after handling raw eggs.",
+              "Bring to a boil and continue cooking until the whites and yolks are completely set. Cooking time alone does not guarantee doneness.",
+              "Remove with clean utensils, let cool slightly, peel and cut open to check that they are fully cooked."
+            ],
+            "reason": "The instructions have 3 steps."
+          }
+        ],
+        "mode": "openai",
+        "message": "Boiled eggs. Fits the equipment and servings you selected. Needs 1 ingredient to buy. Some amounts or prices still need confirmation.",
+        "responseType": "meal_candidates",
+        "unknowns": []
+      },
+      "meetsV6Expectation": true
+    }
+  ],
+  "deployedCommit": "2865717a719d437838fbfe390d8236e8f996025e",
+  "deploymentId": "dpl_83sdrpmpBomNqHceSJdt9tJcx3gz",
+  "inputProvenance": "Fictional, agent-authored English prompts",
+  "targetedBehaviorsMet": 12,
+  "modelBackedTurns": 3
+}

@@ -1,5 +1,7 @@
 # CareKitchen Evaluation Evidence
 
+Latest production evidence: [English V6 comparison](waicy-english-v6.md) and [ten-round chat history](waicy-chat-history.md). The older files below document their original versions.
+
 **Evidence status as of November 23, 2026.** The archived Chinese V1–V4 runs and the current English V5/baseline runs used authorized OpenAI API calls with synthetic meal-planning scenarios. Browser roles were acted by agents. No target-user interviews, external judge testing, or formal submission is evidenced here.
 
 **Added November 27, 2026:** the [final chat history](waicy-chat-history.md) (ten rounds, synthetic) and a [hosted-app check](runs/live-deploy-2026-11-27.json) of 23 scripted requests, all HTTP 200, and a [form walkthrough](runs/live-walkthrough-2026-11-27.json) used for the deck screenshots.

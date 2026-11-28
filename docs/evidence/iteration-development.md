@@ -132,3 +132,7 @@ Both runs use model `gpt-6-luna` and record prompt hashes in the JSON. The `sour
 ### English browser verification
 
 The [browser check](browser/waicy-english-check.js) reached the actual OpenAI-backed preview in all three roles. The [browser record](runs/browser-english-v5.json) logs five live model turns and one server-only medication referral, all with HTTP 200. The [screenshots and PDF](waicy-pdf-materials/README.md) were captured after the reply and available cards appeared. At 320 CSS pixels the English reading controls initially caused horizontal overflow. The header now wraps the controls, and the workspace and evidence page fit the tested 320, 390, 900 and 1440 CSS-pixel widths.
+
+## 8. English V6 production regression and browser walkthrough
+
+The project tested 12 short English prompts against the old and revised public deployments with identical starting states. All 12 targeted behaviors passed after the fix. The engineering cases cover short serving replies, pantry coverage, casual swaps, grounded explanations, and the oven-only recovery path. A distinct production browser session recorded ten complete rounds with six model-backed answers and demonstrated all three roles. See the [production comparison and full responses](waicy-english-v6.md).

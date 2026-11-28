@@ -1,18 +1,18 @@
 # WAICY Rubric and Required-Content Mapping
 
-Page numbers refer to the 33-page deck of November 27, 2026. This is a project self-review, not a predicted score. Criteria names and points follow the Large Language Models tab of the [official rubric](https://www.waicy.org/rubrics/).
+Page numbers refer to the 33-page deck and November 28 replacement slides. The six-page technical report covers the same ten required topics. This is a project self-review, not a predicted score. Criteria names and points follow the Large Language Models tab of the [official rubric](https://www.waicy.org/rubrics/).
 
 ## Seven scoring criteria
 
 | Criterion | Pages | Supporting material | Remaining gap |
 |---|---|---|---|
-| Specific AI Service (25) | 6–8, 11–15 | Service definition, journey, agent design, full final instructions, live screens | No comparison with commercial products |
-| Iterative Development (25) | 16–24 | Five-stage overview, idea change, prompt changes, per-round results, baseline comparison, failures and retests | One run per version; V2/V3 prompts reconstructed |
-| Motivation & Problem Statement (10) | 4–5 | WHO, Eurostat, French study, Taiwan MOI; inspiration; recorded plain-chat failures | No target-user interviews |
+| Specific AI Service (25) | 6–8, 11–15 | Service definition, journey, agent design, full final instructions, live screens | Limited catalog; judge can test appliance and pantry recovery |
+| Iterative Development (25) | 16–24 | Historical versions, prompt changes, and the production English V6 same-input retest | Targeted synthetic inputs; some earlier prompt files are reconstructions |
+| Motivation & Problem Statement (10) | 4–5 | Taiwan MOI and published research; study-linked scenario design and plain-chat failures | No target-user interviews |
 | Limitations & Considerations (10) | 27–28 | Practical limits, autonomy, privacy, over-trust, bias, misuse | — |
 | Future Development & Clear Reference (10) | 29, 33 | A next step per limitation; APA references | — |
 | Presentation & Communication (10) | All | One idea per page, requirement guide, real screens | Live presentation and Q&A need practice |
-| Originality & Creativity (10) | 30 | Price states, confirmed-versus-unsure limits, propose/verify split, safety before the model | — |
+| Originality & Creativity (10) | 30 | Project catalog and condition checks, model ranking, framework, and public-source roles | — |
 
 ## Ten required items (guidebook)
 

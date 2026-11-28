@@ -1,0 +1,624 @@
+{
+  "executedAt": "2026-11-28T01:10:22.580Z",
+  "baseUrl": "https://carekitchen-theta.vercel.app",
+  "browser": "Chromium",
+  "transport": "browser-context HTTP requests",
+  "rows": [
+    {
+      "text": "Dinner for 1",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please confirm servings (for example, one person) and equipment (for example, rice cooker only or no cooking).",
+        "responseType": "ask_clarification",
+        "unknowns": [
+          "servings (for example, one person)",
+          "equipment (for example, rice cooker only or no cooking)"
+        ]
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "for 2",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please tell me the number of people, available ingredients, budget, equipment, or how you want to adjust the meal.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "for one",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please tell me the number of people, available ingredients, budget, equipment, or how you want to adjust the meal.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "I live alone",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please tell me the number of people, available ingredients, budget, equipment, or how you want to adjust the meal.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "I have chicken and white rice.",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [
+            {
+              "name": "chicken",
+              "quantity": null,
+              "unit": null
+            },
+            {
+              "name": "white rice",
+              "quantity": null,
+              "unit": null
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-egg",
+            "title": "Boiled eggs",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "eggs",
+                "quantity": 2,
+                "unit": "個",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "eggs"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Check that the eggshells are intact. Put the eggs in a pot and cover with drinking water. Wash your hands after handling raw eggs.",
+              "Bring to a boil and continue cooking until the whites and yolks are completely set. Cooking time alone does not guarantee doneness.",
+              "Remove with clean utensils, let cool slightly, peel and cut open to check that they are fully cooked."
+            ],
+            "reason": "The instructions have 3 steps."
+          },
+          {
+            "id": "boil-cabbage-mushroom",
+            "title": "Boiled cabbage and mushrooms",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "cabbage",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              },
+              {
+                "name": "mushrooms",
+                "quantity": 160,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "no_budget",
+            "missingPrices": [
+              "cabbage",
+              "mushrooms"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "The instructions have 2 steps."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Purchase prices to confirm: eggs, cabbage, mushrooms"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v5"
+        }
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "I have eggs and tomatoes, and a stove.",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please tell me the number of people, available ingredients, budget, equipment, or how you want to adjust the meal.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "I want something different",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please tell me the number of people, available ingredients, budget, equipment, or how you want to adjust the meal.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "Why did you choose these?",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please tell me the number of people, available ingredients, budget, equipment, or how you want to adjust the meal.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "I have an oven",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [
+            {
+              "name": "anoven",
+              "quantity": null,
+              "unit": null
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "This requirement needs confirmation. Please specify the excluded ingredients, available equipment, and time limit in Meal conditions; medical diet prescriptions need a qualified professional.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "Dinner for 2. I have eggs and tomatoes, and a stove.",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please confirm servings (for example, one person).",
+        "responseType": "ask_clarification",
+        "unknowns": [
+          "servings (for example, one person)"
+        ]
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "I have only an oven. Dinner for 2.",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "This requirement needs confirmation. Please specify the excluded ingredients, available equipment, and time limit in Meal conditions; medical diet prescriptions need a qualified professional.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    },
+    {
+      "text": "Why these dishes?",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [
+          "stove"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "boil-egg"
+      ],
+      "status": 200,
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please tell me the number of people, available ingredients, budget, equipment, or how you want to adjust the meal.",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      },
+      "meetsV6Expectation": false
+    }
+  ],
+  "deployedCommit": "5ee8ecb9a330ca602b241cd8083527b73e931b1c",
+  "deploymentId": "dpl_63ecwr772zNM2rcXpN3KYsSBBK7y",
+  "inputProvenance": "Fictional, agent-authored English prompts",
+  "targetedBehaviorsMet": 0,
+  "modelBackedTurns": 1
+}

@@ -1,23 +1,13 @@
 # Submission Checklist
 
-**Deadline in the official guidebook and form (read November 27, 2026):** November 29, 2026, 5:00 PM ET (November 30, 06:00 Taiwan time). Aim to submit by November 29, Taiwan time.
+**Deadline:** November 29, 2026 at 5:00 PM Eastern Time, or November 30 at 06:00 Taiwan time. The guidebook and the submission form agree. [WAICY guidebook, pp. 20–23](https://waicy-cdn.wholeren.cn/wp-content/uploads/2026/09/WAICY-2026-Guidebook.pdf) · [Submission form](https://www.waicy.org/2026-submission/)
 
-## To do before sending
+## Team-owned checks
 
-| # | Action |
-|---:|---|
-| 1 | Confirm the first team member's full English name; the draft shows the given name only. |
-| 2 | Each student prepares to present and answer questions on the area listed for them on page 31; change any assignment that does not fit. |
-| 3 | The PDF carries no AI-assistance statement. The team prepares a separate document that states which AI tools built, tested, operated and wrote what, and what the students did. |
-| 4 | Create the Drive folder `LLM_Middle_CareKitchen`, add `LLM_Middle_CareKitchen.pdf`, share it so anyone with the link can view, and test it signed out. |
-| 5 | Complete the [submission form](https://www.waicy.org/2026-submission/): country, participation mode, contact phone, member details, instructor if any, competition group Middle School, and the description (200 words or fewer). Teams registered through a regional organizer may not need this form. |
-| 6 | Keep the hosted app funded and online through judging; open both links on a phone signed out. |
-| 7 | Prepare for the final if invited: 3-minute presentation, 3-minute demo, 4-minute Q&A (December 4–6). |
+1. Add the first member's verified full English name and confirm all team details. Add verified personal contributions to the [AI use disclosure](ai-use-disclosure.md).
+2. Open the live assistant and published conversation outside the team's browser session. The guide specifies a conversation with the final assistant and at least 10 exchanged messages. The repository supplies a labelled ten-round Codex-operated transcript. For an unambiguous student-authored record, have a team member run the same final assistant and replace that link if required by the organizer.
+3. Use the folder name `LLM_Middle_CareKitchen` if the team's Middle School designation is confirmed. Place the English PDF named `LLM_Middle_CareKitchen.pdf` inside. Add the verified AI use disclosure as supporting material if appropriate. Set Drive sharing to anyone with the link and verify an anonymous open.
+4. Use the [copy-ready description](project-description.md) in the official form. Provide the required contact and team details. Teams already entered by a regional organizer should follow that organizer's process.
+5. Check the PDF links and save the official submission confirmation. Verify any live presentation schedule and practice the meal update, budget explanation and safety handoff.
 
-## Open limitations
-
-- No study with older adults, caregivers or relatives.
-- The transcript was recorded on a local build of the final code, not on the hosted instance.
-- The English condition parser can misread unusual phrasing (observed: “an oven” stored as an ingredient).
-- In an automated walkthrough, an equipment button clicked immediately after typing in a text field did not register on the first click.
-- No native-English review of the deck.
+The project tested the live UI using scripted fictional inputs. Publishing a claim about human participants requires the team's independently documented, consent-based observations.

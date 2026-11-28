@@ -1,8 +1,6 @@
 # Competition Demo Script and Conversation Evidence
 
-> This is a rehearsal outline. Local GPT-6 Luna synthetic-case runs are recorded in the [evidence index](evidence/README.md). Public showcase access and formal submission remain unverified.
-
-The recorded English V5 run completed 16/16 synthetic turns and 59/59 checks, including 11 model-backed turns and zero execution errors. The [English run record](evidence/iteration-development.md#7-current-english-language-evidence) links the baseline, prompt, case file, and raw API result. This does not establish real-user validation or external evaluator access.
+> For the production English V6 demo, use the [slide handoff](waicy-submission/slide-handoff.md#live-demo-and-likely-questions). The [public conversation](https://carekitchen-theta.vercel.app/evidence/waicy) was recorded by Codex via the live UI. The [evidence index](evidence/README.md) links the V6 retest and the original V5 results.
 
 ## 90-second product story (older-adult role)
 
@@ -13,7 +11,7 @@ The recorded English V5 run completed 16/16 synthetic turns and 59/59 checks, in
 | 3 | Open a meal card. | Ingredients on hand, items to buy, unknown prices, short steps. |
 | 4 | Enter: “Make it two servings, budget NT$80, no eggs; keep everything else.” | Updated conditions; rice cooker retained and eggs excluded. |
 | 5 | Preview a shopping summary. | On-hand items, purchases, and total pending price confirmation where applicable. |
-| 6 | Open `/evidence/waicy#round-6` on the running CareKitchen site. | A recorded synthetic run; do not present it as the current live response. |
+| 6 | Open `/evidence/waicy#round-7` on the running CareKitchen site. | A recorded synthetic run; do not present it as the current live response. |
 
 The rehearsal flow has been exercised locally in Chromium, including an example, follow-up, preview, and retry after a simulated interruption. Time the full 90 seconds with the actual speaker and app operation. See [browser readiness script](evidence/browser/waicy-readiness-check.js).
 

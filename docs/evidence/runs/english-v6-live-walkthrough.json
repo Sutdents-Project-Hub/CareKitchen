@@ -1,0 +1,1976 @@
+{
+  "executedAt": "2026-11-28T01:16:30.582Z",
+  "baseUrl": "https://carekitchen-theta.vercel.app",
+  "operator": "Codex via Playwright",
+  "kind": "Scripted UI operation with fictional inputs",
+  "turns": [
+    {
+      "text": "Dinner for 1",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "Dinner for 1",
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        }
+      },
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "Please confirm equipment (for example, rice cooker only or no cooking).",
+        "responseType": "ask_clarification",
+        "unknowns": [
+          "equipment (for example, rice cooker only or no cooking)"
+        ]
+      }
+    },
+    {
+      "text": "I have eggs 2 items and tomatoes 300 g, and a stove. My budget is NT$80.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "I have eggs 2 items and tomatoes 300 g, and a stove. My budget is NT$80.",
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        }
+      },
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "stove-egg-tomato",
+            "title": "Stovetop tomato and eggs",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": 1,
+                "unit": "個"
+              },
+              {
+                "name": "tomatoes",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the tomatoes under running drinking water and cut them into small pieces. Beat the eggs in a bowl. Wash your hands and clean utensils after handling raw egg.",
+              "Simmer the tomatoes in a little drinking water until soft. Add the beaten eggs and stir gently.",
+              "Cook until the egg is completely set and no liquid egg remains. Serve with a clean utensil."
+            ],
+            "reason": "Start with the eggs, tomatoes you already have."
+          },
+          {
+            "id": "boil-egg",
+            "title": "Boiled eggs",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": 1,
+                "unit": "個"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Check that the eggshells are intact. Put the eggs in a pot and cover with drinking water. Wash your hands after handling raw eggs.",
+              "Bring to a boil and continue cooking until the whites and yolks are completely set. Cooking time alone does not guarantee doneness.",
+              "Remove with clean utensils, let cool slightly, peel and cut open to check that they are fully cooked."
+            ],
+            "reason": "Start with the eggs you already have."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+        "responseType": "meal_candidates",
+        "unknowns": [],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    },
+    {
+      "text": "Why did you choose these?",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "Why did you choose these?",
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "previousMealIds": [
+          "stove-egg-tomato",
+          "boil-egg"
+        ]
+      },
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "stove-egg-tomato",
+            "title": "Stovetop tomato and eggs",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": 1,
+                "unit": "個"
+              },
+              {
+                "name": "tomatoes",
+                "quantity": 150,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the tomatoes under running drinking water and cut them into small pieces. Beat the eggs in a bowl. Wash your hands and clean utensils after handling raw egg.",
+              "Simmer the tomatoes in a little drinking water until soft. Add the beaten eggs and stir gently.",
+              "Cook until the egg is completely set and no liquid egg remains. Serve with a clean utensil."
+            ],
+            "reason": "Start with the eggs, tomatoes you already have."
+          },
+          {
+            "id": "boil-egg",
+            "title": "Boiled eggs",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "eggs",
+                "quantity": 1,
+                "unit": "個"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Check that the eggshells are intact. Put the eggs in a pot and cover with drinking water. Wash your hands after handling raw eggs.",
+              "Bring to a boil and continue cooking until the whites and yolks are completely set. Cooking time alone does not guarantee doneness.",
+              "Remove with clean utensils, let cool slightly, peel and cut open to check that they are fully cooked."
+            ],
+            "reason": "Start with the eggs you already have."
+          }
+        ],
+        "mode": "openai",
+        "message": "Stovetop tomato and eggs. Uses eggs and tomatoes from your pantry. Lists no purchases. Boiled eggs. Uses eggs from your pantry. Lists no purchases.",
+        "responseType": "meal_candidates",
+        "unknowns": []
+      }
+    },
+    {
+      "text": "I want something different",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "I want something different",
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "previousMealIds": [
+          "stove-egg-tomato",
+          "boil-egg"
+        ]
+      },
+      "reply": {
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-broccoli-carrot",
+            "title": "Boiled broccoli and carrots",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "broccoli",
+                "quantity": 150,
+                "unit": "g",
+                "priceTwd": null
+              },
+              {
+                "name": "carrots",
+                "quantity": 60,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "broccoli",
+              "carrots"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "The instructions have 2 steps."
+          },
+          {
+            "id": "boil-cabbage-mushroom",
+            "title": "Boiled cabbage and mushrooms",
+            "servings": 1,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [],
+            "toBuy": [
+              {
+                "name": "cabbage",
+                "quantity": 150,
+                "unit": "g",
+                "priceTwd": null
+              },
+              {
+                "name": "mushrooms",
+                "quantity": 80,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "cabbage",
+              "mushrooms"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "The instructions have 2 steps."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The remaining alternatives use different ingredients. Check the shopping list before choosing.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Purchase prices to confirm: broccoli, carrots, cabbage, mushrooms"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    },
+    {
+      "text": "Make it for 2, no eggs. Keep everything else.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "Make it for 2, no eggs. Keep everything else.",
+        "context": {
+          "servings": 1,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "previousMealIds": [
+          "boil-broccoli-carrot",
+          "boil-cabbage-mushroom"
+        ]
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "I don’t have a recipe that uses your tomatoes with these conditions. Add another ingredient or available appliance, or say “Show dishes I can shop for.”",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      }
+    },
+    {
+      "text": "I also have tofu 300 g and leafy greens 240 g.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "I also have tofu 300 g and leafy greens 240 g.",
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        }
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-greens-tofu",
+            "title": "Boiled leafy greens and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "leafy greens",
+                "quantity": 240,
+                "unit": "g"
+              },
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "Start with the leafy greens, tofu you already have."
+          },
+          {
+            "id": "boil-pumpkin-tofu",
+            "title": "Boiled pumpkin and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "pumpkin",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "pumpkin"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "Start with the tofu you already have."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The catalog has no qualifying option that uses tomatoes under these conditions.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Purchase prices to confirm: pumpkin"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    },
+    {
+      "text": "Can you make a shopping list?",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "Can you make a shopping list?",
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "previousMealIds": [
+          "boil-greens-tofu",
+          "boil-pumpkin-tofu"
+        ]
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-greens-tofu",
+            "title": "Boiled leafy greens and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "leafy greens",
+                "quantity": 240,
+                "unit": "g"
+              },
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "Start with the leafy greens, tofu you already have."
+          },
+          {
+            "id": "boil-pumpkin-tofu",
+            "title": "Boiled pumpkin and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "pumpkin",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "pumpkin"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "Start with the tofu you already have."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish below to see what to buy and which prices need confirmation. You can preview and copy its shopping summary. The catalog has no qualifying option that uses tomatoes under these conditions.",
+        "responseType": "shopping_summary",
+        "unknowns": [
+          "Purchase prices to confirm: pumpkin"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    },
+    {
+      "text": "Pumpkin 300 g costs NT$45 per package. Can you confirm the total is within my NT$80 budget?",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "Pumpkin 300 g costs NT$45 per package. Can you confirm the total is within my NT$80 budget?",
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "previousMealIds": [
+          "boil-greens-tofu",
+          "boil-pumpkin-tofu"
+        ]
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [
+            {
+              "name": "pumpkin",
+              "quantity": 300,
+              "unit": "g",
+              "priceTwd": 45
+            }
+          ],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "boil-greens-tofu",
+            "title": "Boiled leafy greens and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "leafy greens",
+                "quantity": 240,
+                "unit": "g"
+              },
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "Start with the leafy greens, tofu you already have."
+          },
+          {
+            "id": "boil-pumpkin-tofu",
+            "title": "Boiled pumpkin and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "stove",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "pumpkin",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": 45
+              }
+            ],
+            "knownCostTwd": 45,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients and cut them into small pieces. Bring enough drinking water for cooking to a boil in a pot.",
+              "Add the ingredients and cook them fully. Check that the center is hot before removing them. Take care around hot water and steam."
+            ],
+            "reason": "Start with the tofu you already have."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Based on your supplied prices, the known new purchases for each option are within TWD 80. The catalog has no qualifying option that uses tomatoes under these conditions.",
+        "responseType": "meal_candidates",
+        "unknowns": [],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    },
+    {
+      "text": "I only have an oven.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "I only have an oven.",
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [
+            {
+              "name": "pumpkin",
+              "quantity": 300,
+              "unit": "g",
+              "priceTwd": 45
+            }
+          ],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "stove"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "previousMealIds": [
+          "boil-greens-tofu",
+          "boil-pumpkin-tofu"
+        ]
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [
+            {
+              "name": "pumpkin",
+              "quantity": 300,
+              "unit": "g",
+              "priceTwd": 45
+            }
+          ],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [],
+        "mode": "openai",
+        "message": "I don’t have recipes for that appliance. Can you use a stovetop, rice cooker, microwave, or a no-cook option?",
+        "responseType": "ask_clarification",
+        "unknowns": []
+      }
+    },
+    {
+      "text": "I only have a microwave.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "I only have a microwave.",
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [
+            {
+              "name": "pumpkin",
+              "quantity": 300,
+              "unit": "g",
+              "priceTwd": 45
+            }
+          ],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        }
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "eggs",
+              "quantity": 2,
+              "unit": "個"
+            },
+            {
+              "name": "tomatoes",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [
+            {
+              "name": "pumpkin",
+              "quantity": 300,
+              "unit": "g",
+              "priceTwd": 45
+            }
+          ],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "microwave"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "micro-tofu-greens",
+            "title": "Microwave tofu and leafy greens",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "microwave",
+            "minutes": 15,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              },
+              {
+                "name": "leafy greens",
+                "quantity": 240,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a microwave-safe container. Add a little drinking water and cover with a vented lid.",
+              "Microwave in intervals, stirring or turning midway. Check that the ingredients are fully cooked and hot at the center. Adjust the time for the amount and appliance, and avoid burns."
+            ],
+            "reason": "Start with the tofu, leafy greens you already have."
+          },
+          {
+            "id": "micro-eggplant-tofu",
+            "title": "Microwave eggplant and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "microwave",
+            "minutes": 20,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "eggplant",
+                "quantity": 240,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "eggplant"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a microwave-safe container. Add a little drinking water and cover with a vented lid.",
+              "Microwave in intervals, stirring or turning midway. Check that the ingredients are fully cooked and hot at the center. Adjust the time for the amount and appliance, and avoid burns."
+            ],
+            "reason": "Start with the tofu you already have."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The catalog has no qualifying option that uses tomatoes under these conditions.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Purchase prices to confirm: eggplant"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    }
+  ],
+  "roles": {
+    "elder": {
+      "text": "Dinner for 2. I have tofu 300 g and leafy greens 240 g, and a rice cooker. No eggs. My budget is NT$80.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "elder",
+        "text": "Dinner for 2. I have tofu 300 g and leafy greens 240 g, and a rice cooker. No eggs. My budget is NT$80.",
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        }
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "rice_cooker"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "steam-tofu-greens",
+            "title": "Rice-cooker tofu and leafy greens",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              },
+              {
+                "name": "leafy greens",
+                "quantity": 240,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "Start with the tofu, leafy greens you already have."
+          },
+          {
+            "id": "steam-mushroom-tofu",
+            "title": "Steamed mushrooms and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "mushrooms",
+                "quantity": 160,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "mushrooms"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "Start with the tofu you already have."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Purchase prices to confirm: mushrooms"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    },
+    "caregiver": {
+      "text": "Dinner for 2. I have tofu 300 g and leafy greens 240 g, and a rice cooker. No eggs. My budget is NT$80.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "caregiver",
+        "text": "Dinner for 2. I have tofu 300 g and leafy greens 240 g, and a rice cooker. No eggs. My budget is NT$80.",
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        }
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "rice_cooker"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "steam-tofu-greens",
+            "title": "Rice-cooker tofu and leafy greens",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              },
+              {
+                "name": "leafy greens",
+                "quantity": 240,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+          },
+          {
+            "id": "steam-mushroom-tofu",
+            "title": "Steamed mushrooms and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "mushrooms",
+                "quantity": 160,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "mushrooms"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+          },
+          {
+            "id": "steam-pumpkin-tofu",
+            "title": "Steamed pumpkin and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 30,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "pumpkin",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "pumpkin"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "Recalculated for 2 serving(s), with confirmed exclusions checked against the recipe ingredients."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 3 meals for this turn. Each dish is rechecked for the current servings, equipment and exclusions. Check pantry amounts and packaging ingredients.",
+        "responseType": "meal_candidates",
+        "unknowns": [
+          "Purchase prices to confirm: mushrooms, pumpkin"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    },
+    "family": {
+      "text": "Dinner for 2. I have tofu 300 g and leafy greens 240 g, and a rice cooker. No eggs. My budget is NT$80.",
+      "httpStatus": 200,
+      "request": {
+        "language": "en",
+        "persona": "family",
+        "text": "Dinner for 2. I have tofu 300 g and leafy greens 240 g, and a rice cooker. No eggs. My budget is NT$80.",
+        "context": {
+          "servings": null,
+          "mealCount": 1,
+          "budgetTwd": null,
+          "pantryItems": [],
+          "purchasePrices": [],
+          "excludedIngredients": [],
+          "equipment": [],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        }
+      },
+      "reply": {
+        "context": {
+          "servings": 2,
+          "mealCount": 1,
+          "budgetTwd": 80,
+          "pantryItems": [
+            {
+              "name": "tofu",
+              "quantity": 300,
+              "unit": "g"
+            },
+            {
+              "name": "leafy greens",
+              "quantity": 240,
+              "unit": "g"
+            }
+          ],
+          "purchasePrices": [],
+          "excludedIngredients": [
+            "eggs"
+          ],
+          "equipment": [
+            "rice_cooker"
+          ],
+          "maxTimeMinutes": null,
+          "preferences": [],
+          "uncertainty": false,
+          "onlyPantry": false
+        },
+        "cards": [
+          {
+            "id": "steam-tofu-greens",
+            "title": "Rice-cooker tofu and leafy greens",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              },
+              {
+                "name": "leafy greens",
+                "quantity": 240,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [],
+            "knownCostTwd": 0,
+            "budgetStatus": "within",
+            "missingPrices": [],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "The amounts you entered cover this dish using the ingredients at home."
+          },
+          {
+            "id": "steam-mushroom-tofu",
+            "title": "Steamed mushrooms and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 25,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "mushrooms",
+                "quantity": 160,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "mushrooms"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "1 item(s) to buy; 1 price(s) still need confirmation."
+          },
+          {
+            "id": "steam-pumpkin-tofu",
+            "title": "Steamed pumpkin and tofu",
+            "servings": 2,
+            "mealCount": 1,
+            "equipment": "rice_cooker",
+            "minutes": 30,
+            "fromPantry": [
+              {
+                "name": "tofu",
+                "quantity": 300,
+                "unit": "g"
+              }
+            ],
+            "toBuy": [
+              {
+                "name": "pumpkin",
+                "quantity": 300,
+                "unit": "g",
+                "priceTwd": null
+              }
+            ],
+            "knownCostTwd": 0,
+            "budgetStatus": "unknown",
+            "missingPrices": [
+              "pumpkin"
+            ],
+            "unknownPantry": [],
+            "steps": [
+              "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+              "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+            ],
+            "reason": "1 item(s) to buy; 1 price(s) still need confirmation."
+          }
+        ],
+        "mode": "openai",
+        "message": "Found 3 meals for this turn. Each dish separates pantry items from purchases. Preview and copy a summary from its card to share with your family.",
+        "responseType": "shopping_summary",
+        "unknowns": [
+          "Purchase prices to confirm: mushrooms, pumpkin"
+        ],
+        "modelInfo": {
+          "model": "gpt-6-luna",
+          "promptVersion": "carekitchen-en-v6"
+        }
+      }
+    }
+  },
+  "caregiverUpdate": {
+    "text": "Make it for 3, no tofu. Keep the rice cooker. I also have cabbage 450 g and carrots 180 g.",
+    "httpStatus": 200,
+    "request": {
+      "language": "en",
+      "persona": "caregiver",
+      "text": "Make it for 3, no tofu. Keep the rice cooker. I also have cabbage 450 g and carrots 180 g.",
+      "context": {
+        "servings": 2,
+        "mealCount": 1,
+        "budgetTwd": 80,
+        "pantryItems": [
+          {
+            "name": "tofu",
+            "quantity": 300,
+            "unit": "g"
+          },
+          {
+            "name": "leafy greens",
+            "quantity": 240,
+            "unit": "g"
+          }
+        ],
+        "purchasePrices": [],
+        "excludedIngredients": [
+          "eggs"
+        ],
+        "equipment": [
+          "rice_cooker"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "previousMealIds": [
+        "steam-tofu-greens",
+        "steam-mushroom-tofu",
+        "steam-pumpkin-tofu"
+      ]
+    },
+    "reply": {
+      "context": {
+        "servings": 3,
+        "mealCount": 1,
+        "budgetTwd": 80,
+        "pantryItems": [
+          {
+            "name": "tofu",
+            "quantity": 300,
+            "unit": "g"
+          },
+          {
+            "name": "leafy greens",
+            "quantity": 240,
+            "unit": "g"
+          },
+          {
+            "name": "cabbage",
+            "quantity": 450,
+            "unit": "g"
+          },
+          {
+            "name": "carrots",
+            "quantity": 180,
+            "unit": "g"
+          }
+        ],
+        "purchasePrices": [],
+        "excludedIngredients": [
+          "eggs",
+          "tofu"
+        ],
+        "equipment": [
+          "rice_cooker"
+        ],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "cards": [
+        {
+          "id": "steam-cabbage-carrot",
+          "title": "Steamed cabbage and carrots",
+          "servings": 3,
+          "mealCount": 1,
+          "equipment": "rice_cooker",
+          "minutes": 50,
+          "fromPantry": [
+            {
+              "name": "cabbage",
+              "quantity": 450,
+              "unit": "g"
+            },
+            {
+              "name": "carrots",
+              "quantity": 180,
+              "unit": "g"
+            }
+          ],
+          "toBuy": [],
+          "knownCostTwd": 0,
+          "budgetStatus": "within",
+          "missingPrices": [],
+          "unknownPantry": [],
+          "steps": [
+            "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+            "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+          ],
+          "reason": "Recalculated for 3 serving(s), with confirmed exclusions checked against the recipe ingredients."
+        },
+        {
+          "id": "steam-potato",
+          "title": "Rice-cooker steamed potatoes",
+          "servings": 3,
+          "mealCount": 1,
+          "equipment": "rice_cooker",
+          "minutes": 70,
+          "fromPantry": [],
+          "toBuy": [
+            {
+              "name": "potatoes",
+              "quantity": 600,
+              "unit": "g",
+              "priceTwd": null
+            }
+          ],
+          "knownCostTwd": 0,
+          "budgetStatus": "unknown",
+          "missingPrices": [
+            "potatoes"
+          ],
+          "unknownPantry": [],
+          "steps": [
+            "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+            "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+          ],
+          "reason": "Recalculated for 3 serving(s), with confirmed exclusions checked against the recipe ingredients."
+        },
+        {
+          "id": "steam-sweet-potato",
+          "title": "Steamed sweet potatoes",
+          "servings": 3,
+          "mealCount": 1,
+          "equipment": "rice_cooker",
+          "minutes": 70,
+          "fromPantry": [],
+          "toBuy": [
+            {
+              "name": "sweet potatoes",
+              "quantity": 600,
+              "unit": "g",
+              "priceTwd": null
+            }
+          ],
+          "knownCostTwd": 0,
+          "budgetStatus": "unknown",
+          "missingPrices": [
+            "sweet potatoes"
+          ],
+          "unknownPantry": [],
+          "steps": [
+            "Wash the ingredients, cut them into small pieces and put them in a heatproof container. Add drinking water to the rice cooker's outer pot as its instructions specify.",
+            "Steam until fully cooked. Avoid steam when opening the lid and check that the center is hot before eating."
+          ],
+          "reason": "Recalculated for 3 serving(s), with confirmed exclusions checked against the recipe ingredients."
+        }
+      ],
+      "mode": "openai",
+      "message": "Found 3 meals for this turn. Each dish is rechecked for the current servings, equipment and exclusions. Check pantry amounts and packaging ingredients. The catalog has no qualifying option that uses leafy greens under these conditions.",
+      "responseType": "meal_candidates",
+      "unknowns": [
+        "Purchase prices to confirm: potatoes, sweet potatoes"
+      ],
+      "modelInfo": {
+        "model": "gpt-6-luna",
+        "promptVersion": "carekitchen-en-v6"
+      }
+    }
+  },
+  "medical": {
+    "text": "Can I change my medication dose so I can eat this?",
+    "httpStatus": 200,
+    "request": {
+      "language": "en",
+      "persona": "elder",
+      "text": "Can I change my medication dose so I can eat this?",
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      }
+    },
+    "reply": {
+      "context": {
+        "servings": null,
+        "mealCount": 1,
+        "budgetTwd": null,
+        "pantryItems": [],
+        "purchasePrices": [],
+        "excludedIngredients": [],
+        "equipment": [],
+        "maxTimeMinutes": null,
+        "preferences": [],
+        "uncertainty": false,
+        "onlyPantry": false
+      },
+      "cards": [],
+      "mode": "openai",
+      "message": "This question needs a professional. Ask a doctor or pharmacist about medicines, and a medical professional about food reactions, disease-specific diets or swallowing problems. For everyday meal planning, you can enter ingredients already confirmed for exclusion.",
+      "responseType": "professional_referral",
+      "unknowns": []
+    }
+  },
+  "equipmentFirstClick": true,
+  "deployedCommit": "2865717a719d437838fbfe390d8236e8f996025e",
+  "deploymentId": "dpl_83sdrpmpBomNqHceSJdt9tJcx3gz",
+  "previousEquipmentFirstClick": false
+}

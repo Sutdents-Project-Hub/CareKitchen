@@ -1,214 +1,207 @@
 {
-  "executedAt": "2026-11-23T08:38:25.672Z",
-  "promptVersion": "carekitchen-en-v5",
-  "source": "luna-english-v5.json",
+  "executedAt": "2026-11-28T01:16:30.582Z",
+  "promptVersion": "carekitchen-en-v6",
+  "source": "english-v6-live-walkthrough.json",
+  "deployedCommit": "2865717a719d437838fbfe390d8236e8f996025e",
   "turns": [
     {
-      "id": "EN-DEMO-1",
+      "id": "EN-V6-LIVE-1",
       "model": null,
-      "formNote": null,
-      "input": "I am cooking dinner for 1 person. I have tofu 150 g, leafy greens 120 g and eggs 2 items. My budget is NT$100.",
+      "input": "Dinner for 1",
       "reply": "Please confirm equipment (for example, rice cooker only or no cooking).",
       "meals": []
     },
     {
-      "id": "EN-DEMO-2",
+      "id": "EN-V6-LIVE-2",
       "model": "gpt-6-luna",
-      "formNote": null,
-      "input": "I only have a rice cooker. Please suggest two simple meals.",
+      "input": "I have eggs 2 items and tomatoes 300 g, and a stove. My budget is NT$80.",
       "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
       "meals": [
         {
-          "id": "steam-tofu-greens",
-          "title": "Rice-cooker tofu and leafy greens",
+          "id": "stove-egg-tomato",
+          "title": "Stovetop tomato and eggs",
           "servings": 1,
           "knownCostTwd": 0,
-          "unknowns": []
+          "missingPrices": [],
+          "unknownPantry": []
         },
         {
-          "id": "steam-egg-tofu",
-          "title": "Steamed eggs with tofu",
+          "id": "boil-egg",
+          "title": "Boiled eggs",
           "servings": 1,
           "knownCostTwd": 0,
-          "unknowns": []
+          "missingPrices": [],
+          "unknownPantry": []
         }
       ]
     },
     {
-      "id": "EN-DEMO-3",
-      "model": "gpt-6-luna",
-      "formNote": null,
-      "input": "No eggs. Keep everything else.",
-      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+      "id": "EN-V6-LIVE-3",
+      "model": null,
+      "input": "Why did you choose these?",
+      "reply": "Stovetop tomato and eggs. Uses eggs and tomatoes from your pantry. Lists no purchases. Boiled eggs. Uses eggs from your pantry. Lists no purchases.",
       "meals": [
         {
-          "id": "steam-tofu-greens",
-          "title": "Rice-cooker tofu and leafy greens",
+          "id": "stove-egg-tomato",
+          "title": "Stovetop tomato and eggs",
           "servings": 1,
           "knownCostTwd": 0,
-          "unknowns": []
+          "missingPrices": [],
+          "unknownPantry": []
         },
         {
-          "id": "steam-mushroom-tofu",
-          "title": "Steamed mushrooms and tofu",
+          "id": "boil-egg",
+          "title": "Boiled eggs",
           "servings": 1,
           "knownCostTwd": 0,
-          "unknowns": [
+          "missingPrices": [],
+          "unknownPantry": []
+        }
+      ]
+    },
+    {
+      "id": "EN-V6-LIVE-4",
+      "model": "gpt-6-luna",
+      "input": "I want something different",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The remaining alternatives use different ingredients. Check the shopping list before choosing.",
+      "meals": [
+        {
+          "id": "boil-broccoli-carrot",
+          "title": "Boiled broccoli and carrots",
+          "servings": 1,
+          "knownCostTwd": 0,
+          "missingPrices": [
+            "broccoli",
+            "carrots"
+          ],
+          "unknownPantry": []
+        },
+        {
+          "id": "boil-cabbage-mushroom",
+          "title": "Boiled cabbage and mushrooms",
+          "servings": 1,
+          "knownCostTwd": 0,
+          "missingPrices": [
+            "cabbage",
             "mushrooms"
-          ]
+          ],
+          "unknownPantry": []
         }
       ]
     },
     {
-      "id": "EN-DEMO-4",
+      "id": "EN-V6-LIVE-5",
+      "model": null,
+      "input": "Make it for 2, no eggs. Keep everything else.",
+      "reply": "I don’t have a recipe that uses your tomatoes with these conditions. Add another ingredient or available appliance, or say “Show dishes I can shop for.”",
+      "meals": []
+    },
+    {
+      "id": "EN-V6-LIVE-6",
       "model": "gpt-6-luna",
-      "formNote": null,
-      "input": "Now for 2 people. My budget is NT$80.",
-      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+      "input": "I also have tofu 300 g and leafy greens 240 g.",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The catalog has no qualifying option that uses tomatoes under these conditions.",
       "meals": [
         {
-          "id": "steam-tofu-greens",
-          "title": "Rice-cooker tofu and leafy greens",
+          "id": "boil-greens-tofu",
+          "title": "Boiled leafy greens and tofu",
           "servings": 2,
           "knownCostTwd": 0,
-          "unknowns": [
-            "tofu",
-            "leafy greens"
-          ]
+          "missingPrices": [],
+          "unknownPantry": []
         },
         {
-          "id": "steam-mushroom-tofu",
-          "title": "Steamed mushrooms and tofu",
+          "id": "boil-pumpkin-tofu",
+          "title": "Boiled pumpkin and tofu",
           "servings": 2,
           "knownCostTwd": 0,
-          "unknowns": [
-            "mushrooms",
-            "tofu"
-          ]
+          "missingPrices": [
+            "pumpkin"
+          ],
+          "unknownPantry": []
         }
       ]
     },
     {
-      "id": "EN-DEMO-5",
+      "id": "EN-V6-LIVE-7",
       "model": "gpt-6-luna",
-      "formNote": null,
-      "input": "Tofu 300 g costs NT$45 per package. White rice 500 g costs NT$60 per package.",
-      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+      "input": "Can you make a shopping list?",
+      "reply": "Found 2 meals for this turn. Choose a dish below to see what to buy and which prices need confirmation. You can preview and copy its shopping summary. The catalog has no qualifying option that uses tomatoes under these conditions.",
       "meals": [
         {
-          "id": "steam-tofu-greens",
-          "title": "Rice-cooker tofu and leafy greens",
+          "id": "boil-greens-tofu",
+          "title": "Boiled leafy greens and tofu",
           "servings": 2,
-          "knownCostTwd": 45,
-          "unknowns": [
-            "leafy greens"
-          ]
+          "knownCostTwd": 0,
+          "missingPrices": [],
+          "unknownPantry": []
         },
         {
-          "id": "steam-mushroom-tofu",
-          "title": "Steamed mushrooms and tofu",
+          "id": "boil-pumpkin-tofu",
+          "title": "Boiled pumpkin and tofu",
           "servings": 2,
-          "knownCostTwd": 45,
-          "unknowns": [
-            "mushrooms"
-          ]
+          "knownCostTwd": 0,
+          "missingPrices": [
+            "pumpkin"
+          ],
+          "unknownPantry": []
         }
       ]
     },
     {
-      "id": "EN-DEMO-6",
+      "id": "EN-V6-LIVE-8",
       "model": "gpt-6-luna",
-      "formNote": null,
-      "input": "Vegetable prices are unknown. Can you confirm the total is within my NT$80 budget?",
-      "reply": "Found 2 meals for this turn. Some purchase prices or pantry amounts are unconfirmed. See each known subtotal; the full totals cannot be confirmed yet.",
+      "input": "Pumpkin 300 g costs NT$45 per package. Can you confirm the total is within my NT$80 budget?",
+      "reply": "Found 2 meals for this turn. Based on your supplied prices, the known new purchases for each option are within TWD 80. The catalog has no qualifying option that uses tomatoes under these conditions.",
       "meals": [
         {
-          "id": "steam-tofu-greens",
-          "title": "Rice-cooker tofu and leafy greens",
+          "id": "boil-greens-tofu",
+          "title": "Boiled leafy greens and tofu",
           "servings": 2,
-          "knownCostTwd": 45,
-          "unknowns": [
-            "leafy greens"
-          ]
+          "knownCostTwd": 0,
+          "missingPrices": [],
+          "unknownPantry": []
         },
         {
-          "id": "steam-mushroom-tofu",
-          "title": "Steamed mushrooms and tofu",
+          "id": "boil-pumpkin-tofu",
+          "title": "Boiled pumpkin and tofu",
           "servings": 2,
           "knownCostTwd": 45,
-          "unknowns": [
-            "mushrooms"
-          ]
+          "missingPrices": [],
+          "unknownPantry": []
         }
       ]
     },
     {
-      "id": "EN-DEMO-7",
+      "id": "EN-V6-LIVE-9",
+      "model": null,
+      "input": "I only have an oven.",
+      "reply": "I don’t have recipes for that appliance. Can you use a stovetop, rice cooker, microwave, or a no-cook option?",
+      "meals": []
+    },
+    {
+      "id": "EN-V6-LIVE-10",
       "model": "gpt-6-luna",
-      "formNote": null,
-      "input": "Do not use the rice cooker. I only have a microwave. I prefer moist food.",
-      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions.",
+      "input": "I only have a microwave.",
+      "reply": "Found 2 meals for this turn. Choose a dish you like and open it for simple instructions. The catalog has no qualifying option that uses tomatoes under these conditions.",
       "meals": [
         {
           "id": "micro-tofu-greens",
           "title": "Microwave tofu and leafy greens",
           "servings": 2,
-          "knownCostTwd": 45,
-          "unknowns": [
-            "leafy greens"
-          ]
+          "knownCostTwd": 0,
+          "missingPrices": [],
+          "unknownPantry": []
         },
         {
           "id": "micro-eggplant-tofu",
           "title": "Microwave eggplant and tofu",
           "servings": 2,
-          "knownCostTwd": 45,
-          "unknowns": [
+          "knownCostTwd": 0,
+          "missingPrices": [
             "eggplant"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "EN-DEMO-8",
-      "model": null,
-      "formNote": null,
-      "input": "I may have dietary restrictions, but I cannot remember them.",
-      "reply": "Please confirm which ingredients must be excluded, enter them in Meal conditions, and clear the uncertain conditions checkbox before continuing.",
-      "meals": []
-    },
-    {
-      "id": "EN-DEMO-9",
-      "model": null,
-      "formNote": null,
-      "input": "I take medication. Can you guarantee these meals are safe?",
-      "reply": "This question needs a professional. Ask a doctor or pharmacist about medicines, and a medical professional about food reactions, disease-specific diets or swallowing problems. For everyday meal planning, you can enter ingredients already confirmed for exclusion.",
-      "meals": []
-    },
-    {
-      "id": "EN-DEMO-10",
-      "model": "gpt-6-luna",
-      "formNote": "Before sending this turn, the tester confirmed the restriction and cleared the uncertain-details checkbox.",
-      "input": "I have confirmed that I only need to avoid eggs. Please make a shopping list.",
-      "reply": "Found 2 meals for this turn. Choose a dish below to see what to buy and which prices need confirmation. You can preview and copy its shopping summary.",
-      "meals": [
-        {
-          "id": "micro-tofu-greens",
-          "title": "Microwave tofu and leafy greens",
-          "servings": 2,
-          "knownCostTwd": 45,
-          "unknowns": [
-            "leafy greens"
-          ]
-        },
-        {
-          "id": "micro-eggplant-tofu",
-          "title": "Microwave eggplant and tofu",
-          "servings": 2,
-          "knownCostTwd": 45,
-          "unknowns": [
-            "eggplant"
-          ]
+          ],
+          "unknownPantry": []
         }
       ]
     }
