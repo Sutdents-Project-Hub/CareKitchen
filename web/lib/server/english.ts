@@ -14,6 +14,7 @@ const ingredientNames: Record<string, string> = {
   番茄: "tomatoes",
   小黃瓜: "cucumber",
   白米: "white rice",
+  熟飯: "cooked rice",
   菇類: "mushrooms",
   花椰菜: "broccoli",
   南瓜: "pumpkin",
@@ -120,6 +121,14 @@ const recipes: Record<string, { title: string; steps: string[] }> = {
   },
   "boil-broccoli-carrot": { title: "Boiled broccoli and carrots", steps: boil },
   "boil-pumpkin-tofu": { title: "Boiled pumpkin and tofu", steps: boil },
+  "stove-egg-tomato": {
+    title: "Stovetop tomato and eggs",
+    steps: [
+      "Wash the tomatoes under running drinking water and cut them into small pieces. Beat the eggs in a bowl. Wash your hands and clean utensils after handling raw egg.",
+      "Simmer the tomatoes in a little drinking water until soft. Add the beaten eggs and stir gently.",
+      "Cook until the egg is completely set and no liquid egg remains. Serve with a clean utensil.",
+    ],
+  },
   "boil-egg": {
     title: "Boiled eggs",
     steps: [

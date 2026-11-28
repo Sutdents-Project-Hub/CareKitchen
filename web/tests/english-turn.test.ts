@@ -285,3 +285,32 @@ test("new exclusions apply alongside carryover wording and additional pantry is 
     { name: "青菜", quantity: 120, unit: "g" },
   ]);
 });
+
+test("conversational serving counts and household shorthand are recognized", () => {
+  for (const [text, count] of [
+    ["Dinner for 1", 1], ["for 2", 2], ["for one", 1], ["I live alone", 1],
+    ["Make it for 2, no eggs.", 2], ["Dinner for two of us", 2],
+  ] as const) {
+    assert.equal(inspect(text, emptyContext).context.servings, count, text);
+  }
+  assert.equal(inspect("Dinner for -2", initial).intent, "clarify");
+  assert.equal(inspect("Cook for 20 minutes", initial).context.servings, 1);
+  assert.equal(inspect("Cook for 20 minutes", initial).context.maxTimeMinutes, 20);
+  assert.equal(inspect("Tofu 300 g costs NT$45", initial).context.servings, 1);
+});
+
+test("mixed pantry details and appliances are parsed without turning equipment into food", () => {
+  const mixed = inspect("Dinner for 2. I have eggs and tomatoes, and a stove.", emptyContext);
+  assert.equal(mixed.context.servings, 2);
+  assert.deepEqual(mixed.context.pantryItems.map(({ name }) => name), ["雞蛋", "番茄"]);
+  assert.deepEqual(mixed.context.equipment, ["stove"]);
+  const oven = inspect("I have only an oven. Dinner for 2.", mixed.context);
+  assert.deepEqual(oven.context.pantryItems, mixed.context.pantryItems);
+  assert.deepEqual(oven.context.equipment, []);
+  assert.match(oven.question ?? "", /don’t have recipes for that appliance/);
+  assert.deepEqual(inspect("I have a microwave oven.", emptyContext).context.equipment, ["microwave"]);
+  const example = inspect("Plan a dinner for one. I have 150 g tofu and 120 g greens, a budget of NT$ 100, and a rice cooker.", emptyContext);
+  assert.equal(example.intent, "plan");
+  assert.equal(example.context.budgetTwd, 100);
+  assert.equal(example.context.pantryItems.length, 2);
+});

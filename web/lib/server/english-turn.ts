@@ -10,9 +10,13 @@ import { canonicalIngredient } from "./meals.ts";
 const equipmentPatterns: Array<[RegExp, Equipment]> = [
   [/\brice cooker\b/i, "rice_cooker"],
   [/\bmicrowave(?: oven)?\b/i, "microwave"],
-  [/\b(?:stove|hob|hotplate|induction cooker)\b/i, "stove"],
+  [/\b(?:stove(?: ?top)?|hob|hotplate|induction cooker)\b/i, "stove"],
   [/\b(?:no[- ]cook|no cooking|without cooking)\b/i, "no_cook"],
 ];
+const unsupportedEquipment = /\b(?:(?<!microwave )oven|air fryer|grill|toaster)\b/i;
+const isEquipment = (text: string) =>
+  unsupportedEquipment.test(text) ||
+  equipmentPatterns.some(([pattern]) => pattern.test(text));
 const identity =
   /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|\b09\d{2}[- ]?\d{3}[- ]?\d{3}\b|\b[A-Z][12]\d{8}\b/i;
 const medical =
@@ -73,12 +77,15 @@ function foodName(raw: string): string | null {
     .replace(/\s+(?:please|for now)$/i, "");
   if (
     !/^[a-z][a-z -]{0,31}$/i.test(value) ||
-    /\b(?:budget|minutes?|people|person|cooker|microwave|stove|meals?|dinner|equipment|anything|everything|restrictions?|rules?|questions?|guarantee|safe|shopping|buy|cook|use|have|need|only|else)\b/i.test(
+    /\b(?:oven|toaster|grill|allerg(?:y|ies|ic)|budget|minutes?|people|person|cooker|microwave|stove|meals?|dinner|equipment|anything|everything|restrictions?|rules?|questions?|guarantee|safe|shopping|buy|cook|use|have|need|only|else)\b/i.test(
       value,
     )
   )
     return null;
-  return canonicalIngredient(value);
+  const canonical = canonicalIngredient(value);
+  return canonical === value.replace(/\s+/g, "").toLowerCase()
+    ? value.toLowerCase()
+    : canonical;
 }
 
 function parseAmount(raw: string): ItemAmount | null {
@@ -143,7 +150,7 @@ export function inspectEnglishTurn(
   context: MealContext,
 ): {
   context: MealContext;
-  intent: "plan" | "swap" | "shopping" | "budget" | "clarify" | "refer";
+  intent: "plan" | "explain" | "swap" | "shopping" | "budget" | "clarify" | "refer";
   question?: string;
 } {
   const normalized = text.normalize("NFKC").trim();
@@ -180,10 +187,11 @@ export function inspectEnglishTurn(
     );
   const servings = latest(
     new RegExp(
-      `\\b(${numberPattern})\\s*(?:people|persons?|servings?)\\b`,
+      `\\b(?:for\\s+(-?${numberPattern})(?=\\s*(?:$|[,.!?;]|(?:people|persons?|servings?|of us|please|and|with)\\b))|(${numberPattern})\\s*(?:people|persons?|servings?)\\b)`,
       "gi",
     ),
   );
+  const servingCount = servings ? toNumber(servings[1] ?? servings[2]) : null;
   const meals = latest(new RegExp(`\\b(${numberPattern})\\s*meals?\\b`, "gi"));
   // Requests for "two simple meals" ask for candidates, not multiple meals of food.
   const actualMeals =
@@ -196,23 +204,21 @@ export function inspectEnglishTurn(
   const minutes = latest(
     new RegExp(`\\b(${numberPattern})\\s*(?:minutes?|mins?)\\b`, "gi"),
   );
-  for (const [match, limit] of [
-    [servings, 12],
-    [actualMeals, 7],
-    [minutes, 360],
+  for (const [count, limit] of [
+    [servingCount, 12],
+    [actualMeals ? toNumber(actualMeals[1]) : null, 7],
+    [minutes ? toNumber(minutes[1]) : null, 360],
   ] as const) {
     if (
-      match &&
-      (!Number.isInteger(toNumber(match[1])) ||
-        toNumber(match[1]) < 1 ||
-        toNumber(match[1]) > limit)
+      count !== null && (!Number.isInteger(count) || count < 1 || count > limit)
     )
       return clarify(
         "Please enter 1–12 people, 1–7 meals, and a cooking time of 1–360 minutes in Meal conditions.",
       );
   }
-  if (servings) updated.servings = toNumber(servings[1]);
+  if (servingCount !== null) updated.servings = servingCount;
   else if (
+    (context.servings === null && /\bI live (?:alone|by myself|on my own)\b/i.test(normalized)) ||
     /\b(?:just (?:me|myself)|(?:I (?:am |will be )?(?:cooking|eating)|cook|cooking) (?:only )?for (?:myself|me alone)|I (?:eat|am eating) alone)\b/i.test(
       normalized,
     )
@@ -294,6 +300,8 @@ export function inspectEnglishTurn(
       updated.purchasePrices.push(quote);
   }
 
+  let needsSupportedEquipment = false;
+  let requestedUnsupportedEquipment = false;
   for (const sentence of sentences) {
     const clauses = sentence.split(/,|\bbut\b|\bhowever\b/i);
     for (const clause of clauses) {
@@ -311,20 +319,22 @@ export function inspectEnglishTurn(
             : [];
         })
         .sort((a, b) => a.index - b.index);
-      if (
-        found.length &&
-        /\b(?:only|only have|only use|switch to|instead use|left with)\b/i.test(
-          clause,
-        )
-      )
+      const equipmentSwitch = /\b(?:only|switch to|instead use|left with)\b/i.test(clause);
+      const mentionsUnsupported = unsupportedEquipment.test(clause);
+      if (equipmentSwitch && (found.length || mentionsUnsupported))
         updated.equipment = [];
+      if (mentionsUnsupported && !updated.equipment.length)
+        needsSupportedEquipment = true;
+      if (mentionsUnsupported && /\b(?:use|using|bake|roast)\b/i.test(clause) &&
+          !/\b(?:no|not|without|cannot|can’t|can't|don't)\b/i.test(clause))
+        requestedUnsupportedEquipment = true;
       let excluded = false;
       let previousEnd = 0;
       for (const match of found) {
         const prefix = clause.slice(previousEnd, match.index);
         const suffix = clause.slice(match.end);
         excluded =
-          /\b(?:no|not|without|cannot|can't|do not|don't|unavailable|broken)\s*(?:have|use)?\s*(?:a|the)?\s*$/i.test(
+          /\b(?:no|not|without|cannot|can't|do not|don't|unavailable|broken)\s*(?:have|use)?\s*(?:an?|the)?\s*$/i.test(
             prefix,
           ) ||
           (excluded && /^\s*(?:and|or|&)\s*(?:a|the)?\s*$/i.test(prefix)) ||
@@ -356,11 +366,10 @@ export function inspectEnglishTurn(
       sentence.match(
         /\b(?:pantry|ingredients)\s*(?:contains?|are|:|=)\s*(.+)$/i,
       );
-    if (
-      pantry &&
-      !equipmentPatterns.some(([pattern]) => pattern.test(pantry[1]))
-    ) {
-      const parts = splitFoods(pantry[1]);
+    if (pantry) {
+      const parts = splitFoods(pantry[1]).filter((part) =>
+        !isEquipment(part) && !/^(?:(?:a|my|our|the) )?budget\b|^(?:for|in) \d/i.test(part),
+      );
       const items = parts.map(parseAmount);
       if (parts.some((part, index) => !items[index] && /\d/.test(part)))
         return clarify(
@@ -480,7 +489,7 @@ export function inspectEnglishTurn(
     );
     for (const rawFood of foods) {
       if (
-        /\b(?:budget|cooker|microwave|stove|recommend|suggest|plan|please|keep|everything|unchanged)\b|^(?:for|only|now|can you|I have)\b/i.test(
+        /\b(?:budget|cooker|microwave|stove(?: ?top)?|oven|air fryer|grill|toaster|recommend|suggest|plan|please|keep|everything|unchanged)\b|^(?:for|only|now|can you|I have)\b/i.test(
           rawFood,
         )
       )
@@ -509,12 +518,17 @@ export function inspectEnglishTurn(
       updated,
     );
   if (
-    /\b(?:vegan|vegetarian|halal|kosher|low[- ]sodium|low[- ]sugar|low[- ]potassium|sodium limit|carbohydrate limit|special diet|must never|strict diet|deep[- ]fr(?:y|ied)|air fr(?:y|ier)|oven|raw (?:fish|eggs?|meat)|undercooked)\b/i.test(
+    /\b(?:vegan|vegetarian|halal|kosher|low[- ]sodium|low[- ]sugar|low[- ]potassium|sodium limit|carbohydrate limit|special diet|must never|strict diet|deep[- ]fr(?:y|ied)|raw (?:fish|eggs?|meat)|undercooked)\b/i.test(
       normalized,
     )
   )
     return clarify(
       "This requirement needs confirmation. Please specify the excluded ingredients, available equipment, and time limit in Meal conditions; medical diet prescriptions need a qualified professional.",
+      updated,
+    );
+  if (requestedUnsupportedEquipment || (needsSupportedEquipment && !updated.equipment.length))
+    return clarify(
+      "I don’t have recipes for that appliance. Can you use a stovetop, rice cooker, microwave, or a no-cook option?",
       updated,
     );
   const priceQuery =
@@ -534,15 +548,18 @@ export function inspectEnglishTurn(
   if (requestsShoppingEnglish(normalized))
     return { context: updated, intent: "shopping" as const };
   if (priceQuery) return { context: updated, intent: "budget" as const };
+  if (/\b(?:why (?:did|do|would) you (?:choose|pick|recommend|suggest)|why (?:these|this|those|that) (?:dishes|meals|options|dish|meal|option)|what made you (?:choose|pick|recommend))\b/i.test(normalized))
+    return { context: updated, intent: "explain" as const };
   if (
-    /\b(?:swap|replace|another (?:meal|option)|different (?:meal|option)|change (?:the )?(?:meal|ingredient))\b/i.test(
+    /\b(?:swap|replace|another (?:meal|dish|option|idea|one)|different (?:meal|dish|option|idea)|something (?:else|different)|what else|any (?:other (?:meals?|dishes|options?|ideas?)|alternatives?)|change (?:the )?(?:meal|ingredient))\b/i.test(
       normalized,
     )
   )
     return { context: updated, intent: "swap" as const };
   if (
+    servingCount !== null ||
     JSON.stringify(updated) !== JSON.stringify(context) ||
-    /\b(?:meal|dinner|lunch|breakfast|cook|recommend|suggest|plan|eat|food|budget)\b/i.test(
+    /\b(?:meals?|dinner|lunch|breakfast|cook|recommend|suggest|plan|eat|food|budget|recipes?|dishes|dish|ideas?)\b/i.test(
       normalized,
     )
   )

@@ -12,6 +12,8 @@ CareKitchen is not a medical, medication-interaction, nutrition-prescription, or
 - English is the default interface language; Traditional Chinese remains available. English requests may specify `language: "en"`; older callers that omit it retain the existing Chinese behavior.
 - The recorded English GPT-6 Luna V5 run completed 16/16 synthetic turns with 59/59 checks, 11 model-backed turns, and zero execution errors. This is engineering evidence from synthetic cases, not real-user or external evaluator validation. See the [English run record](docs/evidence/iteration-development.md#7-current-english-language-evidence) and [evidence index](docs/evidence/README.md).
 
+English V6 accepts short serving replies, mixed pantry and appliance messages, and follow-ups asking for another dish or an explanation. It prioritizes eligible pantry matches and names gaps in catalog coverage. See [judge-facing retest](docs/evidence/waicy-english-v6.md).
+
 ## Local development
 
 The only executable component is [web/](web/README.md), built with Next.js App Router, TypeScript, Node.js 24 LTS, and pnpm 10.

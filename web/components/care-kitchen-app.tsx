@@ -1188,7 +1188,7 @@ export default function CareKitchenApp() {
           <aside className="scope-note">
             <strong>Scope</strong>
             <p>
-              For questions about medical diets, allergies, or medications, consult a doctor, pharmacist, or dietitian.CareKitchen
+              For questions about medical diets, allergies, or medications, consult a doctor, pharmacist, or dietitian.
               CareKitchen does not provide diagnoses or medical diet prescriptions.
             </p>
           </aside>

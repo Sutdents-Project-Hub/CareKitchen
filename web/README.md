@@ -37,3 +37,7 @@ Upstream errors, timeouts, or unparseable responses prompt the user to retry. Th
 - `lib/server/` parses conditions, filters candidates, and calculates shopping costs. OpenAI classifies intent and ranks existing eligible candidates; server-side rules remain authoritative.
 - `tests/` use Node.js tests for rules and model substitutes. Actual local synthetic OpenAI runs, iteration records, and limitations are documented in [evaluation evidence](../docs/evidence/README.md). They do not establish public availability or real-user acceptance.
 - Conversation state belongs to the current browser tab. Shopping summaries are manually copied. `/evidence/waicy` is a read-only page for recorded synthetic cases and includes English instructions; it is not a live chat. The hosted copy was reachable without sign-in on November 27, 2026; see the [deployment status](../docs/deployment.md).
+
+## English V6 conversation behavior
+
+English chat accepts “Dinner for 1”, “for two”, and “I live alone” as an initial one-person cue. Use “I want something different” to swap the displayed set, or “Why did you choose these?” to explain the preceding results. Oven-only cooking prompts for a supported appliance or a no-cook option. A missing catalog match names the pantry gap and offers a concrete next step.

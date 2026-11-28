@@ -95,3 +95,7 @@ Playwright in Chromium checked widths of 320, 375, 768, 1024, and 1440 CSS px, r
 Typed input and built-in examples use the same condition parser. The turn summary shows recognized people, budget, equipment, exclusions, and quote changes. Cards emphasize inventory for older adults, servings/exclusion checks for caregivers, and item-level shopping/unknown prices for family members. “Replace meal” text and button exclude the prior candidate. Multi-meal quantities use the same recipe scaling; heating estimates assume batches of about two servings and depend on equipment capacity.
 
 For missing prices, cards show that the total is pending confirmation; known partial costs appear only as a subtotal. When inventory covers everything, the interface says no additional purchase is needed. Failed requests retain input and conditions; a successful retry shows the user message once. `/evidence/waicy` includes English instructions and turn summaries while preserving original Traditional Chinese conversation and model-participation labels.
+
+## English V6 conversation behavior
+
+If the English assistant needs one missing condition, an answer like “for two” can complete the field. Users can ask why the displayed dishes fit or request something different in natural English. If the oven is the only appliance or none of the pantry ingredients fits the current catalog, the message offers an actionable next step.

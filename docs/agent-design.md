@@ -87,3 +87,7 @@ Example: rice is known to cost NT$40, vegetables are needed but unpriced, and th
 | “Change my budget from 100 to 60.” | Update the amount and recalculate. |
 
 Prompt and code versions must be traceable to actual runs. Do not describe planned versions as tested. See the [prompt draft](prompts/system-draft.md) and [recorded evaluation](evaluation-and-iteration.md).
+
+## English V6 conversation behavior
+
+In English V6 the server checks conditions and prefers eligible dishes with more pantry matches. GPT-6 Luna ranks eligible IDs within equal pantry match counts. A “why” follow-up uses verifiable properties of the previous eligible cards and avoids a provider call. Lack of usable equipment or pantry coverage can trigger a direct server reply.

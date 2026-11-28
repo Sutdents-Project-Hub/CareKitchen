@@ -262,6 +262,25 @@ function explainMeal(
     : `做法整理成 ${card.steps.length} 個步驟。`;
 }
 
+const englishList = new Intl.ListFormat("en", { style: "long", type: "conjunction" });
+
+function pantryMatchCount(card: MealCard) {
+  return new Set(card.fromPantry.map(({ name }) => canonicalIngredient(name))).size;
+}
+
+function explainPrevious(cards: MealCard[]) {
+  return cards.map((card) => {
+    const { title, fromPantry, toBuy, missingPrices, unknownPantry } = englishCard(card);
+    const pantry = [...new Set(fromPantry.map(({ name }) => name))];
+    const reasons = [
+      pantry.length ? `Uses ${englishList.format(pantry)} from your pantry` : "Fits the equipment and servings you selected",
+      toBuy.length ? `Needs ${toBuy.length} ${toBuy.length === 1 ? "ingredient" : "ingredients"} to buy` : "Lists no purchases",
+    ];
+    if (missingPrices.length || unknownPantry.length) reasons.push("Some amounts or prices still need confirmation");
+    return `${title}. ${reasons.join(". ")}.`;
+  }).join(" ");
+}
+
 async function plan(turn: Turn, rank?: RankMeals): Promise<ChatReply> {
   const english = turn.language === "en";
   const localizedReferral = english
@@ -330,6 +349,34 @@ async function plan(turn: Turn, rank?: RankMeals): Promise<ChatReply> {
           : "目前的餐點庫找不到符合這些條件的搭配。請核對排除食材、時間和設備，再看看哪些備餐條件能調整。",
     };
   }
+  if (local.intent === "explain") {
+    const prior = pickInOrder(
+      eligible.filter(({ id }) => turn.previousMealIds.includes(id)),
+      turn.previousMealIds,
+    ).slice(0, 3);
+    if (!prior.length)
+      return { ...reply, message: "Ask for meal ideas first, and I can explain what each suggestion uses and costs." };
+    return {
+      ...reply,
+      cards: prior.map((card) => ({ ...card, reason: explainMeal(card, turn.persona, context, true) })),
+      message: explainPrevious(prior),
+      responseType: "meal_candidates",
+    };
+  }
+
+  const pantry = english ? context.pantryItems.filter(({ name }) =>
+    !["水", "食用水", "飲用水"].includes(canonicalIngredient(name)),
+  ) : [];
+  const allowOtherDishes = /\b(?:show|suggest|give|try|recommend)\b.{0,30}\b(?:dishes|meals|options)\b.{0,25}\b(?:shop for|buy ingredients for|without using my pantry)\b/i.test(turn.text);
+  if (pantry.length && !eligible.some((card) => pantryMatchCount(card) > 0) &&
+      !allowOtherDishes && local.intent === "plan") {
+    const names = englishList.format([...new Set(pantry.map(({ name }) => ingredientEnglish(name)))]);
+    return {
+      ...reply,
+      message: `I don’t have a recipe that uses your ${names} with these conditions. Add another ingredient or available appliance, or say “Show dishes I can shop for.”`,
+    };
+  }
+
   const model = rank
     ? await rank(
         {
@@ -395,7 +442,10 @@ async function plan(turn: Turn, rank?: RankMeals): Promise<ChatReply> {
   const candidates = swap
     ? eligible.filter(({ id }) => !turn.previousMealIds.includes(id))
     : eligible;
-  const cards = pickInOrder(candidates, decision?.preferredIds ?? [])
+  const ordered = pickInOrder(candidates, decision?.preferredIds ?? []);
+  if (pantry.length && !allowOtherDishes)
+    ordered.sort((a, b) => pantryMatchCount(b) - pantryMatchCount(a));
+  const cards = ordered
     .slice(0, requestedCount(turn.text, turn.persona, english))
     .map((card) => ({
       ...card,
@@ -478,10 +528,21 @@ async function plan(turn: Turn, rank?: RankMeals): Promise<ChatReply> {
               "Each dish separates pantry items from purchases. Preview and copy a summary from its card to share with your family.",
           }[turn.persona]
         : intros[turn.persona]);
+  const eligibleIngredients = new Set(eligible.flatMap(({ fromPantry }) =>
+    fromPantry.map(({ name }) => canonicalIngredient(name)),
+  ));
+  const unavailablePantry = [...new Set(pantry
+    .filter(({ name }) => !eligibleIngredients.has(canonicalIngredient(name)))
+    .map(({ name }) => ingredientEnglish(name)))];
+  const pantryNote = unavailablePantry.length
+    ? ` The catalog has no qualifying option that uses ${englishList.format(unavailablePantry)} under these conditions.`
+    : swap && pantry.length && cards.every((card) => pantryMatchCount(card) === 0)
+      ? " The remaining alternatives use different ingredients. Check the shopping list before choosing."
+      : "";
   return {
     ...reply,
     cards,
-    message: `${count}${detail}${allergyNote}`,
+    message: `${count}${detail}${pantryNote}${allergyNote}`,
     unknowns,
     responseType:
       shopping || turn.persona === "family"

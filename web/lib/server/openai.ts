@@ -7,7 +7,7 @@ import { clarificationFields, type RankMeals } from "./planner.ts";
 
 const lunaModel = "gpt-6-luna";
 const chinesePromptVersion = "carekitchen-v4";
-const englishPromptVersion = "carekitchen-en-v5";
+const englishPromptVersion = "carekitchen-en-v6";
 const outputSchema = z.object({
   action: z.enum(["keep", "clarify", "refer", "shopping", "swap"]),
   preferredIds: z.array(z.string()),
@@ -26,7 +26,7 @@ The server has already checked the options against servings, equipment, time, ex
 Use keep for ordinary planning when the conditions are clear, shopping for an explicit shopping-list request, and swap for an explicit request for a different dish. A shopping budget alone does not mean the user wants a list. Leave missing prices, uncertain pantry quantities and optional budget or time limits for the interface to disclose.
 Use clarify only for a material new condition that is still unknown or unapplied. Select the field and copy the relevant phrase verbatim from the current text into evidence. Treat the context as already applied, including explicit ingredient allergies that are already excluded. Set clarification to null for other actions.
 Use refer for medication, possible food reactions, swallowing difficulties, clinical diets or requests for a medical safety guarantee. Never lift a confirmed exclusion, invent ingredients, prices or recipe steps, or independently decide that a dish is safe for a medical condition.
-For an older adult, favor simple preparation and pantry use. For a caregiver, prioritize confirmed exclusions and portions. For a relative, prioritize a clear shopping handoff. Return only the structured decision.`;
+When options use similar pantry ingredients, favor shorter preparation for an older adult cooking alone. For a caregiver, favor options with fewer unknown amounts and purchases after the portion and exclusion checks. For a relative, favor itemized and priced purchases when shopping is needed. Return only the structured decision.`;
 
 export function getInstructions(language?: "en") {
   return language === "en" ? englishInstructions : instructions;

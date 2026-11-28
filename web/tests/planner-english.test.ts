@@ -237,3 +237,36 @@ test("English display keeps multilingual safety and local clarification messages
   assert.match(unclear.message, /confirm.*excluded/i);
   noChinese(unclear.message);
 });
+
+test("pantry gaps are actionable and supported pantry matches take priority over model order", async () => {
+  const stove: MealContext = { ...emptyContext, servings: 2, equipment: ["stove"] };
+  const unsupported = await planTurn(englishTurn("I have chicken and white rice.", stove));
+  assert.deepEqual(unsupported.cards, []);
+  assert.match(unsupported.message, /chicken and white rice/);
+  const alternate = await planTurn(englishTurn("Show dishes I can shop for.", unsupported.context));
+  assert.ok(alternate.cards.length > 0);
+  const rank: RankMeals = async () => ({
+    decision: { action: "keep", preferredIds: ["boil-broccoli-carrot"] },
+    modelInfo: { model: "fixture", promptVersion: "test" },
+  });
+  const supported = await planTurn(englishTurn("I have eggs and tomatoes.", stove), rank);
+  assert.equal(supported.cards[0].id, "stove-egg-tomato");
+  assert.deepEqual(supported.cards[0].unknownPantry, ["eggs", "tomatoes"]);
+});
+
+test("a casual swap and a why follow-up preserve hard conditions and reference displayed cards", async () => {
+  const stove: MealContext = {
+    ...emptyContext, servings: 2, equipment: ["stove"], excludedIngredients: ["eggs"], budgetTwd: 80,
+  };
+  const first = await planTurn(englishTurn("Dinner please.", stove));
+  const previousMealIds = first.cards.map(({ id }) => id);
+  const why = await planTurn({ ...englishTurn("Why did you choose these?", first.context), previousMealIds });
+  assert.deepEqual(why.cards.map(({ id }) => id), previousMealIds);
+  assert.ok(why.cards.every(({ title }) => why.message.includes(title)));
+  assert.match(why.message, /prices still need confirmation/);
+  const swap = await planTurn({ ...englishTurn("I want something different", why.context), previousMealIds });
+  assert.ok(swap.cards.length > 0);
+  assert.ok(swap.cards.every(({ id, servings }) => !previousMealIds.includes(id) && servings === 2));
+  assert.deepEqual(swap.context.excludedIngredients, ["eggs"]);
+  assert.equal(swap.context.budgetTwd, 80);
+});

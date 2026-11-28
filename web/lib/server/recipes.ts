@@ -114,6 +114,18 @@ export const RECIPES: readonly Recipe[] = [
     g("豆腐", 150),
   ]),
   {
+    id: "stove-egg-tomato",
+    title: "番茄煮蛋",
+    equipment: "stove",
+    minutes: 20,
+    ingredients: [egg, g("番茄", 150)],
+    steps: [
+      "將番茄用流動飲用水洗淨切小塊。把雞蛋打入碗中打散，接觸生蛋後洗手並清潔器具。",
+      "將番茄和少量飲用水放入鍋中煮軟，倒入蛋液並輕輕攪拌。",
+      "煮至蛋液完全凝固、沒有流動蛋液，再用乾淨器具盛出。",
+    ],
+  },
+  {
     id: "boil-egg",
     title: "水煮蛋",
     equipment: "stove",
