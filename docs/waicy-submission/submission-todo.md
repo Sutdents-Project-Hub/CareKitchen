@@ -4,7 +4,7 @@
 
 ## Team-owned checks
 
-1. Upload the 35-page deck export, not the six-page report that shares its file name. Add the first member's verified full English name to pages 1 and 33 and confirm all team details. Add verified personal contributions to the [AI use disclosure](ai-use-disclosure.md).
+1. Upload the 35-page deck export, not the six-page report that shares its file name. All five English names on pages 1 and 33 follow the team data supplied on November 28; confirm the other team details in the form. Add verified personal contributions to the [AI use disclosure](ai-use-disclosure.md).
 2. Open the live assistant and published conversation outside the team's browser session. The guide specifies a conversation with the final assistant and at least 10 exchanged messages. The repository supplies a labelled ten-round Codex-operated transcript. For an unambiguous student-authored record, have a team member run the same final assistant and replace that link if required by the organizer.
 3. Use the folder name `LLM_Middle_CareKitchen` if the team's Middle School designation is confirmed. Place the English PDF named `LLM_Middle_CareKitchen.pdf` inside. Add the verified AI use disclosure as supporting material if appropriate. Set Drive sharing to anyone with the link and verify an anonymous open.
 4. Use the [copy-ready description](project-description.md) in the official form. Provide the required contact and team details. Teams already entered by a regional organizer should follow that organizer's process.
