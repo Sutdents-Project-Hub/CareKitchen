@@ -1,17 +1,18 @@
 <section id="prompts" data-transition="fade">
 <p class="eyebrow">ITERATIVE DESIGN · STAGE 2: ADVISOR DESIGN</p>
-<h2>From the first prompt to English V5</h2>
+<h2>From the first prompt to English V6</h2>
 <div class="body">
-<table style="font-size:25px; color:#41495A; width:1664px">
-<tr><th style="width:13%; text-align:left; color:#16315C; padding:11px 20px">Version</th><th style="width:48%; text-align:left; color:#16315C">Design</th><th style="width:39%; text-align:left; color:#16315C">What it was meant to fix</th></tr>
+<table style="font-size:23px; color:#41495A; width:1664px">
+<tr><th style="width:13%; text-align:left; color:#16315C; padding:7px 20px">Version</th><th style="width:48%; text-align:left; color:#16315C">Design</th><th style="width:39%; text-align:left; color:#16315C">What it was meant to fix</th></tr>
 <tr><td style="font-weight:600; color:#0E1B33">Baseline</td><td>One line, “Answer the user in Traditional Chinese” (later in English). Plain chat history, free text.</td><td>Reference point: the same model with no CareKitchen design.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">V1</td><td>The model classifies the turn and ranks candidates. It may ask about any unknown.</td><td>First end-to-end meal advisor.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">V2</td><td>Server-parsed conditions are trusted. A clarification must name the missing field and quote the user.</td><td>Needless re-asking, lost spoken edits, no way to enter prices.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">V3</td><td>Mentioning a budget is separated from asking for a shopping list. Reasons and screens depend on the role.</td><td>All three roles got the same shopping summary.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">V4</td><td>The server parses everyday phrasings; the prompt stresses exclusions and budget changes not yet applied.</td><td>“No egg today”, “keep it under 70”, “no cooking today”, “now two of us”.</td></tr>
 <tr><td style="font-weight:600; color:#0E1B33">English V5</td><td>English instructions with the same ranking, evidence and referral boundaries.</td><td>An English service with its own test runs and transcript.</td></tr>
+<tr><td style="font-weight:600; color:#0E1B33">English V6</td><td>Role guidance names checkable tie-breakers. The server reads short phrases, ranks pantry matches first, explains and swaps.</td><td>“Dinner for 1” unread, foods dropped, “an oven” stored as food, follow-ups not understood.</td></tr>
 </table>
-<div class="soft" style="padding:16px 34px"><p class="cs" style="color:#0E1B33">Same settings in every run: gpt-6-luna, reasoning effort none, store false. V1–V4 phrasings are translated from Chinese. V2 and V3 prompt files were reconstructed from known differences, not archived at the time.</p></div>
+<div class="soft" style="padding:10px 34px"><p class="cs" style="color:#0E1B33">Same settings in every run: gpt-6-luna, reasoning effort none, store false. V1–V4 wording is translated from Chinese. V2 and V3 prompt files were reconstructed from known differences, not archived at the time.</p></div>
 </div>
 <p class="foot">CareKitchen · WAICY 2026 · Track 4: LLM &amp; AI Agent</p>
 </section>

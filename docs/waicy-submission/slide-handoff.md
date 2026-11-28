@@ -1,5 +1,7 @@
 # CareKitchen Presentation Handoff
 
+Applied on November 28: the private deck now has 35 pages with the V6 material below, plus a team motivation page at page 4 (the V6 retest is page 26). The table keeps the earlier 33-page numbering for reference.
+
 Use the updated English technical report and the V6 evidence below when editing the existing 33-page deck. The private deck remains the source for team details.
 
 | Page | What to show | Evidence and wording |
